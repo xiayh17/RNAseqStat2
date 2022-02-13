@@ -1,3 +1,4 @@
+#' @export
 gseResolve <- function(object) {
 
   ## 获取GeneList
@@ -24,6 +25,7 @@ gseResolve <- function(object) {
 }
 
 #' @importFrom clusterProfiler gseKEGG
+#' @export
 gse_keggResolve <- function(...,geneSet_list,keggParams) {
 
   usethis::ui_info("Enrich KEGG analysis Start. This process will take a few minutes.")

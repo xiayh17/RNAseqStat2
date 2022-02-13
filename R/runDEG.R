@@ -1,3 +1,4 @@
+#' @export
 setGeneric(name="runDEG", def=function(obj, dir = ".", prefix = "2-runDEG",
                                             parallel = TRUE,qc=TRUE,
                                              gene = 10,light = NULL,label_light = TRUE,

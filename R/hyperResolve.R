@@ -1,3 +1,4 @@
+#' @export
 hyperResolve <- function(object) {
 
   ## 获取GeneList
@@ -39,6 +40,7 @@ hyperResolve <- function(object) {
 # }
 
 #' @importFrom clusterProfiler enrichKEGG
+#' @export
 hyper_keggResolve <- function(...,geneSet_list,keggParams) {
 
   usethis::ui_info("Enrich KEGG analysis Start. This process will take a few minutes.")

@@ -1,4 +1,5 @@
 #' @import enrichplot
+#' @export
 setGeneric(name="runHyper", def=function(obj, dir = ".", prefix = "3-runHyper",top = 10) standardGeneric("runHyper"))
 
 setMethod(f="runHyper", signature="DEGContainer", definition=function(obj, dir = ".", prefix = "3-runHyper",top = 10) {

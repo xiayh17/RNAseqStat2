@@ -1,4 +1,5 @@
 #' @importFrom kit fduplicated
+#' @export
 msigdbGet <- function(object) {
 
   ## 下载数据
@@ -48,6 +49,7 @@ msigdbGet <- function(object) {
 }
 
 #' @importFrom msigdbr msigdbr
+#' @export
 msigdbGetCore <- function(...,msigdbParam){
 
   params <- list(...)
@@ -95,6 +97,7 @@ gseMSigDB <- function(object) {
 }
 
 #' @importFrom clusterProfiler GSEA
+#' @export
 gseMSigDB_Core <- function(...,msigdbGSEAparam){
 
   params <- list(...)
@@ -110,6 +113,7 @@ gseMSigDB_Core <- function(...,msigdbGSEAparam){
 
 #' @importFrom GSEABase GeneSet GeneSetCollection EntrezIdentifier KEGGCollection
 #' @importFrom GSVA gsva
+#' @export
 gsvaResolve <- function(object) {
 
   # 重新提取数据

@@ -1,3 +1,4 @@
+#' @export
 setGeneric(name="degGroup", def=function(obj) standardGeneric("degGroup"))
 setMethod(f="degGroup", signature="DEGContainer", definition=function(obj) {
 

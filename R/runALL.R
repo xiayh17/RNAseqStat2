@@ -1,3 +1,4 @@
+#' @export
 runALL <- function(object,dir = "output",top = 10,parallel = T) {
 
   runCheck(object = object,dir = dir)

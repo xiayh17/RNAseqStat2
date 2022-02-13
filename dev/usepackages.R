@@ -1,8 +1,11 @@
 usethis::use_package("glue")
 usethis::use_package("edgeR")
+usethis::use_package("fs")
+usethis::use_package("usethis")
+
 usethis::use_package("DESeq2")
 usethis::use_package("SummarizedExperiment")
-usethis::use_package("fs")
+
 usethis::use_package("FactoMineR")
 usethis::use_package("factoextra")
 usethis::use_package("ggplot2")

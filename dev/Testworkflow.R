@@ -20,7 +20,7 @@ data_i <- Create_DEGContainer(expMatrix = row_counts,
                               idType = "ENSEMBL")
 
 data_o <- runALL(object = data_i,dir = "output_test")
-data_t <- runMSigDB(obj = data_o,dir = "output_test")
+# data_t <- runMSigDB(obj = data_o,dir = "output_test")
 
 # runCheck(data_i)
 #

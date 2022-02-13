@@ -1,0 +1,76 @@
+Package: RNAseqStat2
+Type: Package
+Title: A Pipeline to Process RNAseq Data
+Version: 0.1.0.9990
+Authors@R: c(
+        person("Jianming","Zeng",
+            email = "jmzeng1314@163.com",
+            role = c("aut", "ctb")),
+        person(given = "Yonghe",
+           family = "Xia",
+           role = c("aut", "ctb", "cre"),
+           email = "xiayh17@gmail.com"),
+        person("Biotrainee group",role = c("cph","fnd"))
+    )
+Maintainer: Yonghe Xia <xiayh17@gmail.com>
+Description: More about what it does (maybe more than one line)
+    Use four spaces when indenting paragraphs within the Description.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Depends: 
+    R (>= 3.5.0)
+RoxygenNote: 7.1.2
+URL: https://github.com/xiayh17/RNAseqStat,
+    http://xiayh17.top/RNAseqStat
+BugReports: https://github.com/xiayh17/RNAseqStat/issues
+Suggests: 
+    testthat (>= 3.0.0),
+    covr,
+    knitr,
+    rmarkdown,
+    pdftools,
+    png
+Imports: 
+    fs,
+    edgeR,
+    glue,
+    FactoMineR,
+    factoextra,
+    ggplot2,
+    RColorBrewer,
+    pheatmap,
+    data.table,
+    emoji,
+    utils,
+    ggrepel,
+    stats,
+    DESeq2,
+    SummarizedExperiment,
+    magrittr,
+    AnnotationDbi,
+    DOSE,
+    GO.db,
+    GOSemSim,
+    clusterProfiler,
+    furrr,
+    kit,
+    limma,
+    methods,
+    qvalue,
+    org.Hs.eg.db,
+    ggfun,
+    grid,
+    dplyr,
+    forcats,
+    shadowtext,
+    ggnewscale,
+    stringr,
+    enrichplot,
+    plyr,
+    usethis,
+    GSEABase,
+    GSVA
+biocViews: DataImport, Microarray, OneChannel, SAGE, Software, TwoChannel
+Config/testthat/edition: 3
+VignetteBuilder: knitr

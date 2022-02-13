@@ -1,0 +1,120 @@
+> runAll(count_data = counts_input,
++        group_list = group_list,
++        case_group = "autophagy", control_group = "control",
++        OrgDb = "org.Hs.eg.db",
++        dir ="GSE186581_results/")
+Step1: Check you data
+Too few points to calculate an ellipse
+Too few points to calculate an ellipse
+🌳 PCA checking have done, a plot was store in GSE186581_results/.
+🌳 Correlation checking have done, a plot was store in GSE186581_results/.
+🌳 Correlation to top 500 genes checking have done, a plot was store in GSE186581_results/.
+🌳 Standard Deviation top 1000 genes checking have done, a plot was store in GSE186581_results/.
+Step2: DEG analysis
+  it appears that the last variable in the design formula, 'group_list',
+  has a factor level, 'control', which is not the reference level. we recommend
+  to use factor(...,levels=...) or relevel() to set this as the reference level
+  before proceeding. for more information, please see the 'Note on factor levels'
+  in vignette('DESeq2').
+estimating size factors
+estimating dispersions
+gene-wise dispersion estimates
+mean-dispersion relationship
+final dispersion estimates
+fitting model and testing
+🌳 DESeq2 heatmap results were store in GSE186581_results/.
+Down 60
+Stable 12710
+Up 187
+
+🌋 DESeq2 volcano results were store in GSE186581_results/.
+🌳 edgeR heatmap results were store in GSE186581_results/.
+Down 21
+Stable 14245
+Up 72
+
+🌋 edgeR volcano results were store in GSE186581_results/.
+🌳 limma heatmap results were store in GSE186581_results/.
+Down 58
+Stable 20368
+Up 88
+
+🌋 limma volcano results were store in GSE186581_results/.
+Step3: EnrichGO analysis
+Down 195
+Stable 20102
+Up 217
+
+🌳 Enrich GO analysis Start. This process will take a few minutes.
+Result of enrichGO stored in GSE186581_results//3-EnrichGO-limma_go_result.Rdata
+Result of enrichGO ploted in GSE186581_results/
+Down 27
+Stable 14230
+Up 81
+
+🌳 Enrich GO analysis Start. This process will take a few minutes.
+Result of enrichGO stored in GSE186581_results//3-EnrichGO-edgeR_go_result.Rdata
+Result of enrichGO ploted in GSE186581_results/
+Down 255
+Stable 12383
+Up 319
+
+🌳 Enrich GO analysis Start. This process will take a few minutes.
+Result of enrichGO stored in GSE186581_results//3-EnrichGO-DESeq2_go_result.Rdata
+Result of enrichGO ploted in GSE186581_results/
+Step4: EnrichKEGG analysis
+Down 195
+Stable 20102
+Up 217
+
+'select()' returned 1:1 mapping between keys and columns
+'select()' returned 1:1 mapping between keys and columns
+🌳 Enrich KEGG analysis Start. This process will take a few minutes.
+Result of hyper_kegg stored in GSE186581_results//4-EnrichKEGG-limma_GSE186581_results//4-EnrichKEGG-limma_kegg_result.Rdata
+Result of enrichKEGG ploted in GSE186581_results/
+Down 27
+Stable 14230
+Up 81
+
+'select()' returned 1:1 mapping between keys and columns
+'select()' returned 1:1 mapping between keys and columns
+🌳 Enrich KEGG analysis Start. This process will take a few minutes.
+Result of hyper_kegg stored in GSE186581_results//4-EnrichKEGG-edgeR_GSE186581_results//4-EnrichKEGG-edgeR_kegg_result.Rdata
+Result of enrichKEGG ploted in GSE186581_results/
+Down 255
+Stable 12383
+Up 319
+
+'select()' returned 1:1 mapping between keys and columns
+'select()' returned 1:1 mapping between keys and columns
+🌳 Enrich KEGG analysis Start. This process will take a few minutes.
+Result of hyper_kegg stored in GSE186581_results//4-EnrichKEGG-DESeq2_GSE186581_results//4-EnrichKEGG-DESeq2_kegg_result.Rdata
+Result of enrichKEGG ploted in GSE186581_results/
+Step5: GSEA_KEGG analysis
+'select()' returned 1:many mapping between keys and columns
+preparing geneSet collections...
+GSEA analysis...
+leading edge analysis...
+done...
+Result of gsea_kegg stored in GSE186581_results//5-GSEA-limma_GSE186581_results//5-GSEA-limma_gsekegg_result.Rdata
+Barplot of GSEA_KEGG ploted in GSE186581_results/
+Gseplot of GSEA_KEGG ploted in GSE186581_results/
+'select()' returned 1:many mapping between keys and columns
+preparing geneSet collections...
+GSEA analysis...
+leading edge analysis...
+done...
+Result of gsea_kegg stored in GSE186581_results//5-GSEA-edgeR_GSE186581_results//5-GSEA-edgeR_gsekegg_result.Rdata
+Barplot of GSEA_KEGG ploted in GSE186581_results/
+Gseplot of GSEA_KEGG ploted in GSE186581_results/
+'select()' returned 1:many mapping between keys and columns
+preparing geneSet collections...
+GSEA analysis...
+leading edge analysis...
+done...
+Result of gsea_kegg stored in GSE186581_results//5-GSEA-DESeq2_GSE186581_results//5-GSEA-DESeq2_gsekegg_result.Rdata
+Barplot of GSEA_KEGG ploted in GSE186581_results/
+Gseplot of GSEA_KEGG ploted in GSE186581_results/
+Warning message:
+In fgseaMultilevel(...) :
+  For some pathways, in reality P-values are less than 1e-10. You can set the `eps` argument to zero for better estimation.

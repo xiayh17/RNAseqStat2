@@ -1,0 +1,15 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^data-raw$
+^dev$
+^codecov\.yml$
+^README\.Rmd$
+^\.github$
+^\.git$
+^LICENSE\.md$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
+^doc$
+^Meta$
+^output_test.*

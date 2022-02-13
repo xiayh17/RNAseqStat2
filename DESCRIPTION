@@ -62,7 +62,8 @@ Imports:
     plyr,
     GSEABase,
     GSVA,
-    msigdbr
+    msigdbr,
+    AnnoProbe
 biocViews: DataImport, Microarray, OneChannel, SAGE, Software, TwoChannel
 Config/testthat/edition: 3
 VignetteBuilder: knitr

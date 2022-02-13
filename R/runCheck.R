@@ -32,7 +32,8 @@ runCheck <- function(object,
   if(dataType(object) == "Counts") {
 
     ui_info("Your Counts will be Convert to CPM and make a check!")
-    dat=cpm(exprSet, prior.count = 2)
+    # dat=cpm(exprSet, prior.count = 2)
+    dat = log2(cpm(exprSet)+1)
 
     pca_check(dat,group_list,dir = dir,prefix = prefix,palette = palette)
     ui_done(glue("PCA checking have done, a plot was store in {ui_path(dir)}."))
@@ -45,7 +46,16 @@ runCheck <- function(object,
 
   } else {
 
+    ui_info("Your Array will be make a check!")
 
+    pca_check(dat,group_list,dir = dir,prefix = prefix,palette = palette)
+    ui_done(glue("PCA checking have done, a plot was store in {ui_path(dir)}."))
+    corall_check(dat,group_list,dir = dir,prefix = prefix,palette = palette)
+    ui_done(glue("Correlation checking have done, a plot was store in {ui_path(dir)}."))
+    cor500_check(exprSet,group_list,dir = dir,prefix = prefix,palette = palette)
+    ui_done(glue("Correlation to top 500 genes checking have done, a plot was store in {ui_path(dir)}."))
+    top1000_check(dat,group_list,dir = dir,prefix = prefix,palette = palette)
+    ui_done(glue("Standard Deviation top 1000 genes checking have done, a plot was store in {ui_path(dir)}."))
 
   }
 
@@ -105,19 +115,7 @@ pca_check <- function(data, list, dir = ".", prefix = "1-run_check", palette = R
 #' @noRd
 corall_check <- function(data, list, dir = ".", prefix = "1-run_check",palette = RColorBrewer::brewer.pal(3,"Set2")[1:2]) {
   filename = glue('{dir}/{prefix}_cor_all.pdf')
-  colD=data.frame(Groups=list)
-  rownames(colD)=colnames(data)
-  m=cor(data)
-  names(palette) <- unique(list)
-  pheatmap( m ,
-            annotation_col = colD,
-            show_rownames = F,
-            width = ncol(m)*0.3+2.2,
-            height = ncol(m)*0.3+2.2,
-            main = "Correlation by all genes",
-            annotation_colors = list(Groups = palette),
-            filename = filename)
-  # ggsave(filename, width = 400/100, height = 350/100, dpi = 300, units = "in", limitsize = FALSE)
+  corExprHeatmap(expr = data,group_list = list,palette = palette,filename = filename,main = "Correlation by all genes")
 }
 
 #' Correlation of all samples and top 500 genes
@@ -140,22 +138,7 @@ corall_check <- function(data, list, dir = ".", prefix = "1-run_check",palette =
 #' @noRd
 cor500_check <- function(data, list, dir = ".", prefix = "1-run_check",palette = RColorBrewer::brewer.pal(3,"Set2")[1:2]) {
   filename = glue('{dir}/{prefix}_cor_top500.pdf')
-  exprSet=data
-  exprSet=log(edgeR::cpm(exprSet)+1)
-  exprSet=exprSet[names(sort(apply(exprSet, 1,mad),decreasing = T)[1:500]),]
-  colD=data.frame(Groups=list)
-  rownames(colD)=colnames(exprSet)
-  M=cor(exprSet)
-  names(palette) <- unique(list)
-  pheatmap::pheatmap(M,
-                     show_rownames = F,
-                     annotation_col = colD,
-                     width = ncol(M)*0.3+2.2,
-                     height = ncol(M)*0.3+2.2,
-                     main = "Correlation by top 500",
-                     annotation_colors = list(Groups = palette),
-                     filename = filename)
-  # ggsave(filename, width = 400/100, height = 350/100, dpi = 300, units = "in", limitsize = FALSE)
+  corExprHeatmap(expr = data,group_list = list,palette = palette,top=500,filename = filename,main = "Correlation by 500 genes")
 }
 
 #' Heatmap of all samples and Top1000 genes
@@ -179,21 +162,5 @@ cor500_check <- function(data, list, dir = ".", prefix = "1-run_check",palette =
 #' @noRd
 top1000_check <- function(data, list, dir = ".", prefix = "1-run_check",palette = RColorBrewer::brewer.pal(3,"Set2")[1:2]) {
   filename = glue('{dir}/{prefix}_heatmap_top1000_sd.pdf')
-  dat = data
-  cg=names(tail(sort(apply(dat,1,sd)),1000))
-  n=t(scale(t(dat[cg,])))
-  n[n>2]=2
-  n[n< -2]= -2
-  ac=data.frame(Groups=list)
-  rownames(ac)=colnames(n)
-  names(palette) <- unique(list)
-  pheatmap::pheatmap( n ,
-                      annotation_col = ac,
-                      show_rownames = F,
-                      width = ncol(n)*0.3+2.2,
-                      height = ncol(n)*0.3+2.2,
-                      main = "SD Top 1000 genes",
-                      annotation_colors = list(Groups = palette),
-                      filename = filename)
-  # ggsave(filename, width = 400/100, height = 350/100, dpi = 300, units = "in", limitsize = FALSE)
+  topExprHeatmap(expr = data,group_list = list,filename = filename,palette = palette,top = 1000,main = "SD Top 1000 genes")
 }

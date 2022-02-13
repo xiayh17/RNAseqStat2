@@ -59,7 +59,10 @@ Imports:
     ggnewscale,
     stringr,
     enrichplot,
-    plyr
+    plyr,
+    GSEABase,
+    GSVA,
+    msigdbr
 biocViews: DataImport, Microarray, OneChannel, SAGE, Software, TwoChannel
 Config/testthat/edition: 3
 VignetteBuilder: knitr

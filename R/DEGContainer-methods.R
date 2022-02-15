@@ -42,7 +42,7 @@ Create_DEGContainer <- function(species = "Human",
                                 expMatrix,
                                 groupInfo,
                                 caseGroup,
-                                filterMethod = "rowSums(expMatrix > 2) >= ncol(expMatrix)/2"){
+                                filterMethod = "rowSums(expMatrix > 0) >= ncol(expMatrix)/2"){
 
   expMatrix <- as.data.frame(expMatrix)
 
@@ -61,7 +61,7 @@ Create_DEGContainer <- function(species = "Human",
   } else {
 
     keep_feature <- eval(parse(text = filterMethod))
-    matrixFiltered <- expMatrix[keep_feature,]
+    matrixFiltered <- as.data.frame(expMatrix[keep_feature,])
     left = nrow(matrixFiltered)
 
 

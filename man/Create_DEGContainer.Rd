@@ -11,7 +11,7 @@ Create_DEGContainer(
   expMatrix,
   groupInfo,
   caseGroup,
-  filterMethod = "rowSums(expMatrix > 2) >= ncol(expMatrix)/2"
+  filterMethod = "rowSums(expMatrix > 0) >= ncol(expMatrix)/2"
 )
 }
 \arguments{

@@ -1,4 +1,23 @@
 # Low level function to create DEGContainer -------------------------------
+#' @title Initialize an object of class \code{DEGContainer}
+#'
+#' @name DEGContainer
+#' @docType methods
+#'
+#' @description Constructs a \code{DEGContainer} object. Additional helper
+#'   methods for manipulating \code{DEGContainer} objects are  also
+#'   described below. We now recommend using
+#'   \code{Create_DEGContainer} to create objects, instead.
+#'
+#' @param dataInfo a dataInfo object
+#' @param degResults a degResults object
+#' @param hyperResults a hyperResults object
+#' @param gseResults a gseResults object
+#' @param MSigDB a MSigDB object
+#'
+#' @return a DEGContainer
+#'
+#' @export
 DEGContainer <- function(dataInfo=NULL,
                          degResults=NULL,
                          hyperResults=NULL,
@@ -17,7 +36,7 @@ DEGContainer <- function(dataInfo=NULL,
 
 }
 
-#' Create DEGContainer
+#' Create \code{DEGContainer}
 #'
 #' Begin in DEGContainer.
 #'
@@ -31,7 +50,7 @@ DEGContainer <- function(dataInfo=NULL,
 #'
 #' @importFrom usethis ui_info ui_done ui_code
 #'
-#' @return
+#' @return a \code{DEGContainer} object
 #' @export
 #'
 #' @examples

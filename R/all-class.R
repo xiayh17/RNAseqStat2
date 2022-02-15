@@ -13,6 +13,7 @@ setClassUnion("numeric_OR_list_OR_NULL", c("list","numeric", "NULL"))
 #'
 #' @family DEGContainer
 #'
+#' @export
 setClass(Class="dataInfo",
          slots = c(
            species = "character", ## 物种
@@ -109,6 +110,25 @@ setClassUnion("degResults_OR_NULL", c("degResults", "NULL"))
 setClassUnion("gseResults_OR_NULL", c("gseResults", "NULL"))
 
 # msigdb ------------------------------------------------------------------
+#' @title Class \code{MSigDB}
+#' @aliases MSigDB-class
+#'
+#' @description This was the class for storing data from MSigDB and analysis
+#'   results. We now generally reommend using the
+#'   \code{\link{Create_DEGContainer}} to create it.
+#'
+#' @slot msigdbParam list_OR_NULL.
+#' @slot msigdbData list.
+#' @slot msigdbGSEAparam list_OR_NULL.
+#' @slot msigdbGSEAresult list.
+#' @slot msigdbGSVAresult list.
+#'
+#' @return The accessor functions \code{msigdbParam}, \code{msigdbData},
+#'   \code{msigdbGSEAparam}, \code{msigdbGSEAresult}, \code{msigdbGSVAresult}
+#'   return the corresponding elements of a
+#'   \code{DEGContainer} or \code{MSigDB}.
+#'
+#' @export
 setClass(Class = "MSigDB",
          slots = c(msigdbParam = "list_OR_NULL",
                    msigdbData = "list",
@@ -118,6 +138,25 @@ setClass(Class = "MSigDB",
          ))
 setClassUnion("MSigDB_OR_NULL", c("MSigDB", "NULL"))
 
+#' @title Class \code{DEGContainer}
+#' @aliases DEGContainer-class
+#'
+#' @description This was the universal class for storing data and
+#'   results. We now generally reommend using the
+#'   \code{\link{Create_DEGContainer}} to create it.
+#'
+#' @slot dataInfo store input data of workflow
+#' @slot degResults store parameters and results in \code{runDEG} module
+#' @slot hyperResults store parameters and results in \code{runHyper} module
+#' @slot gseResults store parameters and results in \code{runGSEA} module
+#' @slot MSigDB store parameters and results in \code{runMSigDB} module
+#'
+#' @return The accessor functions \code{dataInfo}, \code{degResults},
+#'   \code{hyperResults}, \code{gseResults}, \code{MSigDB} return
+#'   the corresponding elements of a
+#'   \code{DEGContainer}.
+#'
+#' @export
 setClass(Class = "DEGContainer",
           slots = c(
             dataInfo = "dataInfo_OR_NULL",
@@ -138,3 +177,27 @@ setMethod("show", "DEGContainer",
           }
 )
 
+#' @rdname DEGContainer
+#' @export
+setGeneric(name="dataInfo", def=function(obj) standardGeneric("dataInfo"))
+setMethod(f="dataInfo", signature="DEGContainer", definition=function(obj) obj@dataInfo)
+
+#' @rdname DEGContainer
+#' @export
+setGeneric(name="degResults", def=function(obj) standardGeneric("degResults"))
+setMethod(f="degResults", signature="DEGContainer", definition=function(obj) obj@degResults)
+
+#' @rdname DEGContainer
+#' @export
+setGeneric(name="hyperResults", def=function(obj) standardGeneric("hyperResults"))
+setMethod(f="hyperResults", signature="DEGContainer", definition=function(obj) obj@hyperResults)
+
+#' @rdname DEGContainer
+#' @export
+setGeneric(name="gseResults", def=function(obj) standardGeneric("gseResults"))
+setMethod(f="gseResults", signature="DEGContainer", definition=function(obj) obj@gseResults)
+
+#' @rdname DEGContainer
+#' @export
+setGeneric(name="MSigDB", def=function(obj) standardGeneric("MSigDB"))
+setMethod(f="MSigDB", signature="DEGContainer", definition=function(obj) obj@MSigDB)

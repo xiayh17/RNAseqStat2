@@ -2,7 +2,7 @@
 % Please edit documentation in R/DEGContainer-methods.R
 \name{Create_DEGContainer}
 \alias{Create_DEGContainer}
-\title{Create DEGContainer}
+\title{Create \code{DEGContainer}}
 \usage{
 Create_DEGContainer(
   species = "Human",
@@ -30,7 +30,7 @@ Create_DEGContainer(
 \item{matrix}{expresses value matrix. Should be a data.frame row named by gene ID and column named by Sample}
 }
 \value{
-
+a \code{DEGContainer} object
 }
 \description{
 Begin in DEGContainer.

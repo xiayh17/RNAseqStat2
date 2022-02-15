@@ -591,6 +591,14 @@ setReplaceMethod("gseRes", "gseResults",
                  function(obj, value) {obj@gseRes <- value; validObject(obj); obj})
 ## End of methods for gse results ----
 
+#' Create \code{MSigDB}
+#'
+#' Create a msigdbParam list. If NULL, default parameters will apply.
+#'
+#' @param msigdbParam a list contains any paramaters of \code{\link[msigdbr]{msigdbr}}
+#'
+#' @return a list
+#' @export
 Create_msigdbParam <- function(msigdbParam = NULL) {
 
   ## 设置默认选项 ----
@@ -636,6 +644,14 @@ Create_msigdbParam <- function(msigdbParam = NULL) {
 
 }
 
+#' Create \code{MSigDB}
+#'
+#' Create a GSEAparam list. If NULL, default parameters will apply.
+#'
+#' @param GSEAparam a list contains any paramaters of \code{\link[clusterProfiler]{GSEA}}
+#'
+#' @return a list
+#' @export
 Create_msigdbGSEAparam <- function(GSEAparam = NULL) {
 
   GSEAparam_default = list(
@@ -690,6 +706,15 @@ Create_msigdbGSEAparam <- function(GSEAparam = NULL) {
 
 }
 
+#' Create \code{MSigDB}
+#'
+#' Create a MSigDB object.
+#'
+#' @param msigdbParam from \code{Create_msigdbParam}
+#' @param msigdbGSEAparam from \code{Create_msigdbGSEAparam}
+#'
+#' @return a \code{MSigDB} object
+#' @export
 Create_MSigDB <- function(msigdbParam = Create_msigdbParam(),msigdbGSEAparam = Create_msigdbGSEAparam()) {
 
   new("MSigDB",
@@ -702,53 +727,107 @@ Create_MSigDB <- function(msigdbParam = Create_msigdbParam(),msigdbGSEAparam = C
 }
 
 ## Methods for MSigDB ----
+#' @export
 setGeneric(name="msigdbParam", def=function(obj) standardGeneric("msigdbParam"))
+#' @rdname MSigDB
+#' @export
 setMethod(f="msigdbParam", signature="MSigDB", definition=function(obj) obj@msigdbParam)
+#' @rdname DEGContainer
+#' @export
 setMethod(f="msigdbParam", signature="DEGContainer", definition=function(obj) obj@MSigDB@msigdbParam)
 
+#' @export
 setGeneric(name="msigdbGSEAparam", def=function(obj) standardGeneric("msigdbGSEAparam"))
+#' @rdname MSigDB
+#' @export
 setMethod(f="msigdbGSEAparam", signature="MSigDB", definition=function(obj) obj@msigdbGSEAparam)
+#' @rdname DEGContainer
+#' @export
 setMethod(f="msigdbGSEAparam", signature="DEGContainer", definition=function(obj) obj@MSigDB@msigdbGSEAparam)
 
+#' @export
 setGeneric("msigdbParam<-", function(obj, value) standardGeneric("msigdbParam<-"))
+#' @rdname DEGContainer
+#' @export
 setReplaceMethod("msigdbParam", "DEGContainer",
                  function(obj, value) {obj@MSigDB@msigdbParam <- value; validObject(obj); obj})
+#' @rdname MSigDB
+#' @export
 setReplaceMethod("msigdbParam", "MSigDB",
                  function(obj, value) {obj@msigdbParam <- value; validObject(obj); obj})
 
+#' @export
 setGeneric("msigdbGSEAparam<-", function(obj, value) standardGeneric("msigdbGSEAparam<-"))
+#' @rdname DEGContainer
+#' @export
 setReplaceMethod("msigdbGSEAparam", "DEGContainer",
                  function(obj, value) {obj@MSigDB@msigdbGSEAparam <- value; validObject(obj); obj})
+#' @rdname MSigDB
+#' @export
 setReplaceMethod("msigdbGSEAparam", "MSigDB",
                  function(obj, value) {obj@msigdbGSEAparam <- value; validObject(obj); obj})
 
+#' @export
 setGeneric(name="msigdbData", def=function(obj) standardGeneric("msigdbData"))
+#' @rdname MSigDB
+#' @export
 setMethod(f="msigdbData", signature="MSigDB", definition=function(obj) obj@msigdbData)
+#' @rdname DEGContainer
+#' @export
 setMethod(f="msigdbData", signature="DEGContainer", definition=function(obj) obj@MSigDB@msigdbData)
 
+#' @export
 setGeneric("msigdbData<-", function(obj, value) standardGeneric("msigdbData<-"))
+#' @rdname DEGContainer
+#' @export
 setReplaceMethod("msigdbData", "DEGContainer",
                  function(obj, value) {obj@MSigDB@msigdbData <- value; validObject(obj); obj})
+#' @rdname MSigDB
+#' @export
 setReplaceMethod("msigdbData", "MSigDB",
                  function(obj, value) {obj@msigdbData <- value; validObject(obj); obj})
 
+#' @export
 setGeneric(name="msigdbGSEAresult", def=function(obj) standardGeneric("msigdbGSEAresult"))
+#' @rdname MSigDB
+#' @export
 setMethod(f="msigdbGSEAresult", signature="MSigDB", definition=function(obj) obj@msigdbGSEAresult)
+#' @rdname DEGContainer
+#' @export
 setMethod(f="msigdbGSEAresult", signature="DEGContainer", definition=function(obj) obj@MSigDB@msigdbGSEAresult)
 
+#' @export
 setGeneric("msigdbGSEAresult<-", function(obj, value) standardGeneric("msigdbGSEAresult<-"))
+#' @rdname DEGContainer
+#' @export
 setReplaceMethod("msigdbGSEAresult", "DEGContainer",
                  function(obj, value) {obj@MSigDB@msigdbGSEAresult <- value; validObject(obj); obj})
+#' @rdname MSigDB
+#' @export
 setReplaceMethod("msigdbGSEAresult", "MSigDB",
                  function(obj, value) {obj@msigdbGSEAresult <- value; validObject(obj); obj})
 
+
+
+#' @export
 setGeneric(name="msigdbGSVAresult", def=function(obj) standardGeneric("msigdbGSVAresult"))
+#' @rdname MSigDB
+#' @export
 setMethod(f="msigdbGSVAresult", signature="MSigDB", definition=function(obj) obj@msigdbGSVAresult)
+#' @rdname DEGContainer
+#' @export
 setMethod(f="msigdbGSVAresult", signature="DEGContainer", definition=function(obj) obj@MSigDB@msigdbGSVAresult)
 
+
+
+#' @export
 setGeneric("msigdbGSVAresult<-", function(obj, value) standardGeneric("msigdbGSVAresult<-"))
+#' @rdname DEGContainer
+#' @export
 setReplaceMethod("msigdbGSVAresult", "DEGContainer",
                  function(obj, value) {obj@MSigDB@msigdbGSVAresult <- value; validObject(obj); obj})
+#' @rdname MSigDB
+#' @export
 setReplaceMethod("msigdbGSVAresult", "MSigDB",
                  function(obj, value) {obj@msigdbGSVAresult <- value; validObject(obj); obj})
 ## End of methods for gse results ----

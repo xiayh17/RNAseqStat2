@@ -113,15 +113,19 @@ setClassUnion("gseResults_OR_NULL", c("gseResults", "NULL"))
 #' @title Class \code{MSigDB}
 #' @aliases MSigDB-class
 #'
-#' @description This was the class for storing data from MSigDB and analysis
-#'   results. We now generally reommend using the
-#'   \code{\link{Create_DEGContainer}} to create it.
+#' @name MSigDB
+#' @docType methods
 #'
-#' @slot msigdbParam list_OR_NULL.
-#' @slot msigdbData list.
-#' @slot msigdbGSEAparam list_OR_NULL.
-#' @slot msigdbGSEAresult list.
-#' @slot msigdbGSVAresult list.
+#' @description This was the class for storing data from MSigDB and analysis
+#'   results.
+#'   We now generally recommend using the \code{\link{Create_DEGContainer}}
+#'   to create it in \code{DEGContainer} obj.
+#'
+#' @slot msigdbParam list_OR_NULL. Store Param of \code{\link[msigdbr]{msigdbr}}
+#' @slot msigdbData list. Save data download from MSigDB by \code{\link[msigdbr]{msigdbr}}.
+#' @slot msigdbGSEAparam list_OR_NULL. Store Param of \code{\link[clusterProfiler]{GSEA}}
+#' @slot msigdbGSEAresult list. Store results of GSEA.
+#' @slot msigdbGSVAresult list. Store results of GSVA.
 #'
 #' @return The accessor functions \code{msigdbParam}, \code{msigdbData},
 #'   \code{msigdbGSEAparam}, \code{msigdbGSEAresult}, \code{msigdbGSVAresult}
@@ -140,6 +144,9 @@ setClassUnion("MSigDB_OR_NULL", c("MSigDB", "NULL"))
 
 #' @title Class \code{DEGContainer}
 #' @aliases DEGContainer-class
+#'
+#' @name DEGContainer
+#' @docType methods
 #'
 #' @description This was the universal class for storing data and
 #'   results. We now generally reommend using the

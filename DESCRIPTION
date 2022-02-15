@@ -63,7 +63,10 @@ Imports:
     GSEABase,
     GSVA,
     msigdbr,
-    AnnoProbe
+    AnnoProbe,
+    ggtext,
+    ggdist,
+    ggridges
 biocViews: DataImport, Microarray, OneChannel, SAGE, Software, TwoChannel
 Config/testthat/edition: 3
 VignetteBuilder: knitr

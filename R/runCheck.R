@@ -26,38 +26,43 @@ runCheck <- function(object,
     fs::dir_create(dir)
   }
 
-  exprSet= expMatrix(object)
+  exprSet= matrixFiltered(object)
   group_list =  groupInfo(object)
 
   if(dataType(object) == "Counts") {
 
     ui_info("Your Counts will be Convert to CPM and make a check!")
-    # dat=cpm(exprSet, prior.count = 2)
+    # dat=cpm(exprSet, prior.count = 2, log = TRUE)
     dat = log2(cpm(exprSet)+1)
 
-    pca_check(dat,group_list,dir = dir,prefix = prefix,palette = palette)
-    ui_done(glue("PCA checking have done, a plot was store in {ui_path(dir)}."))
-    corall_check(dat,group_list,dir = dir,prefix = prefix,palette = palette)
-    ui_done(glue("Correlation checking have done, a plot was store in {ui_path(dir)}."))
-    cor500_check(exprSet,group_list,dir = dir,prefix = prefix,palette = palette)
-    ui_done(glue("Correlation to top 500 genes checking have done, a plot was store in {ui_path(dir)}."))
-    top1000_check(dat,group_list,dir = dir,prefix = prefix,palette = palette)
-    ui_done(glue("Standard Deviation top 1000 genes checking have done, a plot was store in {ui_path(dir)}."))
+    box_check(dat,group_list,dir = dir,prefix = prefix,palette = palette,y = "log2(cpm(count)+1)")
+    ui_done(glue("Box checking have done, a plot was store in {ui_path(dir)}."))
+    suppressMessages(density_check(dat,group_list,dir = dir,prefix = prefix,palette = palette,y = "log2(cpm(count)+1)"))
+    ui_done(glue("Density checking have done, a plot was store in {ui_path(dir)}."))
 
-  } else {
+  } else if (dataType(object) == "Array") {
 
     ui_info("Your Array will be make a check!")
+    dat = exprSet
 
-    pca_check(dat,group_list,dir = dir,prefix = prefix,palette = palette)
-    ui_done(glue("PCA checking have done, a plot was store in {ui_path(dir)}."))
-    corall_check(dat,group_list,dir = dir,prefix = prefix,palette = palette)
-    ui_done(glue("Correlation checking have done, a plot was store in {ui_path(dir)}."))
-    cor500_check(exprSet,group_list,dir = dir,prefix = prefix,palette = palette)
-    ui_done(glue("Correlation to top 500 genes checking have done, a plot was store in {ui_path(dir)}."))
-    top1000_check(dat,group_list,dir = dir,prefix = prefix,palette = palette)
-    ui_done(glue("Standard Deviation top 1000 genes checking have done, a plot was store in {ui_path(dir)}."))
+    box_check(dat,group_list,dir = dir,prefix = prefix,palette = palette,y = "expression value")
+    ui_done(glue("Box checking have done, a plot was store in {ui_path(dir)}."))
+    suppressMessages(density_check(dat,group_list,dir = dir,prefix = prefix,palette = palette,y = "expression value"))
+    ui_done(glue("Density checking have done, a plot was store in {ui_path(dir)}."))
+
 
   }
+
+  HKG_check(dat,group_list,dir = dir,prefix = prefix,palette = palette)
+  ui_done(glue("HKG checking have done, a plot was store in {ui_path(dir)}."))
+  pca_check(dat,group_list,dir = dir,prefix = prefix,palette = palette)
+  ui_done(glue("PCA checking have done, a plot was store in {ui_path(dir)}."))
+  corall_check(dat,group_list,dir = dir,prefix = prefix,palette = palette)
+  ui_done(glue("Correlation checking have done, a plot was store in {ui_path(dir)}."))
+  cor500_check(exprSet,group_list,dir = dir,prefix = prefix,palette = palette)
+  ui_done(glue("Correlation to top 500 genes checking have done, a plot was store in {ui_path(dir)}."))
+  top1000_check(dat,group_list,dir = dir,prefix = prefix,palette = palette)
+  ui_done(glue("Standard Deviation top 1000 genes checking have done, a plot was store in {ui_path(dir)}."))
 
 }
 
@@ -69,31 +74,20 @@ runCheck <- function(object,
 #' @param list a list ordered by samples in data
 #' @param dir a directory to store results
 #' @param prefix a prefix of file names in this step
+#' @param palette a color palette for plots
 #'
-#' @importFrom FactoMineR PCA
-#' @importFrom factoextra fviz_pca_ind
-#' @importFrom ggplot2 theme element_text labs ggsave
-#' @importFrom RColorBrewer brewer.pal
 #' @importFrom glue glue
 #'
 #' @return a figure of PCA
 #'
 #' @examples
 #' pca_check(data, list)
-#' @noRd
 pca_check <- function(data, list, dir = ".", prefix = "1-run_check", palette = RColorBrewer::brewer.pal(3,"Set2")[1:2]) {
   filename = glue('{dir}/{prefix}_all_samples_PCA_by_type.pdf')
-  dat=t(data)
-  dat.pca <- PCA(dat , graph = FALSE)
-  p <- fviz_pca_ind(dat.pca,
-                    geom.ind = "point", # show points only (nbut not "text")
-                    col.ind =  list, # color by groups
-                    palette = palette,
-                    addEllipses = TRUE, # Concentration ellipses
-                    legend.title = "Groups"
-  ) + theme(plot.title = element_text(face = "bold")) +
-    labs(title = "all samples - PCA")
-  ggsave(filename,p, width = 400/100, height = 350/100, dpi = 300, units = "in", limitsize = FALSE)
+  exprPCA(expr = data, group_list = list,
+          palette = palette,
+          filename = filename, main = "all samples - PCA",
+          width=4, height = 4)
 }
 
 #' Correlation of all samples and all genes
@@ -104,18 +98,17 @@ pca_check <- function(data, list, dir = ".", prefix = "1-run_check", palette = R
 #' @param list a list ordered by samples in data
 #' @param dir a directory to store results
 #' @param prefix a prefix of file names in this step
+#' @param palette a color palette for plots
 #'
 #' @importFrom glue glue
-#' @importFrom pheatmap pheatmap
 #'
 #' @return a Heatmap shows correlation of all samples
 #'
 #' @examples
 #' corall_check(data, list)
-#' @noRd
 corall_check <- function(data, list, dir = ".", prefix = "1-run_check",palette = RColorBrewer::brewer.pal(3,"Set2")[1:2]) {
   filename = glue('{dir}/{prefix}_cor_all.pdf')
-  corExprHeatmap(expr = data,group_list = list,palette = palette,filename = filename,main = "Correlation by all genes")
+  exprCorHeatmap(expr = data,group_list = list,palette = palette,filename = filename,main = "Correlation by all genes")
 }
 
 #' Correlation of all samples and top 500 genes
@@ -126,19 +119,17 @@ corall_check <- function(data, list, dir = ".", prefix = "1-run_check",palette =
 #' @param list a list ordered by samples in data
 #' @param dir a directory to store results
 #' @param prefix a prefix of file names in this step
+#' @param palette a color palette for plots
 #'
 #' @importFrom glue glue
-#' @importFrom pheatmap pheatmap
-#' @importFrom stats cor mad
 #'
 #' @return a Heatmap shows correlation of all samples to 500 genes
 #'
 #' @examples
 #' cor500_check(counts_input, list)
-#' @noRd
 cor500_check <- function(data, list, dir = ".", prefix = "1-run_check",palette = RColorBrewer::brewer.pal(3,"Set2")[1:2]) {
   filename = glue('{dir}/{prefix}_cor_top500.pdf')
-  corExprHeatmap(expr = data,group_list = list,palette = palette,top=500,filename = filename,main = "Correlation by 500 genes")
+  exprCorHeatmap(expr = data,group_list = list,palette = palette,top=500,filename = filename,main = "Correlation by 500 genes")
 }
 
 #' Heatmap of all samples and Top1000 genes
@@ -149,6 +140,7 @@ cor500_check <- function(data, list, dir = ".", prefix = "1-run_check",palette =
 #' @param list a list ordered by samples in data
 #' @param dir a directory to store results
 #' @param prefix a prefix of file names in this step
+#' @param palette a color palette for plots
 #'
 #' @importFrom glue glue
 #' @importFrom pheatmap pheatmap
@@ -159,8 +151,66 @@ cor500_check <- function(data, list, dir = ".", prefix = "1-run_check",palette =
 #'
 #' @examples
 #' top1000_check(data, list)
-#' @noRd
 top1000_check <- function(data, list, dir = ".", prefix = "1-run_check",palette = RColorBrewer::brewer.pal(3,"Set2")[1:2]) {
   filename = glue('{dir}/{prefix}_heatmap_top1000_sd.pdf')
-  topExprHeatmap(expr = data,group_list = list,filename = filename,palette = palette,top = 1000,main = "SD Top 1000 genes")
+  exprTopHeatmap(expr = data,group_list = list,filename = filename,palette = palette,top = 1000,main = "SD Top 1000 genes")
+}
+
+
+#' Boxplot of expression matrix
+#'
+#' Check data by box plot
+#'
+#' @param data a cpm data frame of rows in genes and columns in samples
+#' @param list a list ordered by samples in data
+#' @param dir a directory to store results
+#' @param prefix a prefix of file names in this step
+#' @param palette a color palette for plots
+#' @param ... more parameters in \code{\link{exprBox}}
+#'
+#' @return a ridges plot file
+#'
+#' @examples
+#' density_check(data,list)
+box_check <- function(data, list, dir = ".", prefix = "1-run_check",palette = RColorBrewer::brewer.pal(3,"Set2")[1:2],...) {
+  filename = glue('{dir}/{prefix}_boxplot.pdf')
+  exprBox(expr = data,group_list = list,filename = filename,palette = palette,main = "Boxplot of gene expression",...)
+}
+#' Density of expression matrix
+#'
+#' Check data density by ridges plot
+#'
+#' @param data a cpm data frame of rows in genes and columns in samples
+#' @param list a list ordered by samples in data
+#' @param dir a directory to store results
+#' @param prefix a prefix of file names in this step
+#' @param palette a color palette for plots
+#' @param ... more parameters in \code{\link{exprRidges}}
+#'
+#' @return a ridges plot file
+#'
+#' @examples
+#' density_check(data,list)
+density_check <- function(data, list, dir = ".", prefix = "1-run_check",palette = RColorBrewer::brewer.pal(3,"Set2")[1:2],...) {
+  filename = glue('{dir}/{prefix}_density.pdf')
+  exprRidges(expr = data,group_list = list,filename = filename,palette = palette,main = "Density of gene expression",...)
+}
+
+#' Human housekeeping genes expression
+#'
+#' Check Human housekeeping genes expression
+#'
+#' @param data a cpm data frame of rows in genes and columns in samples
+#' @param list a list ordered by samples in data
+#' @param dir a directory to store results
+#' @param prefix a prefix of file names in this step
+#' @param palette a color palette for plots
+#'
+#' @return a heatmap plot file
+#'
+#' @examples
+#' HKG_check(data,list)
+HKG_check <- function(data, list, dir = ".", prefix = "1-run_check",palette = RColorBrewer::brewer.pal(3,"Set2")[1:2]) {
+  filename = glue('{dir}/{prefix}_HKG.pdf')
+  exprHKGheatmap(expr = data,group_list = list,filename = filename,palette = palette,main = "Human housekeeping genes expression")
 }

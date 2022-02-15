@@ -1,3 +1,4 @@
+# basical volcano ---------------------------------------------------------
 #' Basic DEG volcano basic plot
 #'
 #' more beautiful and clear DEG volcano plot
@@ -80,7 +81,9 @@ BaseVolcanoPlot <- function(object,which) {
   return(p)
 
 }
+# basical volcano ---------------------------------------------------------
 
+# theme of volcano --------------------------------------------------------
 #' theme_volcano
 #'
 #' a nice theme for DEG volcano
@@ -114,7 +117,9 @@ theme_volcano <- function(...) {theme(...,
                                       legend.position = "top", legend.direction = "horizontal",
                                       plot.margin = margin(10, 25, 10, 10),
                                       plot.caption = element_text(hjust = 1,family = "Times", size = 6, face = "italic", colour = "black"))}
+# theme of volcano --------------------------------------------------------
 
+# point volcano -----------------------------------------------------------
 #' Showing gene labels and highlighting gene points in a volcano plot in ggplot
 #'
 #' specific some genes to label
@@ -211,7 +216,9 @@ PointVolcano <- function(object,which,gene,light = NULL,label_light = T,
   return(p)
 
 }
+# point volcano -----------------------------------------------------------
 
+# help function -----------------------------------------------------------
 volcano_nudge_x_up <- function(object,label_data,which,just = 0) {
 
   if (which == "limma") {
@@ -304,3 +311,119 @@ geom_volcano_point <- function(data,
              ...,mapping = mapping)
 
 }
+
+get_breaks <- function(volcano, column_name) {
+  pat <- unique(volcano[,c("group",column_name)])
+  pat <- pat[match(levels(volcano$group),pat[,"group"]),]
+  res <- pat[,column_name]
+  return(res)
+}
+
+genePoint <- function(object,which,gene) {
+
+  volcano <- create_volcano(object,which = which)
+
+  if (is.character(gene)&any(gene %in% volcano[,"rn"])) {
+    gene <- data.frame(
+      rn = gene
+    )
+    # look up piont for labels
+    label_data <- merge(gene,volcano)
+  } else if (is.numeric(gene)&length(gene)==1) {
+
+    gene = topGene(object = object,topSig = gene,which = which)
+
+    gene <- data.frame(
+      rn = gene
+    )
+    # look up piont for labels
+    label_data <- merge(gene,volcano)
+
+    ui_info("top {nrow(gene)} gene of Up and Down were Choosed.")
+
+  } else {
+
+    usethis::ui_oops("Make Sure You Gene Name match on you data! ")
+
+  }
+
+  if (nrow(label_data)>0) {
+
+    ui_done(glue("{nrow(label_data)/nrow(gene)*100}% label match on your data."))
+
+  } else {
+
+    usethis::ui_oops("Make Sure You Gene Name match on you data! ")
+
+  }
+
+  return(label_data)
+
+}
+
+create_volcano <- function(object, which) {
+
+  if (which == "limma") {
+    deg_data = limma_res(object)
+  } else if (which == "edgeR") {
+    deg_data = edgeR_res(object)
+  } else if (which == "DESeq2") {
+    deg_data = DESeq2_res(object)
+  } else {
+    ui_stop("{ui_code('which')} should be one of {ui_value('limma, edgeR, DESeq2')}")
+  }
+
+  x = FC_Identify(deg_data)
+  y = pvalue_Identify(deg_data)
+  sigGroup = label(object)
+  sigCol = sigCol(object)
+  sigAlpha = sigAlpha(object)
+  sigSize = sigSize(object)
+  sigShape = sigShape(object)
+
+  if(length(sigCol) == length(sigGroup)) {
+    names(sigCol) = sigGroup
+    # deg_data[,"point.color"] = factor(sigCol[deg_data$group], levels = sigCol)
+  } else if (length(sigCol) == 1) {
+    sigCol = rep(sigCol, length(sigGroup))
+    names(sigCol) = sigGroup
+  }
+
+  if(length(sigAlpha) == length(sigGroup)) {
+    names(sigAlpha) = sigGroup
+    # deg_data[,"point.alpha"] = factor(sigAlpha[deg_data$group], levels = sigAlpha)
+  } else if (length(sigAlpha) == 1) {
+    sigAlpha = rep(sigAlpha, length(sigGroup))
+    names(sigAlpha) = sigGroup
+  }
+
+  if(length(sigSize) == length(sigGroup)) {
+    names(sigSize) = sigGroup
+    # deg_data[,"point.size"] = factor(sigSize[deg_data$group], levels = sigSize)
+  } else if (length(sigSize) == 1) {
+    sigSize = rep(sigSize, length(sigGroup))
+    names(sigSize) = sigGroup
+  }
+
+  if(length(sigShape) == length(sigGroup)) {
+    names(sigShape) = sigGroup
+    # deg_data[,"point.shape"] = factor(sigShape[deg_data$group], levels = sigShape)
+  } else if (length(sigShape) == 1) {
+    sigShape = rep(sigShape, length(sigGroup))
+    names(sigShape) = sigGroup
+  }
+
+
+  deg_data[,"point.color"] = sigCol[deg_data$group]
+  deg_data[,"point.alpha"] = sigAlpha[deg_data$group]
+  deg_data[,"point.size"] = sigSize[deg_data$group]
+  deg_data[,"point.shape"] = sigShape[deg_data$group]
+  deg_data[,"rn"] = rownames(deg_data)
+
+  y = -log10(deg_data[,y])
+
+  deg_data[,"log10Pvalue"] = y
+
+  return(deg_data)
+}
+# help function -----------------------------------------------------------

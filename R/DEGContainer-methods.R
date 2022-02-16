@@ -43,7 +43,7 @@ DEGContainer <- function(dataInfo=NULL,
 #' @param species species for your data. `Human` or `Mouse`.
 #' @param dataType kind of expresses value matrix. `Counts` (Integer) or `Array` (Decimal).
 #' @param idType kind of gene id. `ENSEMBL` or `SYMBOL`, If `ENSEMBL`, it will be automatically converted to `SYMBOL`.
-#' @param matrix expresses value matrix. Should be a data.frame row named by gene ID and column named by Sample
+#' @param expMatrix expresses value matrix. Should be a data.frame row named by gene ID and column named by Sample
 #' @param groupInfo a Character Vectors ordered by samples in matrix.
 #' @param caseGroup a Character names of case group.
 #' @param filterMethod a function used to filter expresses value matrix. Or disable filter by set as `NULL`.

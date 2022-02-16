@@ -21,13 +21,13 @@ Create_DEGContainer(
 
 \item{idType}{kind of gene id. `ENSEMBL` or `SYMBOL`, If `ENSEMBL`, it will be automatically converted to `SYMBOL`.}
 
+\item{expMatrix}{expresses value matrix. Should be a data.frame row named by gene ID and column named by Sample}
+
 \item{groupInfo}{a Character Vectors ordered by samples in matrix.}
 
 \item{caseGroup}{a Character names of case group.}
 
 \item{filterMethod}{a function used to filter expresses value matrix. Or disable filter by set as `NULL`.}
-
-\item{matrix}{expresses value matrix. Should be a data.frame row named by gene ID and column named by Sample}
 }
 \value{
 a \code{DEGContainer} object

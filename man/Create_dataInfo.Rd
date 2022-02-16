@@ -2,7 +2,7 @@
 % Please edit documentation in R/dataInfo-methods.R
 \name{Create_dataInfo}
 \alias{Create_dataInfo}
-\title{dataInfo create function}
+\title{create \code{dataInfo}}
 \usage{
 Create_dataInfo(
   species,
@@ -33,8 +33,8 @@ Create_dataInfo(
 \item{matrixFiltered}{a expresses value matrix after filter by `filterMethod`.}
 }
 \value{
-a DEG_container ob
+\code{dataInfo}
 }
 \description{
-a function to create dataInfo OB
+a function to create \code{dataInfo} OB
 }

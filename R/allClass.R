@@ -2,16 +2,35 @@ setClassUnion("data.frame_OR_NULL", c("data.frame", "NULL"))
 setClassUnion("character_OR_NULL", c("character", "NULL"))
 setClassUnion("numeric_OR_NULL", c("numeric", "NULL"))
 setClassUnion("numeric_OR_list_OR_NULL", c("list","numeric", "NULL"))
+setClassUnion("list_OR_NULL", c("list", "NULL"))
 
-#' a S4 class contains inputs info for workflow
+#' @title Class \code{dataInfo}
+#' @aliases dataInfo-class
 #'
-#' contains begin info of RNAseqStat2
+#' @family DEGContainer
+#' @name dataInfo
+#' @docType methods
+#'
+#' @description This was the class for storing input data for workflow.
+#'   We now generally recommend using the \code{\link{Create_DEGContainer}}
+#'   to create it in \code{DEGContainer} obj.
+#'
+#' @slot species species for your data. `Human` or `Mouse`.
+#' @slot dataType kind of expresses value matrix. `Counts` (Integer) or `Array` (Decimal).
+#' @slot idType kind of gene id. `ENSEMBL` or `SYMBOL`, If `ENSEMBL`, it will be automatically converted to `SYMBOL`.
+#' @slot expMatrix expresses value matrix. Should be a data.frame row named by gene ID and column named by Sample
+#' @slot groupInfo a Character Vectors ordered by samples in matrix.
+#' @slot caseGroup a Character names of case group.
+#' @slot filterMethod a function used to filter expresses value matrix. Or disable filter by set as `NULL`.
+#' @slot matrixFiltered expresses value matrix after apply \code{filterMethod}. Should be a data.frame row named by gene ID and column named by Sample
 #'
 #' @importFrom methods setClass new
 #'
-#' @rdname dataInfo
-#'
-#' @family DEGContainer
+#' @return The accessor functions \code{species}, \code{dataType},
+#'   \code{idType}, \code{expMatrix}, \code{groupInfo},
+#'   \code{caseGroup}, \code{filterMethod}, \code{matrixFiltered}
+#'   return the corresponding elements of a
+#'   \code{DEGContainer} or \code{dataInfo}.
 #'
 #' @export
 setClass(Class="dataInfo",
@@ -78,7 +97,6 @@ setClass(Class="degResults",
 
 
 # hyper -------------------------------------------------------------------
-setClassUnion("list_OR_NULL", c("list", "NULL"))
 setClass(Class = "hyperParam",
          slots = c(goParam = "list",
                    keggParam = "list"))
@@ -103,8 +121,6 @@ setClass(Class = "gseResults",
            gseRes = "list_OR_NULL", ## 分析结果
            gseParam = "gseParam_OR_NULL"
          ))
-setClassUnion("gseResults_OR_NULL", c("gseResults", "NULL"))
-
 setClassUnion("dataInfo_OR_NULL", c("dataInfo", "NULL"))
 setClassUnion("degResults_OR_NULL", c("degResults", "NULL"))
 setClassUnion("gseResults_OR_NULL", c("gseResults", "NULL"))
@@ -115,6 +131,7 @@ setClassUnion("gseResults_OR_NULL", c("gseResults", "NULL"))
 #'
 #' @name MSigDB
 #' @docType methods
+#' @family DEGContainer
 #'
 #' @description This was the class for storing data from MSigDB and analysis
 #'   results.
@@ -174,37 +191,61 @@ setClass(Class = "DEGContainer",
           )
 )
 
-# methods for DEGContainer ------------------------------------------------
-#' @importFrom usethis ui_line ui_value
-setMethod("show", "DEGContainer",
-          function(object) {
+# check Input data --------------------------------------------------------
+#' @importFrom usethis ui_info ui_stop ui_value ui_code
+setValidity("dataInfo", function(object) {
 
-            ui_line("DEGContainer
-                     {ui_value(dataType(object))} Matrix Containing {ui_value(ncol(expMatrix(object)))} samples")
-          }
-)
+  species = species(object)
+  dataType = dataType(object)
+  idType = idType(object)
+  group_list = groupInfo(object)
+  case_group = caseGroup(object)
+  control_group = setdiff(group_list,case_group)
+  counts_data = expMatrix(object)
+  ## species
+  if (species %in% c("Human","Mouse")&length(species)==1) {
+    usethis::ui_done("species: {ui_value(species)}")
+  } else {
+    usethis::ui_stop("Please make sure your {ui_code('species')} is one of {ui_value('Human')} or {ui_value('Mouse')}")
+  }
+  ## dataType
+  if (dataType %in% c("Counts","Array")&length(dataType)==1) {
+    usethis::ui_done("dataType: {ui_value(dataType)}")
+  } else {
+    usethis::ui_stop("Please make sure your {ui_code('dataType')} is one of {ui_value('Counts')} or {ui_value('Array')}")
+  }
+  ## idType
+  if (idType %in% c("SYMBOL","ENSEMBL")&length(idType)==1) {
+    usethis::ui_done("idType: {ui_value(idType)}")
+  } else {
+    usethis::ui_stop("Please make sure your {ui_code('idType')} is one of {ui_value('SYMBOL')} or {ui_value('ENSEMBL')}")
+  }
+  ## counts
+  if (any(class(counts_data) == "data.frame") & all(apply(counts_data, 2, is.integer))) {
+    usethis::ui_done("Counts data frame seems ok")
+  } else {
+    usethis::ui_stop("Please check your data frame! Is it an integer data frame?")
+  }
+  ## group
+  if (all(c(case_group, control_group) %in% group_list) & ncol(counts_data) == length(group_list)) {
+    usethis::ui_done("{ui_value(case_group)}_VS_{ui_value(control_group)} seems ok")
+  } else {
+    usethis::ui_stop("Please check {ui_code('groupInfo')} and {ui_code('caseGroup')}")
+  }
+  ## names
+  usethis::ui_info("Please make sure your data frame is rownamed by Gene Symbol")
+  ## ----
 
-#' @rdname DEGContainer
-#' @export
-setGeneric(name="dataInfo", def=function(obj) standardGeneric("dataInfo"))
-setMethod(f="dataInfo", signature="DEGContainer", definition=function(obj) obj@dataInfo)
+})
 
-#' @rdname DEGContainer
-#' @export
-setGeneric(name="degResults", def=function(obj) standardGeneric("degResults"))
-setMethod(f="degResults", signature="DEGContainer", definition=function(obj) obj@degResults)
+#' @importFrom usethis ui_stop ui_info ui_value
+setValidity("treatInfo", function(object) {
 
-#' @rdname DEGContainer
-#' @export
-setGeneric(name="hyperResults", def=function(obj) standardGeneric("hyperResults"))
-setMethod(f="hyperResults", signature="DEGContainer", definition=function(obj) obj@hyperResults)
+  label =  paste0(label(object),sigCollapse = ';')
+  if (!label_ns(object) %in% label(object)) {
+    usethis::ui_stop("label_ns must be in one of label")
+  } else {
+    usethis::ui_done("label_ns:{ui_value(label_ns(object))} and label:{ui_value(label)} seems ok")
+  }
 
-#' @rdname DEGContainer
-#' @export
-setGeneric(name="gseResults", def=function(obj) standardGeneric("gseResults"))
-setMethod(f="gseResults", signature="DEGContainer", definition=function(obj) obj@gseResults)
-
-#' @rdname DEGContainer
-#' @export
-setGeneric(name="MSigDB", def=function(obj) standardGeneric("MSigDB"))
-setMethod(f="MSigDB", signature="DEGContainer", definition=function(obj) obj@MSigDB)
+})

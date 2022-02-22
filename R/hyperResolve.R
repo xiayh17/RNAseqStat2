@@ -1,78 +1,164 @@
 #' @export
-hyperResolve <- function(object) {
+hyperResolve <- function(object, GO = FALSE, KEGG = TRUE) {
 
   ## 获取GeneList
   test <- deg_here(object)
   ok <- names(test)[which(test == TRUE)] ## 取有效数据
 
-  hyperKEGG_GeneSets = list()
-  for (i in ok) {
-    hyperKEGG_GeneSets[[i]] <- suppressWarnings(hyper_GS(object,which = i,type = "ENTREZID"))
+  if (KEGG) {
+
+    usethis::ui_info("Enrich KEGG analysis Start. This process will take a few minutes.")
+
+    ## get parameters
+    keggParams <- hyperKEGGparam(object)
+    hyperKEGG_GeneSets = list()
+
+    if("TERM2GENE" %in% names(keggParams)){
+
+      for (i in ok) {
+        hyperKEGG_GeneSets[[i]] <- suppressWarnings(hyper_GS(object,which = i,type = "SYMBOL"))
+      }
+
+    } else {
+
+      for (i in ok) {
+        hyperKEGG_GeneSets[[i]] <- suppressWarnings(hyper_GS(object,which = i,type = "ENTREZID"))
+      }
+
+    }
+
+    ## 富集分析
+    hyperKEGG_res <- lapply(seq_along(hyperKEGG_GeneSets), function(x){
+      geneSet_list = hyperKEGG_GeneSets[[x]]
+      res <- hyper_keggResolve(geneSet_list = geneSet_list,keggParams = keggParams)
+      ui_done("Enrich KEGG {names(hyperKEGG_GeneSets)[x]} analysis done")
+
+      return(res)
+    })
+
+    names(hyperKEGG_res) <- names(hyperKEGG_GeneSets)
+
+  } else {
+
+    hyperKEGG_res <- NULL
+
   }
 
-  ## 富集分析
-  keggParams <- hyperKEGGparam(object)
+  if (GO) {
 
-  hyperKEGG_res <- lapply(hyperKEGG_GeneSets, function(x){
-    hyper_keggResolve(geneSet_list = x,keggParams = keggParams)
-  })
+    usethis::ui_info("Enrich GO analysis Start. This process will take a few minutes.")
+
+    goParams <- hyperGOparam(object)
+    hyperGO_GeneSets = list()
+
+    for (i in ok) {
+      hyperGO_GeneSets[[i]] <- suppressWarnings(hyper_GS(object,which = i,type = "SYMBOL"))
+    }
+
+    ## 富集分析
+    hyperGO_res <- lapply(seq_along(hyperGO_GeneSets), function(x){
+      geneSet_list = hyperGO_GeneSets[[x]]
+      res <- hyper_goResolve(geneSet_list = x,goParams = goParams)
+      ui_done("Enrich KEGG {names(hyperGO_GeneSets)[x]} analysis done")
+      return(res)
+    })
+
+    names(hyperGO_res) <- names(hyperGO_GeneSets)
+
+  } else {
+
+    hyperGO_res <- NULL
+
+  }
 
   ## 保存结果
   tmp <- hyperRes(object)
   tmp["hyperKEGG_res"] <- list(hyperKEGG_res)
+  tmp["hyperGO_res"] <- list(hyperGO_res)
   hyperRes(object) <- tmp
 
   return(object)
 }
 
-# goResolve <- function() {
-#
-#   gene_list <- hyperKEGG_GS(object)
-#   test <- mclapply(gene_list, function(x)
-#     suppressMessages(enhance_enrichGO(gene = x,OrgDb = OrgDb,keyType = keyType,ont = ont,simplify = simplify,
-#                                       pvalueCutoff = pvalueCutoff,
-#                                       pAdjustMethod = pAdjustMethod,
-#                                       qvalueCutoff = qvalueCutoff,
-#                                       minGSSize = minGSSize,
-#                                       maxGSSize = maxGSSize,
-#                                       readable = FALSE,
-#                                       pool = FALSE)),mc.cores = getOption("mc.cores", mc.cores))
-# }
-
-#' @importFrom clusterProfiler enrichKEGG
 #' @export
 hyper_keggResolve <- function(...,geneSet_list,keggParams) {
 
-  usethis::ui_info("Enrich KEGG analysis Start. This process will take a few minutes.")
+  keggres <- lapply(seq_along(geneSet_list), function(x){
 
-  keggres <- lapply(geneSet_list, function(x){
+    gene = geneSet_list[[x]]
 
     tryCatch(
       expr = {
-        hyper_keggCore(gene=x,keggParams=keggParams)
+        hyperCore(gene=gene,fparams = keggParams,f = "enrichKEGG")
       },
       error = function(e){
         usethis::ui_oops("Something wrong occured. try again.")
-        hyper_keggCore(gene=x,keggParams=keggParams)
+        hyperCore(gene=gene,fparams = keggParams,f = "enrichKEGG")
       },
       finally = {
-        usethis::ui_line("Enrich KEGG analysis done")
+        usethis::ui_line("Enrich KEGG {names(geneSet_list)[x]} analysis done")
       }
     )
 
   })
 
+  names(keggres) <- names(geneSet_list)
+
+  return(keggres)
+
 }
 
-hyper_keggCore <- function(...,keggParams){
+#' @importFrom clusterProfiler enrichGO
+#' @export
+hyper_goResolve <- function(...,geneSet_list,goParams) {
+
+  gores <- lapply(seq_along(geneSet_list), function(x){
+
+    gene = geneSet_list[[x]]
+
+    tryCatch(
+      expr = {
+        hyperCore(gene=gene,fparams = goParams,f = "enrichGO")
+      },
+      error = function(e){
+        usethis::ui_oops("Something wrong occured. try again.")
+        hyperCore(gene=gene,fparams = goParams,f = "enrichGO")
+      },
+      finally = {
+        usethis::ui_line("Enrich GO {names(geneSet_list)[x]} analysis done")
+      }
+    )
+
+  })
+
+  names(gores) <- names(geneSet_list)
+
+  return(gores)
+
+}
+
+#' @importFrom clusterProfiler enrichKEGG enricher
+hyperCore <- function(..., fparams, f = "enrichKEGG") {
 
   params <- list(...)
-  keggParams <- modifyList(params, keggParams)
-  kegg_core <- suppressMessages(do.call("enrichKEGG", modifyList(
-    list(),
-    keggParams)
-  ))
+  fparams <- modifyList(params, fparams)
 
-  return(kegg_core)
+  if("TERM2GENE" %in% names(fparams)){
+
+    core <- suppressMessages(do.call("enricher", modifyList(
+      list(),
+      fparams)
+    ))
+
+  } else {
+
+    core <- suppressMessages(do.call(f, modifyList(
+      list(),
+      fparams)
+    ))
+
+  }
+
+  return(core)
 
 }

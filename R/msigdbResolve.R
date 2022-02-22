@@ -71,40 +71,110 @@ gseMSigDB <- function(object) {
   test <- deg_here(object)
   ok <- names(test)[which(test == TRUE)] ## 取有效数据
 
-  gseKEGG_GeneSets = list()
+  gseMSigDB_GeneSets = list()
   for (i in ok) {
-    gseKEGG_GeneSets[[i]] <- suppressWarnings(GSEA_GS(object,which = i,type = "SYMBOL"))
+    gseMSigDB_GeneSets[[i]] <- suppressWarnings(GSEA_GS(object,which = i,type = "SYMBOL"))
   }
 
   ## 对每个子集进行富集分析, 每个子集又可能存在多个geneList 做富集分析
   t2g_l <- msigdbData(object)
-  res_l <- lapply(gseKEGG_GeneSets, function(geneList){
+  res_l <- lapply(gseMSigDB_GeneSets, function(geneList){
 
     gse_res_l <- lapply(seq_along(t2g_l), function(x){
 
-     gseMSigDB_Core(geneList = geneList,TERM2GENE = t2g_l[[x]],msigdbGSEAparam =msigdbGSEAparam)
+      enrichMSigDB_Core(geneList = geneList,TERM2GENE = t2g_l[[x]],fparam =msigdbGSEAparam,f= "GSEA")
 
     })
     names(gse_res_l) <- names(t2g_l)
     return(gse_res_l)
 
   })
-  names(res_l) <- names(gseKEGG_GeneSets)
+  names(res_l) <- names(gseMSigDB_GeneSets)
   ## 结果存储
   msigdbGSEAresult(object) <- res_l
   return(object)
 
 }
 
-#' @importFrom clusterProfiler GSEA
+hyperMSigDB <- function(object){
+
+  msigdbHyperParam <- msigdbHyperParam(object)
+
+  ## 获取GeneList
+  test <- deg_here(object)
+  ok <- names(test)[which(test == TRUE)] ## 取有效数据
+
+  hyperMSigDB_GeneSets = list()
+  for (i in ok) {
+    hyperMSigDB_GeneSets[[i]] <- suppressWarnings(hyper_GS(object,which = i,type = "SYMBOL"))
+  }
+
+  ## 富集分析
+  t2g_l <- msigdbData(object)
+
+  hyperMSigDB_res <- lapply(seq_along(hyperMSigDB_GeneSets), function(x){
+
+    geneSet_list = hyperMSigDB_GeneSets[[x]]
+
+    res <- lapply(seq_along(t2g_l), function(j){
+
+      hyperMSigDB_Resolve(geneSet_list = geneSet_list,
+                                 TERM2GENE = t2g_l[[j]],
+                                 msigdbHyperParam = msigdbHyperParam)
+
+    })
+
+    names(res) <- names(t2g_l)
+
+    ui_done("Enrich MSigDB {names(hyperMSigDB_GeneSets)[x]} analysis done")
+
+    return(res)
+  })
+
+  names(hyperMSigDB_res) <- names(hyperMSigDB_GeneSets)
+
+  ## 结果存储
+  msigdbHyperResult(object) <- hyperMSigDB_res
+  return(object)
+
+}
+
+hyperMSigDB_Resolve <- function(...,geneSet_list,msigdbHyperParam) {
+
+  hyperRes <- lapply(seq_along(geneSet_list), function(x){
+
+    gene = geneSet_list[[x]]
+
+    tryCatch(
+      expr = {
+        enrichMSigDB_Core(gene=gene,fparam = msigdbHyperParam,f = "enricher",...)
+      },
+      error = function(e){
+        usethis::ui_oops("Something wrong occured. try again.")
+        enrichMSigDB_Core(gene=gene,fparam = msigdbHyperParam,f = "enricher",...)
+      },
+      finally = {
+        usethis::ui_line("Enrich MSigDB {names(geneSet_list)[x]} analysis done")
+      }
+    )
+
+  })
+
+  names(hyperRes) <- names(geneSet_list)
+
+  return(hyperRes)
+
+}
+
+#' @importFrom clusterProfiler GSEA enricher
 #' @export
-gseMSigDB_Core <- function(...,msigdbGSEAparam){
+enrichMSigDB_Core <- function(...,fparam,f){
 
   params <- list(...)
-  msigdbGSEAparam <- modifyList(params, msigdbGSEAparam)
-  msigdb_core <- suppressMessages(do.call("GSEA", modifyList(
+  fparam <- modifyList(params, fparam)
+  msigdb_core <- suppressMessages(do.call(f, modifyList(
     list(),
-    msigdbGSEAparam)
+    fparam)
   ))
 
   return(msigdb_core)

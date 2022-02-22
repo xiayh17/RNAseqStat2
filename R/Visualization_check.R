@@ -233,7 +233,7 @@ exprBox <- function(expr,group_list,palette = RColorBrewer::brewer.pal(3,"Set2")
 }
 
 # boxplot base function
-#' @importFrom ggdist stat_halfeye median_qi
+#' @importFrom ggdist stat_halfeye median_qi stat_slabinterval
 plot_boxplot_base <- function(boxplot_data) {
   p <- ggplot(boxplot_data, aes(x = label, y = value), show.legend = F) +
     stat_halfeye(

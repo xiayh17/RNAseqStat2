@@ -564,6 +564,13 @@ setMethod(f="msigdbGSEAparam", signature="MSigDB", definition=function(obj) obj@
 #' @export
 setMethod(f="msigdbGSEAparam", signature="DEGContainer", definition=function(obj) obj@MSigDB@msigdbGSEAparam)
 
+#' @rdname MSigDB
+#' @export
+setMethod(f="msigdbHyperParam", signature="MSigDB", definition=function(obj) obj@msigdbHyperParam)
+#' @rdname DEGContainer
+#' @export
+setMethod(f="msigdbHyperParam", signature="DEGContainer", definition=function(obj) obj@MSigDB@msigdbHyperParam)
+
 #' @rdname DEGContainer
 #' @export
 setReplaceMethod("msigdbParam", "DEGContainer",
@@ -581,6 +588,15 @@ setReplaceMethod("msigdbGSEAparam", "DEGContainer",
 #' @export
 setReplaceMethod("msigdbGSEAparam", "MSigDB",
                  function(obj, value) {obj@msigdbGSEAparam <- value; validObject(obj); obj})
+
+#' @rdname DEGContainer
+#' @export
+setReplaceMethod("msigdbHyperParam", "DEGContainer",
+                 function(obj, value) {obj@MSigDB@msigdbHyperParam <- value; validObject(obj); obj})
+#' @rdname MSigDB
+#' @export
+setReplaceMethod("msigdbHyperParam", "MSigDB",
+                 function(obj, value) {obj@msigdbHyperParam <- value; validObject(obj); obj})
 
 #' @rdname MSigDB
 #' @export
@@ -613,6 +629,22 @@ setReplaceMethod("msigdbGSEAresult", "DEGContainer",
 #' @export
 setReplaceMethod("msigdbGSEAresult", "MSigDB",
                  function(obj, value) {obj@msigdbGSEAresult <- value; validObject(obj); obj})
+
+#' @rdname MSigDB
+#' @export
+setMethod(f="msigdbHyperResult", signature="MSigDB", definition=function(obj) obj@msigdbHyperResult)
+#' @rdname DEGContainer
+#' @export
+setMethod(f="msigdbHyperResult", signature="DEGContainer", definition=function(obj) obj@MSigDB@msigdbHyperResult)
+
+#' @rdname DEGContainer
+#' @export
+setReplaceMethod("msigdbHyperResult", "DEGContainer",
+                 function(obj, value) {obj@MSigDB@msigdbHyperResult <- value; validObject(obj); obj})
+#' @rdname MSigDB
+#' @export
+setReplaceMethod("msigdbHyperResult", "MSigDB",
+                 function(obj, value) {obj@msigdbHyperResult <- value; validObject(obj); obj})
 
 #' @rdname MSigDB
 #' @export

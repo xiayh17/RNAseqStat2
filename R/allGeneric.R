@@ -239,13 +239,19 @@ setGeneric("gseRes<-", function(obj, value) standardGeneric("gseRes<-"))
 setGeneric(name="msigdbParam", def=function(obj) standardGeneric("msigdbParam"))
 
 #' @export
-setGeneric(name="msigdbGSEAparam", def=function(obj) standardGeneric("msigdbGSEAparam"))
-
-#' @export
 setGeneric("msigdbParam<-", function(obj, value) standardGeneric("msigdbParam<-"))
 
 #' @export
+setGeneric(name="msigdbGSEAparam", def=function(obj) standardGeneric("msigdbGSEAparam"))
+
+#' @export
 setGeneric("msigdbGSEAparam<-", function(obj, value) standardGeneric("msigdbGSEAparam<-"))
+
+#' @export
+setGeneric(name="msigdbHyperParam", def=function(obj) standardGeneric("msigdbHyperParam"))
+
+#' @export
+setGeneric("msigdbHyperParam<-", function(obj, value) standardGeneric("msigdbHyperParam<-"))
 
 #' @export
 setGeneric(name="msigdbData", def=function(obj) standardGeneric("msigdbData"))
@@ -258,6 +264,13 @@ setGeneric(name="msigdbGSEAresult", def=function(obj) standardGeneric("msigdbGSE
 
 #' @export
 setGeneric("msigdbGSEAresult<-", function(obj, value) standardGeneric("msigdbGSEAresult<-"))
+
+#' @export
+setGeneric(name="msigdbHyperResult", def=function(obj) standardGeneric("msigdbHyperResult"))
+
+#' @export
+setGeneric("msigdbHyperResult<-", function(obj, value) standardGeneric("msigdbHyperResult<-"))
+
 
 #' @export
 setGeneric(name="msigdbGSVAresult", def=function(obj) standardGeneric("msigdbGSVAresult"))

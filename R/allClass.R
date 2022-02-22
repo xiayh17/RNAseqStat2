@@ -141,7 +141,9 @@ setClassUnion("gseResults_OR_NULL", c("gseResults", "NULL"))
 #' @slot msigdbParam list_OR_NULL. Store Param of \code{\link[msigdbr]{msigdbr}}
 #' @slot msigdbData list. Save data download from MSigDB by \code{\link[msigdbr]{msigdbr}}.
 #' @slot msigdbGSEAparam list_OR_NULL. Store Param of \code{\link[clusterProfiler]{GSEA}}
+#' @slot msigdbHyperParam list_OR_NULL. Store Param of \code{\link[clusterProfiler]{enricher}}
 #' @slot msigdbGSEAresult list. Store results of GSEA.
+#' @slot msigdbHyperResult list. Store results of Hyper
 #' @slot msigdbGSVAresult list. Store results of GSVA.
 #'
 #' @return The accessor functions \code{msigdbParam}, \code{msigdbData},
@@ -152,10 +154,12 @@ setClassUnion("gseResults_OR_NULL", c("gseResults", "NULL"))
 #' @export
 setClass(Class = "MSigDB",
          slots = c(msigdbParam = "list_OR_NULL",
-                   msigdbData = "list",
+                   msigdbData = "list_OR_NULL",
                    msigdbGSEAparam = "list_OR_NULL",
-                   msigdbGSEAresult = "list",
-                   msigdbGSVAresult = "list"
+                   msigdbHyperParam = "list_OR_NULL",
+                   msigdbGSEAresult = "list_OR_NULL",
+                   msigdbHyperResult = "list_OR_NULL",
+                   msigdbGSVAresult = "list_OR_NULL"
          ))
 setClassUnion("MSigDB_OR_NULL", c("MSigDB", "NULL"))
 
@@ -203,10 +207,10 @@ setValidity("dataInfo", function(object) {
   control_group = setdiff(group_list,case_group)
   counts_data = expMatrix(object)
   ## species
-  if (species %in% c("Human","Mouse")&length(species)==1) {
+  if (length(species)==1) {
     usethis::ui_done("species: {ui_value(species)}")
   } else {
-    usethis::ui_stop("Please make sure your {ui_code('species')} is one of {ui_value('Human')} or {ui_value('Mouse')}")
+    usethis::ui_stop("Please make sure your {ui_code('species')} is a {ui_value('Character')}.")
   }
   ## dataType
   if (dataType %in% c("Counts","Array")&length(dataType)==1) {

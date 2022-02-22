@@ -53,8 +53,11 @@ runCheck <- function(object,
 
   }
 
-  HKG_check(dat,group_list,dir = dir,prefix = prefix,palette = palette)
-  ui_done(glue("HKG checking have done, a plot was store in {ui_path(dir)}."))
+  if(species(object) == "Human"){
+    HKG_check(dat,group_list,dir = dir,prefix = prefix,palette = palette)
+    ui_done(glue("HKG checking have done, a plot was store in {ui_path(dir)}."))
+  }
+
   pca_check(dat,group_list,dir = dir,prefix = prefix,palette = palette)
   ui_done(glue("PCA checking have done, a plot was store in {ui_path(dir)}."))
   corall_check(dat,group_list,dir = dir,prefix = prefix,palette = palette)

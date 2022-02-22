@@ -6,12 +6,16 @@
 \alias{MSigDB-class}
 \alias{msigdbParam,MSigDB-method}
 \alias{msigdbGSEAparam,MSigDB-method}
+\alias{msigdbHyperParam,MSigDB-method}
 \alias{msigdbParam<-,MSigDB-method}
 \alias{msigdbGSEAparam<-,MSigDB-method}
+\alias{msigdbHyperParam<-,MSigDB-method}
 \alias{msigdbData,MSigDB-method}
 \alias{msigdbData<-,MSigDB-method}
 \alias{msigdbGSEAresult,MSigDB-method}
 \alias{msigdbGSEAresult<-,MSigDB-method}
+\alias{msigdbHyperResult,MSigDB-method}
+\alias{msigdbHyperResult<-,MSigDB-method}
 \alias{msigdbGSVAresult,MSigDB-method}
 \alias{msigdbGSVAresult<-,MSigDB-method}
 \title{Class \code{MSigDB}}
@@ -20,9 +24,13 @@
 
 \S4method{msigdbGSEAparam}{MSigDB}(obj)
 
+\S4method{msigdbHyperParam}{MSigDB}(obj)
+
 \S4method{msigdbParam}{MSigDB}(obj) <- value
 
 \S4method{msigdbGSEAparam}{MSigDB}(obj) <- value
+
+\S4method{msigdbHyperParam}{MSigDB}(obj) <- value
 
 \S4method{msigdbData}{MSigDB}(obj)
 
@@ -31,6 +39,10 @@
 \S4method{msigdbGSEAresult}{MSigDB}(obj)
 
 \S4method{msigdbGSEAresult}{MSigDB}(obj) <- value
+
+\S4method{msigdbHyperResult}{MSigDB}(obj)
+
+\S4method{msigdbHyperResult}{MSigDB}(obj) <- value
 
 \S4method{msigdbGSVAresult}{MSigDB}(obj)
 
@@ -57,7 +69,11 @@ This was the class for storing data from MSigDB and analysis
 
 \item{\code{msigdbGSEAparam}}{list_OR_NULL. Store Param of \code{\link[clusterProfiler]{GSEA}}}
 
+\item{\code{msigdbHyperParam}}{list_OR_NULL. Store Param of \code{\link[clusterProfiler]{enricher}}}
+
 \item{\code{msigdbGSEAresult}}{list. Store results of GSEA.}
+
+\item{\code{msigdbHyperResult}}{list. Store results of Hyper}
 
 \item{\code{msigdbGSVAresult}}{list. Store results of GSVA.}
 }}

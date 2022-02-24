@@ -45,7 +45,8 @@ Create_DEGContainer <- function(species = "Human",
 
   ## convert ids
   if (idType == "ENSEMBL"&presetSpecies(species)) {
-    expMatrix <- suppressWarnings(toSYMBOL(row_counts = expMatrix))
+
+    expMatrix <- suppressWarnings(toSYMBOL(row_counts = expMatrix,species = species))
     idType = "SYMBOL"
     ui_done("ENSEMBL named expression matrix renamed by SYMBOL")
   } else if (idType != "SYMBOL"&!presetSpecies(species)) {

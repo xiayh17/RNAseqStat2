@@ -14,8 +14,13 @@ setMethod(f="runDEG", signature="DEGContainer", definition=function(obj, dir = "
                                                                expend = c(0.12, 0.12))) {
 
   ## DEG resolve of limma edgeR DESeq2
+  if (dataType(obj) == "Array") {
+    obj <- degResolveArray(obj = obj, dir = dir, prefix = prefix)
+  } else {
 
-  obj <- degResolve(obj = obj, dir = dir, prefix = prefix,parallel = parallel, qc =qc)
+    obj <- degResolve(obj = obj, dir = dir, prefix = prefix,parallel = parallel, qc =qc)
+
+  }
 
   ## group DEG Results
   obj <- degGroup(obj = obj)

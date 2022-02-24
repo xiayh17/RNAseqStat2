@@ -32,3 +32,23 @@ setMethod(f="degGroup", signature="DEGContainer", definition=function(obj) {
   return(obj)
 
 })
+
+setMethod(f="degGroup", signature="MSigDB", definition=function(obj) {
+
+  main = names(msigdbGSVAresult(obj)[['GSVA_diff']])
+
+  if(length(main)>=1){
+
+    for (i in main) {
+
+      obj <- cutMuch(obj,which = "MSigDB",category = i)
+
+    }
+
+  } else {
+    ui_info("None available results of MSigDB DEG analysis.")
+  }
+
+  return(obj)
+
+})

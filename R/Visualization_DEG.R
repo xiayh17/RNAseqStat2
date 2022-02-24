@@ -19,8 +19,8 @@
 #'
 #' @examples
 #' DEGtopHeatmap(object,which = "limma")
-DEGtopHeatmap <- function(object, which, top = 50, filename = NA,
-                            palette = RColorBrewer::brewer.pal(3,"Set2")[1:2]) {
+DEGtopHeatmap <- function(object, which, top = 50, filename = NA, show_gene = TRUE,
+                            palette = RColorBrewer::brewer.pal(3,"Set2")[1:2],...) {
 
   if (is.null(matrixFiltered(object))) {
     counts_data = expMatrix(object)
@@ -60,10 +60,36 @@ DEGtopHeatmap <- function(object, which, top = 50, filename = NA,
   colD=data.frame(Groups=group_list)
   rownames(colD)=colnames(exprSet)
   names(palette) <- unique(group_list)
-  pheatmap(choose_matrix,
+  pheatmap(choose_matrix,...,
            annotation_col = colD,fontsize = 12,
            width = (ncol(choose_matrix)*0.3+2.2) *2,
            height = 550/100*3*nrow(choose_matrix)/100,
-           annotation_colors = list(Groups = palette),
+           annotation_colors = list(Groups = palette),show_rownames = show_gene,border_color = NA,
            filename = filename)
+}
+
+#' @importFrom VennDiagram venn.diagram
+#' @importFrom ggplotify as.ggplot
+#' @importFrom cowplot as_grob
+#' @export
+DEGvenn <- function(geneSets, palette = c('#1f78b4','#33a02c','#ff7f00')) {
+
+  p =  venn.diagram(x = geneSets,
+                                 filename= NULL,
+                                 disable.logging = FALSE,
+                                 col=NA,
+                                 fill=palette,
+                                 cat.col=palette,
+                                 cat.cex = 1,
+                                 cat.dist = -0.15,
+                                 rotation.degree = 0,
+                                 main.cex = 1,
+                                 cex=1,
+                                 alpha = 0.5,
+                                 reverse=TRUE)
+  file.remove(dir(pattern = ("^VennDiagram.*log$")))
+  p = as.ggplot(as_grob(p))
+
+  return(p)
+
 }

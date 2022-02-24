@@ -15,7 +15,7 @@ exprHKGheatmap(
   width = ncol(expr) * 0.3 + 2.2,
   height = 10 * 0.3 + 2.2,
   ...,
-  heatmapParam = list(show_rownames = F, cluster_cols = F)
+  heatmapParam = list(show_rownames = T, cluster_cols = F)
 )
 }
 \arguments{

@@ -1,3 +1,4 @@
+#' @importFrom aplot plot_list
 #' @export
 degSummary <- function(obj, dir = ".", prefix = "2-runDEG",
                        PointVolcanoParam = list(gene = 10,light = NULL,
@@ -63,6 +64,42 @@ degSummary <- function(obj, dir = ".", prefix = "2-runDEG",
       ui_done(glue("{which} top 500 heatmap were store in {ui_path(topHeatmap_file)}."))
 
     }
+
+    ## top heatmap all
+    heatmap_ls <- lapply(main, function(x){
+
+      do.call("DEGtopHeatmap",list(obj = obj, which = x,filename = NA,show_gene = FALSE,
+                                   legend = FALSE,annotation_legend = FALSE,annotation_names_col = F))
+
+    })
+    heatmap_all <- aplot::plot_list(gglist = heatmap_ls,labels = main,guides = 'collect')
+    heatmap_all_file = glue("{dir}/{prefix}_top500heatmap.pdf")
+    ggsave(filename = heatmap_all_file,plot = heatmap_all,device = cairo_pdf,width = 4.5*length(main),height = 4.5)
+    ui_done(glue("DEG top heatmap plot were store in {ui_path(heatmap_all_file)}."))
+
+    ## venn plot
+    index <- c(setdiff(label(obj),label_ns(obj)),"diff")
+
+    geneSets <- lapply(main, function(x){
+      geneSymbol_list <- hyper_GS(object = obj,which = x,type = "SYMBOL")
+    })
+    names(geneSets) <- main
+
+    geneSets_ls <- list()
+    for (i in index){
+      tmp <- lapply(main, function(x){geneSets[[x]][[i]]})
+      names(tmp) <- main
+      geneSets_ls[[i]] <- tmp
+    }
+
+    p_list <- lapply(seq_along(geneSets_ls), function(x){
+      DEGvenn(geneSets = geneSets_ls[[x]])
+    })
+    p_l <- aplot::plot_list(gglist = p_list,labels = index)
+
+    venn_file = glue("{dir}/{prefix}_vennplot.pdf")
+    ggsave(filename = venn_file,plot = p_l,device = cairo_pdf,width = 4.5*length(index),height = 4.5)
+    ui_done(glue("DEG venn plot were store in {ui_path(venn_file)}."))
 
   } else {
     ui_info("None available results of DEG.")

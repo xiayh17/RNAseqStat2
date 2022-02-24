@@ -410,7 +410,7 @@ exprHKGheatmap <- function(expr,group_list,filename = NA, main = "Human housekee
                            palette = RColorBrewer::brewer.pal(3,"Set2")[1:2],anno_title = "Group",
                            annotation_col = ac_(expr,group_list),
                            width = ncol(expr)*0.3+2.2,height = 10*0.3+2.2,
-                           ...,heatmapParam = list(show_rownames = F,cluster_cols = F)){
+                           ...,heatmapParam = list(show_rownames = T,cluster_cols = F)){
 
   # highly uniform and strongly expressed genes
   hk=c('C1orf43','CHMP2A','EMC7','GPI','PSMB2','PSMB4','RAB7A','REEP5','SNRPD3','VCP','VPS29')

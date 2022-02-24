@@ -1,6 +1,6 @@
 #' @export
 degSummary <- function(obj, dir = ".", prefix = "2-runDEG",
-                       PointVolcanoParam = list(gene = 10,light = NULL, 
+                       PointVolcanoParam = list(gene = 10,light = NULL,
                                                 light_color = "#24ac56",
                                                 light_label_color = "#24ac56",
                                                 expend = c(0.12, 0.12))) {
@@ -58,9 +58,9 @@ degSummary <- function(obj, dir = ".", prefix = "2-runDEG",
       ggsave(volcano_plot,filename = volcano_file, width = 1600,height = 1600,units = "px",limitsize = FALSE,device = cairo_pdf)
       ui_done(glue("{which} volcano results were store in {ui_path(volcano_file)}."))
 
-      topHeatmap_file = glue("{dir}/{prefix}_{which}_volcano.pdf")
+      topHeatmap_file = glue("{dir}/{prefix}_{which}_top500_heatmap.pdf")
       topHeatmap <- do.call("DEGtopHeatmap",list(obj = obj,which = i,filename = topHeatmap_file))
-      ui_done(glue("{which} top 50 heatmap were store in {ui_path(topHeatmap_file)}."))
+      ui_done(glue("{which} top 500 heatmap were store in {ui_path(topHeatmap_file)}."))
 
     }
 

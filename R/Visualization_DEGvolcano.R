@@ -422,8 +422,6 @@ genePoint <- function(object,which, gene, category = "H") {
 
 create_volcano <- function(object, which = 'MSigDB', category = "H") {
 
-  deg_data_list <- msigdbGSVAresult(test)[["GSVA_diff"]]
-
   if (which == "limma") {
     deg_data = limma_res(object)
   } else if (which == "edgeR") {

@@ -1,14 +1,14 @@
 #' @export
 setGeneric(name="runDEG", def=function(obj, dir = ".", prefix = "2-runDEG",
                                             parallel = TRUE,qc=TRUE,
-                                       PointVolcanoParam = list(gene = 10,light = NULL,label_light = TRUE,
+                                       PointVolcanoParam = list(gene = 10,light = NULL,
                                                                 light_color = "#24ac56",
                                                                 light_label_color = "#24ac56",
                                                                 expend = c(0.12, 0.12))) standardGeneric("runDEG"))
 
 setMethod(f="runDEG", signature="DEGContainer", definition=function(obj, dir = ".", prefix = "2-runDEG",
                                                                     parallel = TRUE,qc=TRUE,
-                                      PointVolcanoParam = list(gene = 10,light = NULL,label_light = TRUE,
+                                      PointVolcanoParam = list(gene = 10,light = NULL,
                                                                light_color = "#24ac56",
                                                                light_label_color = "#24ac56",
                                                                expend = c(0.12, 0.12))) {

@@ -159,7 +159,8 @@ setClass(Class = "MSigDB",
                    msigdbHyperParam = "list_OR_NULL",
                    msigdbGSEAresult = "list_OR_NULL",
                    msigdbHyperResult = "list_OR_NULL",
-                   msigdbGSVAresult = "list_OR_NULL"
+                   msigdbGSVAresult = "list_OR_NULL",
+                   msigdbTreat = "treatInfo_OR_NULL"
          ))
 setClassUnion("MSigDB_OR_NULL", c("MSigDB", "NULL"))
 

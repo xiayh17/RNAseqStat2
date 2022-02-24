@@ -661,4 +661,28 @@ setReplaceMethod("msigdbGSVAresult", "DEGContainer",
 #' @export
 setReplaceMethod("msigdbGSVAresult", "MSigDB",
                  function(obj, value) {obj@msigdbGSVAresult <- value; validObject(obj); obj})
+
+#' @rdname MSigDB
+#' @export
+setMethod(f="msigdbTreat", signature="MSigDB", definition=function(obj) obj@msigdbTreat)
+#' @rdname DEGContainer
+#' @export
+setMethod(f="msigdbTreat", signature="DEGContainer", definition=function(obj) obj@MSigDB@msigdbTreat)
+
+#' @rdname DEGContainer
+#' @export
+setReplaceMethod("msigdbTreat", "DEGContainer",
+                 function(obj, value) {obj@MSigDB@msigdbTreat <- value; validObject(obj); obj})
+#' @rdname MSigDB
+#' @export
+setReplaceMethod("msigdbTreat", "MSigDB",
+                 function(obj, value) {obj@msigdbTreat <- value; validObject(obj); obj})
+
+#' @export
+setMethod(f="cutFC", signature="MSigDB", definition=function(obj) obj@msigdbTreat@cutFC)
+
+#' @export
+setReplaceMethod("cutFC", "MSigDB",
+                 function(obj, value) {obj@msigdbTreat@cutFC <- value; validObject(obj); obj})
+
 ## Methods for MSigDB ----

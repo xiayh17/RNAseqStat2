@@ -278,4 +278,10 @@ setGeneric(name="msigdbGSVAresult", def=function(obj) standardGeneric("msigdbGSV
 #' @export
 setGeneric("msigdbGSVAresult<-", function(obj, value) standardGeneric("msigdbGSVAresult<-"))
 
+#' @export
+setGeneric(name="msigdbTreat", def=function(obj) standardGeneric("msigdbTreat"))
+
+#' @export
+setGeneric("msigdbTreat<-", function(obj, value) standardGeneric("msigdbTreat<-"))
+
 ## Generic for MSigDB ----

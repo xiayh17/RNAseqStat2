@@ -20,7 +20,7 @@ pvalue_Identify <- function(res) {
   return(y)
 }
 
-cutFC_Verify <- function(res, cut_FC) {
+cutFC_Verify <- function(res, cut_FC, scale = 1) {
 
   deg_data = res
   x <- FC_Identify(res = deg_data)
@@ -52,6 +52,8 @@ cutFC_Verify <- function(res, cut_FC) {
     ui_info(glue("{ui_code('|cutFC|')} = {ui_value(cut_FC)} calculated automatically by {ui_code(glue('mean(abs({x})) + 2*sd(abs({x}))'))}"))
 
   }
+
+  cut_FC = cut_FC*scale
 
   return(cut_FC)
 
@@ -85,7 +87,7 @@ upDate_cutFC_NULL <- function(object,which,new_cutFC) {
 
 }
 
-cutMuch <- function(object,which) {
+cutMuch <- function(object,which,category = 'H') {
 
   if (which == "limma") {
     deg_data = limma_res(object)
@@ -93,27 +95,57 @@ cutMuch <- function(object,which) {
     deg_data = edgeR_res(object)
   } else if (which == "DESeq2") {
     deg_data = DESeq2_res(object)
-  } else {
-    ui_stop("{ui_code('which')} should be one of {ui_value('limma, edgeR, DESeq2')}")
+  } else if (which == "MSigDB") {
+    if(!is.null(category)) {
+
+      deg_data = msigdbGSVAresult(object)[["GSVA_diff"]][[category]]
+
+    } else {
+
+      ui_stop("when {ui_code('which')} set as {ui_value('MSigDB')}, {ui_code('category')} should be one of category in {ui_value('MSigDB')}")
+
+    }
+  }else {
+    ui_stop("{ui_code('which')} should be one of {ui_value('limma, edgeR, DESeq2, MSigDB')}")
   }
 
   x = FC_Identify(deg_data)
   y = pvalue_Identify(deg_data)
 
-  label = label(object)
-  label_ns = label_ns(object)
-  cut_FDR = cutFDR(object)
-  cut_FC = cutFC(object)
+  if (which == "MSigDB") {
+
+    treat = msigdbTreat(object)
+    label = treat@label
+    label_ns = treat@label_ns
+    cut_FDR = treat@cutFDR
+    cut_FC = treat@cutFC
+
+  } else {
+
+    label = label(object)
+    label_ns = label_ns(object)
+    cut_FDR = cutFDR(object)
+    cut_FC = cutFC(object)
+
+  }
 
   if (is.null(cut_FC)) {
-    cut_FC <- cutFC_Verify(res = deg_data,cut_FC)
+    if (which == 'MSigDB') {
+      cut_FC <- cutFC_Verify(res = deg_data,cut_FC,scale = 0.5)
+    } else {
+      cut_FC <- cutFC_Verify(res = deg_data,cut_FC)
+    }
     object <- upDate_cutFC_NULL(object = object,which = which,new_cutFC = cut_FC)
     cut_FC <- c(-cut_FC, cut_FC)
   } else {
 
     if (length(cut_FC) == 1&is.numeric(cut_FC)) {
 
-      cut_FC <- cutFC_Verify(res = deg_data,cut_FC)
+      if (which == 'MSigDB') {
+        cut_FC <- cutFC_Verify(res = deg_data,cut_FC,scale = 0.5)
+      } else {
+        cut_FC <- cutFC_Verify(res = deg_data,cut_FC)
+      }
       if (cut_FC != cutFC(object)) {
         object <- upDate_cutFC_NULL(object = object,which = which,new_cutFC = cut_FC)
       }
@@ -123,11 +155,19 @@ cutMuch <- function(object,which) {
 
       cut_FC <- cut_FC[[which]]
       if (is.null(cut_FC)) {
-        cut_FC <- cutFC_Verify(res = deg_data,cut_FC)
+        if (which == 'MSigDB') {
+          cut_FC <- cutFC_Verify(res = deg_data,cut_FC,scale = 0.5)
+        } else {
+          cut_FC <- cutFC_Verify(res = deg_data,cut_FC)
+        }
         object <- upDate_cutFC_NULL(object = object,which = which,new_cutFC = cut_FC)
       } else {
 
-        cut_FC_new <- cutFC_Verify(res = deg_data,cut_FC)
+        if (which == 'MSigDB') {
+          cut_FC_new <- cutFC_Verify(res = deg_data,cut_FC,scale = 0.5)
+        } else {
+          cut_FC_new <- cutFC_Verify(res = deg_data,cut_FC)
+        }
         if (cut_FC != cut_FC_new) {
           object <- upDate_cutFC_NULL(object = object,which = which,new_cutFC = cut_FC_new)
           cut_FC = cut_FC_new
@@ -176,6 +216,8 @@ cutMuch <- function(object,which) {
     edgeR_res(object) = deg_data
   } else if (which == "DESeq2") {
     DESeq2_res(object) = deg_data
+  } else if (which == "MSigDB") {
+    msigdbGSVAresult(object)[["GSVA_diff"]][[category]] = deg_data
   }
 
   return(object)
@@ -199,7 +241,7 @@ cutMuch <- function(object,which) {
 #'
 #' @examples
 #' topGene(object,  topSig = 50, which = "limma")
-topGene <- function(object, topSig = 50, which) {
+topGene <- function(object, topSig = 50, which, category = 'H') {
 
   if (which == "limma") {
     deg_data = limma_res(object)
@@ -207,28 +249,97 @@ topGene <- function(object, topSig = 50, which) {
     deg_data = edgeR_res(object)
   } else if (which == "DESeq2") {
     deg_data = DESeq2_res(object)
+  } else if (which == "merge") {
+    deg_data = merge_res(object)
+    deg_data <- commonGroup(merge_data = deg_data)
+  } else if (which == "MSigDB") {
+    if(!is.null(category)) {
+
+      deg_data = msigdbGSVAresult(object)[["GSVA_diff"]][[category]]
+
+    } else {
+
+      ui_stop("when {ui_code('which')} set as {ui_value('MSigDB')}, {ui_code('category')} should be one of category in {ui_value('MSigDB')}")
+
+    }
   } else {
-    ui_stop("{ui_code('which')} should be one of {ui_value('limma, edgeR, DESeq2')}")
+    ui_stop("{ui_code('which')} should be one of {ui_value('limma, edgeR, DESeq2, merge, MSigDB')}")
   }
 
-  x = FC_Identify(deg_data)
-  y = pvalue_Identify(deg_data)
-  cut_FDR = cutFDR(object)
-  top = topSig
+  if (which == "merge") {
 
-  data_f <- deg_data[which(deg_data[,y] <= cut_FDR),]
+    x = FC_Identify(deg_data)
+    y = pvalue_Identify(deg_data)
+    cut_FDR = cutFDR(object)
+    top = topSig
 
-  d <- data.table(data_f, key=x, keep.rownames = TRUE)
+    data_f <- deg_data[which(apply((deg_data[,y] <= cut_FDR), 1, all)),]
 
-  if (length(top) == 1) {
-    td <- d[, head(.SD, top)]
-    hd <-  d[, tail(.SD, top)]
-  } else if (length(top) == 2) {
-    td <- d[, head(.SD, top[2])]
-    hd <-  d[, tail(.SD, top[1])] # the descending order
+    gene_named <- data.frame(
+      SYMBOL = row.names(data_f),
+      value = data_f[,x]
+    )
+
+    gene_named$value <- apply(gene_named[,setdiff(colnames(gene_named),c("SYMBOL","ENTREZID"))],1,mean)
+
+    d <- data.table(gene_named, key='value', keep.rownames = TRUE)
+
+    if (length(top) == 1) {
+      td <- d[, head(.SD, top)] ## most mini
+      hd <-  d[, tail(.SD, top)] ## most large
+    } else if (length(top) == 2) {
+      td <- d[, head(.SD, top[2])] # most mini
+      hd <-  d[, tail(.SD, top[1])] # the descending order
+    } else {
+      stop("top should be a single number or a length of 2 numeric vector")
+    }
+
+  } else if (which == "MSigDB") {
+
+    x = FC_Identify(deg_data)
+    y = pvalue_Identify(deg_data)
+    treat = msigdbTreat(object)
+    cut_FDR = cut_FDR = treat@cutFDR
+    top = topSig
+
+    data_f <- deg_data[which(deg_data[,y] <= cut_FDR),]
+
+    d <- data.table(data_f, key=x, keep.rownames = TRUE)
+
+    if (length(top) == 1) {
+      td <- d[, head(.SD, top)]
+      hd <-  d[, tail(.SD, top)]
+    } else if (length(top) == 2) {
+      td <- d[, head(.SD, top[2])]
+      hd <-  d[, tail(.SD, top[1])] # the descending order
+    } else {
+      stop("top should be a single number or a length of 2 numeric vector")
+    }
+
   } else {
-    stop("top should be a single number or a length of 2 numeric vector")
+
+    x = FC_Identify(deg_data)
+    y = pvalue_Identify(deg_data)
+    cut_FDR = cutFDR(object)
+    top = topSig
+
+    data_f <- deg_data[which(deg_data[,y] <= cut_FDR),]
+
+    d <- data.table(data_f, key=x, keep.rownames = TRUE)
+
+    if (length(top) == 1) {
+      td <- d[, head(.SD, top)]
+      hd <-  d[, tail(.SD, top)]
+    } else if (length(top) == 2) {
+      td <- d[, head(.SD, top[2])]
+      hd <-  d[, tail(.SD, top[1])] # the descending order
+    } else {
+      stop("top should be a single number or a length of 2 numeric vector")
+    }
+
   }
+
+
 
   hd_names <- hd$rn
   names(hd_names) <- rep("head",length(hd_names))
@@ -441,7 +552,8 @@ GSEA_GS <- function(object,which,type) {
 
   OrgDb = switch (species(object),
                   'Human' = "org.Hs.eg.db",
-                  'Mouse' = "org.Mm.eg.db"
+                  'Mouse' = "org.Mm.eg.db",
+                  'Rat' = "org.Rn.eg.db"
   )
 
   if (which == "merge") {
@@ -512,12 +624,12 @@ GSEA_GS <- function(object,which,type) {
 
 }
 
-toSYMBOL <- function(row_counts) {
+toSYMBOL <- function(row_counts,species) {
 
   row_counts <- as.data.frame(row_counts)
   row_counts[,"ENSEMBL"] <- rownames(row_counts)
 
-  symbols <- AnnoProbe::annoGene(IDs = rownames(row_counts),ID_type = "ENSEMBL",species = "human")
+  symbols <- AnnoProbe::annoGene(IDs = rownames(row_counts),ID_type = "ENSEMBL",species = tolower(species))
   symbols <- symbols[,c("SYMBOL","ENSEMBL")]
 
   counts_ids <- merge(symbols,row_counts,by="ENSEMBL")

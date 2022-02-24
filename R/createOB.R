@@ -186,6 +186,7 @@ Create_MSigDB <- function(msigdbParam = Create_msigdbParam(),
       msigdbHyperParam = msigdbHyperParam,
       msigdbGSEAresult = list(),
       msigdbHyperResult = list(),
-      msigdbGSVAresult = list())
+      msigdbGSVAresult = list(),
+      msigdbTreat = Create_treatInfo())
 
 }

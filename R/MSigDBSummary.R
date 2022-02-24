@@ -159,6 +159,25 @@ MSigDBSummay <- function(obj, dir = ".", prefix = "4-runGSEA",top =10) {
     pheatmap::pheatmap(gsvares_list[[x]],
                        annotation_col = ac,
                        filename = pdf_file)
+    ui_done("{names(gsvares_list)[x]} GSVA heatmap is stored in {usethis::ui_path(pdf_file)}")
+
+    csv_file = glue("{dir}/{prefix}_GSVA_{names(gsvares_list)[x]}_matrix.csv")
+    write.csv(gsvares_list[[x]],file = csv_file)
+    ui_done("{names(gsvares_list)[x]} GSVA matrix is stored in {usethis::ui_path(csv_file)}")
+
+  }))
+
+  gsvadiff_list <- msigdbGSVAresult(obj)[["GSVA_diff"]]
+  invisible(lapply(seq_along(gsvadiff_list), function(x){
+
+    csv_file = glue("{dir}/{prefix}_GSVA_{names(gsvadiff_list)[x]}_limmaDEG.csv")
+    write.csv(gsvadiff_list[[x]],file = csv_file)
+    ui_done("{names(gsvadiff_list)[x]} GSVA analysis by limma is stored in {usethis::ui_path(csv_file)}")
+
+    volcano_file = glue("{dir}/{prefix}_GSVA_{names(gsvadiff_list)[x]}_volcano.pdf")
+    p <- PointVolcano(object = obj,which = "MSigDB",category = names(gsvadiff_list)[x],gene = 5,expend = c(0.4,0.4))
+    ggsave(p,filename = volcano_file, width = 1600,height = 1600,units = "px",limitsize = FALSE,device = cairo_pdf)
+    ui_done("Volcano of {names(gsvadiff_list)[x]} GSVA analysis by limma is plot in {usethis::ui_path(volcano_file)}")
 
   }))
 

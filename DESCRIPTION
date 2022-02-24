@@ -1,7 +1,7 @@
 Package: RNAseqStat2
 Type: Package
 Title: A Pipeline to Process RNAseq Data
-Version: 0.1.0.9991
+Version: 0.1.0.9992
 Authors@R: c(
         person("Jianming","Zeng",
             email = "jmzeng1314@163.com",

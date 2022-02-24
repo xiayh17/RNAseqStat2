@@ -27,16 +27,16 @@ cutFC_Verify <- function(res, cut_FC, scale = 1) {
 
   ## FC阈值 ----
   if (is.null(cut_FC)) { ## 如果是自动
-    cut_FC = mean(abs(deg_data[,x])) + 2*sd(abs(deg_data[,x]))
-    ui_info(glue("{ui_code('|cutFC|')} = {ui_value(cut_FC)} calculated automatically by {ui_code(glue('mean(abs({x})) + 2*sd(abs({x}))'))}
+    cut_FC = (mean(abs(deg_data[,x])) + 2*sd(abs(deg_data[,x]))) * scale
+    ui_info(glue("{ui_code('|cutFC|')} = {ui_value(cut_FC)} calculated automatically by {ui_code(glue('(mean(abs({x})) + 2*sd(abs({x})))*{scale}'))}
                  Your can also set by {ui_code('cutFC')} argument."))
   } else if (is.numeric(cut_FC)) { ## 如果是数字
 
     if (max(cut_FC) > max(deg_data[,x])) { ## 如果数字不合理
 
       usethis::ui_oops(glue("{ui_code('|cutFC|')} = {ui_value(cut_FC)} specified by you is larger than Maximum({max(deg_data[,x])}) of (log)FC column"))
-      cut_FC = mean(abs(deg_data[,x])) + 2*sd(abs(deg_data[,x]))
-      ui_info(glue("{ui_code('|cutFC|')} = {ui_value(cut_FC)} calculated automatically by {ui_code(glue('mean(abs({x})) + 2*sd(abs({x}))'))}"))
+      cut_FC = (mean(abs(deg_data[,x])) + 2*sd(abs(deg_data[,x]))) * scale
+      ui_info(glue("{ui_code('|cutFC|')} = {ui_value(cut_FC)} calculated automatically by {ui_code(glue('(mean(abs({x})) + 2*sd(abs({x})))*{scale}'))}"))
 
     } else {
 
@@ -48,12 +48,10 @@ cutFC_Verify <- function(res, cut_FC, scale = 1) {
   } else { ## 如果是其他情况
 
     usethis::ui_oops(glue("{ui_code('|cutFC|')} = {ui_value(cut_FC)} specified by you will not applied"))
-    cut_FC = mean(abs(deg_data[,x])) + 2*sd(abs(deg_data[,x]))
-    ui_info(glue("{ui_code('|cutFC|')} = {ui_value(cut_FC)} calculated automatically by {ui_code(glue('mean(abs({x})) + 2*sd(abs({x}))'))}"))
+    cut_FC = (mean(abs(deg_data[,x])) + 2*sd(abs(deg_data[,x]))) * scale
+    ui_info(glue("{ui_code('|cutFC|')} = {ui_value(cut_FC)} calculated automatically by {ui_code(glue('(mean(abs({x})) + 2*sd(abs({x})))*{scale}'))}"))
 
   }
-
-  cut_FC = cut_FC*scale
 
   return(cut_FC)
 

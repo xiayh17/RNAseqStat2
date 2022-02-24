@@ -18,6 +18,8 @@
 \alias{msigdbHyperResult<-,MSigDB-method}
 \alias{msigdbGSVAresult,MSigDB-method}
 \alias{msigdbGSVAresult<-,MSigDB-method}
+\alias{msigdbTreat,MSigDB-method}
+\alias{msigdbTreat<-,MSigDB-method}
 \title{Class \code{MSigDB}}
 \usage{
 \S4method{msigdbParam}{MSigDB}(obj)
@@ -47,6 +49,10 @@
 \S4method{msigdbGSVAresult}{MSigDB}(obj)
 
 \S4method{msigdbGSVAresult}{MSigDB}(obj) <- value
+
+\S4method{msigdbTreat}{MSigDB}(obj)
+
+\S4method{msigdbTreat}{MSigDB}(obj) <- value
 }
 \value{
 The accessor functions \code{msigdbParam}, \code{msigdbData},

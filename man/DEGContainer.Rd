@@ -33,6 +33,8 @@
 \alias{msigdbHyperResult<-,DEGContainer-method}
 \alias{msigdbGSVAresult,DEGContainer-method}
 \alias{msigdbGSVAresult<-,DEGContainer-method}
+\alias{msigdbTreat,DEGContainer-method}
+\alias{msigdbTreat<-,DEGContainer-method}
 \title{Class \code{DEGContainer}}
 \usage{
 dataInfo(obj)
@@ -92,6 +94,10 @@ MSigDB(obj)
 \S4method{msigdbGSVAresult}{DEGContainer}(obj)
 
 \S4method{msigdbGSVAresult}{DEGContainer}(obj) <- value
+
+\S4method{msigdbTreat}{DEGContainer}(obj)
+
+\S4method{msigdbTreat}{DEGContainer}(obj) <- value
 }
 \value{
 The accessor functions \code{dataInfo}, \code{degResults},

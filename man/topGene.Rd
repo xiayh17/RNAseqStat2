@@ -4,7 +4,7 @@
 \alias{topGene}
 \title{Choose top genes from DEG data frame of limma DESeq2 edgeR}
 \usage{
-topGene(object, topSig = 50, which)
+topGene(object, topSig = 50, which, category = "H")
 }
 \arguments{
 \item{object}{a DEG data frame contains logFC and p value}

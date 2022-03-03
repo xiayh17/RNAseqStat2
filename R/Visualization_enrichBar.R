@@ -8,8 +8,7 @@ hyperBar <- function(res, top = 10) {
               aes(Count, fct_reorder(stringr::str_wrap(Description,25), Count),
                   fill=qvalue)) +
     geom_col() +
-    scale_fill_gradientn(colours=c("#b3eebe",
-                                   "#46bac2", "#371ea3"),
+    scale_fill_gradientn(colours=c("#b3eebe", "#46bac2", "#371ea3"),
                          guide=guide_colorbar(reverse=TRUE)) +
     theme_dose(12) +
     xlab("Count") +

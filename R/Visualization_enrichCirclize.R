@@ -563,7 +563,6 @@ highlightGroup <- function(df,track.index = 1,palatte,
 modelEnrich <- function(obj,dataBase = "KEGG",orderBy = "pvalue", head = 3) {
 
   # 验证方法得到的结果
-  obj = data_h
   test <- deg_here(obj)
   ok <- names(test)[which(test == TRUE)]
   main <- setdiff(ok,"merge")

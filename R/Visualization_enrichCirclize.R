@@ -131,7 +131,7 @@ linkCir <- function(df, group = "model") {
 
   # 计算ID的重复数量，重复大于一的为有link ，值为1
   count_id <- as.data.frame(table(dat_d$ID))
-  count_ids <- count_id$Var1[which(count_id$Freq > 1)] |> as.character()
+  count_ids <- count_id$Var1[which(count_id$Freq > 1)] %>% as.character()
   mat_o$value[gsub(".*_","",mat_o$x) %in% count_ids] <- 1
 
   # 去除 相同分组相同ID的 组合

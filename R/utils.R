@@ -651,3 +651,30 @@ toSYMBOL <- function(row_counts,species) {
   return(data)
 
 }
+
+#' @importFrom data.table rbindlist
+#' @export
+eggnogG2T <- function(data,SYMBOL,TERM) {
+
+  ## remove no GOs
+  gene2term <- data[!grepl("-",data$GOs),]
+
+  list_res <- lapply(seq_along(data[,get(SYMBOL)]), function(x){
+
+    gos <- strsplit(data[,get(TERM)][x],",",perl = T)
+    query <- rep(data[,get(SYMBOL)][x],length(gos[[1]]))
+
+    df <- data.frame(
+      Term = gos[[1]],
+      SYMBOL = query
+    )
+    return(df)
+
+  })
+
+  res_df <- data.table::rbindlist(list_res)
+  res_df <- as.data.frame(res_df)
+
+  return(res_df)
+
+}

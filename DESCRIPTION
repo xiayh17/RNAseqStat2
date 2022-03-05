@@ -19,7 +19,7 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Depends: 
-    R (>= 3.5.0)
+    R (>= 4.1.0)
 RoxygenNote: 7.1.2
 URL: https://github.com/xiayh17/RNAseqStat,
     http://xiayh17.top/RNAseqStat
@@ -77,7 +77,8 @@ Imports:
     textshape,
     reshape2,
     cowplot,
-    VennDiagram
+    VennDiagram,
+    aplot (>= 0.0.7)
 biocViews: DataImport, Microarray, OneChannel, SAGE, Software, TwoChannel
 Config/testthat/edition: 3
 VignetteBuilder: knitr

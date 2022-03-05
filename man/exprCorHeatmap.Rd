@@ -55,5 +55,5 @@ Use \code{\link[stats]{cor}} to get correlation of samples. Can filter genes by 
 `top` means the top mad (by \code{\link[stats]{mad}}) of expression matrix.
 }
 \examples{
-corExprHeatmap(counts_input,group_list=group_list)
+exprCorHeatmap(expr,group_list)
 }

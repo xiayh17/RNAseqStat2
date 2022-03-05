@@ -42,5 +42,5 @@ plot a pca for expression matrix
 Use \code{\link[FactoMineR]{PCA}} to get PCA of grouped samples.
 }
 \examples{
-exprPCA(counts_input,group_list=group_list)
+exprPCA(expr,group_list)
 }

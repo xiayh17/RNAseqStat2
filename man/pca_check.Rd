@@ -6,7 +6,7 @@
 \usage{
 pca_check(
   data,
-  list,
+  group,
   dir = ".",
   prefix = "1-run_check",
   palette = RColorBrewer::brewer.pal(3, "Set2")[1:2]
@@ -15,7 +15,7 @@ pca_check(
 \arguments{
 \item{data}{a cpm data frame of rows in genes and columns in samples}
 
-\item{list}{a list ordered by samples in data}
+\item{group}{a list ordered by samples in data}
 
 \item{dir}{a directory to store results}
 
@@ -30,5 +30,5 @@ a figure of PCA
 check data quality by PCA plot
 }
 \examples{
-pca_check(data, list)
+pca_check(data, group)
 }

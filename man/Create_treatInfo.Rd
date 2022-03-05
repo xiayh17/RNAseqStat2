@@ -29,7 +29,7 @@ Create_treatInfo(
 \item{sigAlpha}{a numeric vector. transparency for every group}
 }
 \value{
-
+treatInfo
 }
 \description{
 Function for treatInfo

@@ -55,5 +55,5 @@ Can filter genes by `top`.
 `top` means the top sd (by \code{\link[stats]{sd}}) of expression matrix.
 }
 \examples{
-topExprHeatmap(counts_input,group_list=group_list)
+exprTopHeatmap(expr,group_list)
 }

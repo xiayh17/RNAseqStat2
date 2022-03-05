@@ -6,7 +6,7 @@
 \usage{
 box_check(
   data,
-  list,
+  group,
   dir = ".",
   prefix = "1-run_check",
   palette = RColorBrewer::brewer.pal(3, "Set2")[1:2],
@@ -16,7 +16,7 @@ box_check(
 \arguments{
 \item{data}{a cpm data frame of rows in genes and columns in samples}
 
-\item{list}{a list ordered by samples in data}
+\item{group}{a list ordered by samples in data}
 
 \item{dir}{a directory to store results}
 
@@ -33,5 +33,5 @@ a ridges plot file
 Check data by box plot
 }
 \examples{
-density_check(data,list)
+density_check(data,group)
 }

@@ -6,7 +6,7 @@
 \usage{
 HKG_check(
   data,
-  list,
+  group,
   dir = ".",
   prefix = "1-run_check",
   palette = RColorBrewer::brewer.pal(3, "Set2")[1:2]
@@ -15,7 +15,7 @@ HKG_check(
 \arguments{
 \item{data}{a cpm data frame of rows in genes and columns in samples}
 
-\item{list}{a list ordered by samples in data}
+\item{group}{a list ordered by samples in data}
 
 \item{dir}{a directory to store results}
 
@@ -30,5 +30,5 @@ a heatmap plot file
 Check Human housekeeping genes expression
 }
 \examples{
-HKG_check(data,list)
+HKG_check(data,group)
 }

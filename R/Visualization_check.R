@@ -23,7 +23,7 @@
 #' @export
 #'
 #' @examples
-#' exprPCA(counts_input,group_list=group_list)
+#' exprPCA(expr,group_list)
 exprPCA <- function(expr, group_list,
                     palette = RColorBrewer::brewer.pal(3,"Set2")[1:2],
                     filename = NA,main = "all samples - PCA",
@@ -76,7 +76,7 @@ exprPCA <- function(expr, group_list,
 #' @export
 #'
 #' @examples
-#' corExprHeatmap(counts_input,group_list=group_list)
+#' exprCorHeatmap(expr,group_list)
 exprCorHeatmap <- function(expr,group_list,filename = NA,top = NA,main = "Correlation by all genes",
                         palette = RColorBrewer::brewer.pal(3,"Set2")[1:2],anno_title = "Group",
                         annotation_col = ac_(expr,group_list),
@@ -139,7 +139,7 @@ exprCorHeatmap <- function(expr,group_list,filename = NA,top = NA,main = "Correl
 #' `top` means the top sd (by \code{\link[stats]{sd}}) of expression matrix.
 #'
 #' @examples
-#' topExprHeatmap(counts_input,group_list=group_list)
+#' exprTopHeatmap(expr,group_list)
 exprTopHeatmap <- function(expr,group_list,filename = NA,top = 1000,main = "SD Top 1000 genes",
                        palette = RColorBrewer::brewer.pal(3,"Set2")[1:2],anno_title = "Group",
                        annotation_col = ac_(expr,group_list),
@@ -315,7 +315,7 @@ theme_wide <- function(...)  theme(...,
 # boxplot plot ------------------------------------------------------------
 
 # ridges plot -------------------------------------------------------------
-#' Title
+#' Ridges plot of all samples
 #'
 #' @param expr a expression matrix
 #' @param group_list a character vector order by samples
@@ -388,6 +388,7 @@ exprRidges <- function(expr,group_list,palette = RColorBrewer::brewer.pal(3,"Set
 #' @param filename file name you want to save plot
 #' @param top if not NA, only keep top of genes by mad
 #' @param main plot title
+#' @param hk strongly expressed genes
 #' @param palette annotation palette
 #' @param anno_title annotation title
 #' @param annotation_col annotation dataframe
@@ -397,9 +398,9 @@ exprRidges <- function(expr,group_list,palette = RColorBrewer::brewer.pal(3,"Set
 #' @param ... more parameters in \code{\link[pheatmap]{pheatmap}}
 #'
 #' @details
-#' Human housekeeping genes revisited in
-#' https://www.tau.ac.il/~elieis/HKG/
-#' E. Eisenberg and E.Y. Levanon, Trends in Genetics, 29 (2013)
+#' Human housekeeping genes revisited in \cr
+#' https://www.tau.ac.il/~elieis/HKG/ \cr
+#' E. Eisenberg and E.Y. Levanon, Trends in Genetics, 29 (2013) \cr
 #'
 #' @return a heatmap or a file
 #' @export
@@ -407,13 +408,13 @@ exprRidges <- function(expr,group_list,palette = RColorBrewer::brewer.pal(3,"Set
 #' @examples
 #' exprHKGheatmap(expr,group_list)
 exprHKGheatmap <- function(expr,group_list,filename = NA, main = "Human housekeeping genes",
+hk=c('C1orf43','CHMP2A','EMC7','GPI','PSMB2','PSMB4','RAB7A','REEP5','SNRPD3','VCP','VPS29'),
                            palette = RColorBrewer::brewer.pal(3,"Set2")[1:2],anno_title = "Group",
                            annotation_col = ac_(expr,group_list),
                            width = ncol(expr)*0.3+2.2,height = 10*0.3+2.2,
                            ...,heatmapParam = list(show_rownames = T,cluster_cols = F)){
 
   # highly uniform and strongly expressed genes
-  hk=c('C1orf43','CHMP2A','EMC7','GPI','PSMB2','PSMB4','RAB7A','REEP5','SNRPD3','VCP','VPS29')
   hk = hk[hk %in% rownames(expr)]
   # https://www.tau.ac.il/~elieis/HKG/
   # "Human housekeeping genes revisited"

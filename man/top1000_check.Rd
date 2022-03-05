@@ -6,7 +6,7 @@
 \usage{
 top1000_check(
   data,
-  list,
+  group,
   dir = ".",
   prefix = "1-run_check",
   palette = RColorBrewer::brewer.pal(3, "Set2")[1:2]
@@ -15,7 +15,7 @@ top1000_check(
 \arguments{
 \item{data}{a cpm data frame of rows in genes and columns in samples}
 
-\item{list}{a list ordered by samples in data}
+\item{group}{a list ordered by samples in data}
 
 \item{dir}{a directory to store results}
 
@@ -30,5 +30,5 @@ a Heatmap shows top100 genes of all samples
 Check data quality by plotting heatmap of top 1000 genes
 }
 \examples{
-top1000_check(data, list)
+top1000_check(data, group)
 }

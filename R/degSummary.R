@@ -73,7 +73,7 @@ degSummary <- function(obj, dir = ".", prefix = "2-runDEG",
 
     })
     heatmap_all <- aplot::plot_list(gglist = heatmap_ls,labels = main,guides = 'collect')
-    heatmap_all_file = glue("{dir}/{prefix}_top500heatmap.pdf")
+    heatmap_all_file = glue("{dir}/{prefix}_ALL_top500heatmap.pdf")
     ggsave(filename = heatmap_all_file,plot = heatmap_all,device = cairo_pdf,width = 4.5*length(main),height = 4.5)
     ui_done(glue("DEG top heatmap plot were store in {ui_path(heatmap_all_file)}."))
 

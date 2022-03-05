@@ -2,16 +2,19 @@
 % Please edit documentation in R/createParam.R
 \name{Create_msigdbGSEAparam}
 \alias{Create_msigdbGSEAparam}
-\title{Create \code{MSigDB}}
+\title{Create \code{msigdbGSEAparam}}
 \usage{
 Create_msigdbGSEAparam(GSEAparam = NULL)
 }
 \arguments{
-\item{GSEAparam}{a list contains any paramaters of \code{\link[clusterProfiler]{GSEA}}}
+\item{GSEAparam}{a list contains any paramaters of \code{\link[clusterProfiler]{GSEA}} except \code{geneList}}
 }
 \value{
 a list
 }
 \description{
-Create a GSEAparam list. If NULL, default parameters will apply.
+Create a msigdbHyperParam list. If NULL, default parameters will apply.
+}
+\examples{
+Create_msigdbGSEAparam()
 }

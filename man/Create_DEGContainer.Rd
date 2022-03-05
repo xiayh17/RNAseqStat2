@@ -12,8 +12,9 @@ Create_DEGContainer(
   groupInfo,
   caseGroup,
   filterMethod = "rowSums(expMatrix > 0) >= ncol(expMatrix)/2",
-  OrgDb = NULL,
   msi_species = NULL,
+  msi_category = "H",
+  OrgDb = NULL,
   organism = NULL,
   GOTERM2GENE = NULL,
   GOTERM2NAME = NA,
@@ -36,9 +37,11 @@ Create_DEGContainer(
 
 \item{filterMethod}{a function used to filter expresses value matrix. Or disable filter by set as `NULL`.}
 
-\item{OrgDb}{Select an OrgDb.}
+\item{msi_species}{one of \code{\link[msigdbr]{msigdbr_species}}}
 
-\item{msi_species}{one of \code{msigdbr::msigdbr_species}}
+\item{msi_category}{MSigDB collection abbreviation, such as H or C1.}
+
+\item{OrgDb}{Select an OrgDb.}
 
 \item{organism}{Select an organism.}
 
@@ -57,11 +60,11 @@ a \code{DEGContainer} object
 Begin in DEGContainer.
 }
 \details{
-`Human`, `Mouse` and `Rat` is full supported. For other species, more setting is needed.
-    If data can't provided, related steps in workflow will ignore.
-    OrgDb can be find from here \link{https://bioconductor.org/packages/release/BiocViews.html#___OrgDb}
-    organism can be find from here \link{https://www.genome.jp/kegg/catalog/org_list.html}
-    msi_species can be get from \code{msigdbr::msigdbr_species}
+`Human`, `Mouse` and `Rat` is full supported. For other species, more setting is needed. \cr
+    If data can't provided, related steps in workflow will ignore. \cr
+    OrgDb can be find from here \link{https://bioconductor.org/packages/release/BiocViews.html#___OrgDb} \cr
+    organism can be find from here \link{https://www.genome.jp/kegg/catalog/org_list.html} \cr
+    msi_species can be get from \code{\link[msigdbr]{msigdbr_species}} \cr
 }
 \examples{
 Create_DEGContainer(expMatrix = counts_input,groupInfo = c("C","C","C","T","T","T"),caseGroup = "T")

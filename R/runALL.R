@@ -1,3 +1,15 @@
+#' run all workflow
+#'
+#' runALL include runCheck runDEG runHyper runGSEA runMSigDB
+#'
+#' @param object a DEGContainer
+#' @param dir a directory to store results
+#' @param top top for enrich result filter
+#' @param parallel use parallel in DESeq2
+#' @param GO logic, run GO in enrich step
+#'
+#' @return a DEGContainer
+#'
 #' @export
 runALL <- function(object,dir = "output",top = 10,parallel = T,GO = FALSE) {
 

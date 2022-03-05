@@ -1,6 +1,6 @@
 #' create \code{dataInfo}
 #'
-#' a function to create \code{dataInfo} OB
+#' a function to create \code{\link{dataInfo}} OB
 #'
 #' @param species species for your data. `Human` or `Mouse`
 #' @param dataType kind of expresses value matrix. `Counts` (Integer) or `Array` (Decimal).
@@ -13,7 +13,8 @@
 #'
 #' @importFrom methods new
 #'
-#' @return \code{dataInfo}
+#' @return dataInfo
+#' @export
 Create_dataInfo <- function(species,
                      dataType,
                      idType,
@@ -94,7 +95,7 @@ newDEGContainer <- function(dataInfo=NULL,
 #' @param sigCol a character vector. sigColor of every group
 #' @param sigAlpha a numeric vector. transparency for every group
 #'
-#' @return
+#' @return treatInfo
 #' @export
 Create_treatInfo <- function(cutFC = NULL,
                       cutFDR = 0.05,
@@ -137,7 +138,6 @@ Create_vsData <- function(limma,edgeR,DESeq2) {
 
 }
 
-#' @export
 Create_degResults <- function(vsData,treatInfo = Create_treatInfo()) {
 
   new("degResults",

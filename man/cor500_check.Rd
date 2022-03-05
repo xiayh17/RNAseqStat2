@@ -6,14 +6,14 @@
 \usage{
 cor500_check(
   data,
-  list,
+  group,
   dir = ".",
   prefix = "1-run_check",
   palette = RColorBrewer::brewer.pal(3, "Set2")[1:2]
 )
 }
 \arguments{
-\item{list}{a list ordered by samples in data}
+\item{group}{a list ordered by samples in data}
 
 \item{dir}{a directory to store results}
 
@@ -30,5 +30,5 @@ a Heatmap shows correlation of all samples to 500 genes
 Check data quality by calculating correlation of all samples but top 500 genes
 }
 \examples{
-cor500_check(counts_input, list)
+cor500_check(counts_input, group)
 }

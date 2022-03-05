@@ -15,3 +15,6 @@ a list
 \description{
 Create a msigdbParam list. If NULL, default parameters will apply.
 }
+\examples{
+Create_msigdbParam()
+}

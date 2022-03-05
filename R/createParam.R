@@ -1,5 +1,16 @@
 ## for hyper module ----
+#' Create param for hyper analysis
+#'
+#' @param goParam arguments in \code{\link[clusterProfiler]{enrichGO}} or \code{\link[clusterProfiler]{enricher}} except \code{gene}.
+#' @param keggParam arguments in \code{\link[clusterProfiler]{enrichKEGG}} or \code{\link[clusterProfiler]{enricher}} except \code{gene}.
+#' @param customGO logic. FALSE for \code{\link[clusterProfiler]{enrichGO}}, TRUE for \code{\link[clusterProfiler]{enricher}}
+#' @param customKEGG logic. FALSE for \code{\link[clusterProfiler]{enrichKEGG}}, TRUE for \code{\link[clusterProfiler]{enricher}}
+#'
+#' @return hyperParam
 #' @export
+#'
+#' @examples
+#' Create_hyperParam()
 Create_hyperParam <- function(goParam = NULL,keggParam = NULL,
                               customGO = FALSE,customKEGG = FALSE) {
 
@@ -57,6 +68,18 @@ Create_hyperParam <- function(goParam = NULL,keggParam = NULL,
 ## ----
 
 ## for gse module ----
+#' Create param for gse analysis
+#'
+#' @param goParam arguments in \code{\link[clusterProfiler]{gseGO}} or \code{\link[clusterProfiler]{GSEA}} except \code{geneList}.
+#' @param keggParam arguments in \code{\link[clusterProfiler]{gseKEGG}} or \code{\link[clusterProfiler]{GSEA}} except \code{geneList}.
+#' @param customGO logic. FALSE for \code{\link[clusterProfiler]{gseGO}}, TRUE for \code{\link[clusterProfiler]{GSEA}}
+#' @param customKEGG logic. FALSE for \code{\link[clusterProfiler]{gseKEGG}}, TRUE for \code{\link[clusterProfiler]{GSEA}}
+#'
+#' @return gseParam
+#' @export
+#'
+#' @examples
+#' Create_gseParam()
 Create_gseParam <- function(goParam = NULL,keggParam = NULL,
                             customGO = FALSE,customKEGG = FALSE) {
 
@@ -134,6 +157,9 @@ Create_gseParam <- function(goParam = NULL,keggParam = NULL,
 #'
 #' @return a list
 #' @export
+#'
+#' @examples
+#' Create_msigdbParam()
 Create_msigdbParam <- function(msigdbParam = NULL) {
 
   ## 设置默认选项 ----
@@ -146,14 +172,17 @@ Create_msigdbParam <- function(msigdbParam = NULL) {
 
 }
 
-#' Create \code{MSigDB}
+#' Create \code{msigdbGSEAparam}
 #'
-#' Create a GSEAparam list. If NULL, default parameters will apply.
+#' Create a msigdbHyperParam list. If NULL, default parameters will apply.
 #'
-#' @param GSEAparam a list contains any paramaters of \code{\link[clusterProfiler]{GSEA}}
+#' @param GSEAparam a list contains any paramaters of \code{\link[clusterProfiler]{GSEA}} except \code{geneList}
 #'
 #' @return a list
 #' @export
+#'
+#' @examples
+#' Create_msigdbGSEAparam()
 Create_msigdbGSEAparam <- function(GSEAparam = NULL) {
 
   GSEAparam_default = list(
@@ -175,6 +204,17 @@ Create_msigdbGSEAparam <- function(GSEAparam = NULL) {
 
 }
 
+#' Create \code{msigdbHyperParam}
+#'
+#' Create a msigdbHyperParam list. If NULL, default parameters will apply.
+#'
+#' @param GSEAparam a list contains any paramaters of \code{\link[clusterProfiler]{enricher}} except \code{geneList}
+#'
+#' @return a list
+#' @export
+#'
+#' @examples
+#' Create_msigdbHyperParam()
 Create_msigdbHyperParam <- function(HyperParam = NULL) {
 
   HyperParam_default = list(
@@ -194,7 +234,7 @@ Create_msigdbHyperParam <- function(HyperParam = NULL) {
 }
 
 ## ----
-
+## help function
 paramParse <- function(defaultParams = list(),newParam = NULL) {
 
   if (is.null(newParam))

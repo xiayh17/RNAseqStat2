@@ -1,21 +1,16 @@
 # Generic for DEGContainer ------------------------------------------------
-#' @rdname DEGContainer
 #' @export
 setGeneric(name="dataInfo", def=function(obj) standardGeneric("dataInfo"))
 
-#' @rdname DEGContainer
 #' @export
 setGeneric(name="degResults", def=function(obj) standardGeneric("degResults"))
 
-#' @rdname DEGContainer
 #' @export
 setGeneric(name="hyperResults", def=function(obj) standardGeneric("hyperResults"))
 
-#' @rdname DEGContainer
 #' @export
 setGeneric(name="gseResults", def=function(obj) standardGeneric("gseResults"))
 
-#' @rdname DEGContainer
 #' @export
 setGeneric(name="MSigDB", def=function(obj) standardGeneric("MSigDB"))
 # Generic for DEGContainer ------------------------------------------------

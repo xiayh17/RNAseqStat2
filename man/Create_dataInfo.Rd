@@ -33,8 +33,8 @@ Create_dataInfo(
 \item{matrixFiltered}{a expresses value matrix after filter by `filterMethod`.}
 }
 \value{
-\code{dataInfo}
+dataInfo
 }
 \description{
-a function to create \code{dataInfo} OB
+a function to create \code{\link{dataInfo}} OB
 }

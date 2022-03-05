@@ -76,7 +76,8 @@ Imports:
     MetBrewer,
     textshape,
     reshape2,
-    cowplot
+    cowplot,
+    VennDiagram
 biocViews: DataImport, Microarray, OneChannel, SAGE, Software, TwoChannel
 Config/testthat/edition: 3
 VignetteBuilder: knitr

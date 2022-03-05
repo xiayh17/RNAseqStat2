@@ -9,19 +9,20 @@
 #' @param groupInfo a Character Vectors ordered by samples in matrix.
 #' @param caseGroup a Character names of case group.
 #' @param filterMethod a function used to filter expresses value matrix. Or disable filter by set as `NULL`.
+#' @param msi_species one of \code{\link[msigdbr]{msigdbr_species}}
+#' @param msi_category MSigDB collection abbreviation, such as H or C1.
 #' @param OrgDb Select an OrgDb.
 #' @param organism Select an organism.
 #' @param GOTERM2GENE custom enrich data of GO.
 #' @param GOTERM2NAME custom enrich data of GO.
 #' @param KEGGTERM2GENE custom enrich data of GSE.
 #' @param KEGGTERM2NAME custom enrich data of GSE.
-#' @param msi_species one of \code{msigdbr::msigdbr_species}
 #'
-#' @details `Human`, `Mouse` and `Rat` is full supported. For other species, more setting is needed.
-#'     If data can't provided, related steps in workflow will ignore.
-#'     OrgDb can be find from here \link{https://bioconductor.org/packages/release/BiocViews.html#___OrgDb}
-#'     organism can be find from here \link{https://www.genome.jp/kegg/catalog/org_list.html}
-#'     msi_species can be get from \code{msigdbr::msigdbr_species}
+#' @details `Human`, `Mouse` and `Rat` is full supported. For other species, more setting is needed. \cr
+#'     If data can't provided, related steps in workflow will ignore. \cr
+#'     OrgDb can be find from here \link{https://bioconductor.org/packages/release/BiocViews.html#___OrgDb} \cr
+#'     organism can be find from here \link{https://www.genome.jp/kegg/catalog/org_list.html} \cr
+#'     msi_species can be get from \code{\link[msigdbr]{msigdbr_species}} \cr
 #'
 #' @importFrom usethis ui_info ui_done ui_code ui_oops ui_stop
 #'
@@ -37,7 +38,8 @@ Create_DEGContainer <- function(species = "Human",
                                 groupInfo,
                                 caseGroup,
                                 filterMethod = "rowSums(expMatrix > 0) >= ncol(expMatrix)/2",
-                                OrgDb = NULL, msi_species = NULL, organism = NULL,
+                                msi_species = NULL, msi_category = "H",
+                                OrgDb = NULL, organism = NULL,
                                 GOTERM2GENE = NULL, GOTERM2NAME = NA,
                                 KEGGTERM2GENE = NULL, KEGGTERM2NAME = NA){
 
@@ -122,7 +124,7 @@ Create_DEGContainer <- function(species = "Human",
     gseParam = Create_gseParam(goParam = list(OrgDb = OrgDb),
                             keggParam = list(organism = organism))
 
-    msigdbParam = Create_msigdbParam(msigdbParam = list(species = msi_species,category = "H"))
+    msigdbParam = Create_msigdbParam(msigdbParam = list(species = msi_species,category = msi_category))
 
     shotSpecies(species)
 
@@ -153,9 +155,9 @@ Create_DEGContainer <- function(species = "Human",
     }
 
     if(!is.null(msi_species)) {
-      msigdbParam = Create_msigdbParam(msigdbParam = list(species = msi_species,category = "H"))
+      msigdbParam = Create_msigdbParam(msigdbParam = list(species = msi_species,category = msi_category))
     } else {
-      msigdbParam = Create_msigdbParam(msigdbParam = list(species = msi_species,category = "H"))
+      msigdbParam = Create_msigdbParam(msigdbParam = list(species = msi_species,category = msi_category))
       ui_oops("MSigDB step will skip for lack data")
     }
 
@@ -171,7 +173,7 @@ Create_DEGContainer <- function(species = "Human",
     gseParam = Create_gseParam(goParam = goParam,keggParam = keggParam,
                                customGO = GOcustom,customKEGG = KEGGcustom)
 
-    msigdbParam = Create_msigdbParam(msigdbParam = list(species = msi_species,category = "H"))
+    msigdbParam = Create_msigdbParam(msigdbParam = list(species = msi_species,category = msi_category))
 
   }
 

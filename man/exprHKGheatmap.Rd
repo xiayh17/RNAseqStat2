@@ -9,6 +9,8 @@ exprHKGheatmap(
   group_list,
   filename = NA,
   main = "Human housekeeping genes",
+  hk = c("C1orf43", "CHMP2A", "EMC7", "GPI", "PSMB2", "PSMB4", "RAB7A", "REEP5",
+    "SNRPD3", "VCP", "VPS29"),
   palette = RColorBrewer::brewer.pal(3, "Set2")[1:2],
   anno_title = "Group",
   annotation_col = ac_(expr, group_list),
@@ -26,6 +28,8 @@ exprHKGheatmap(
 \item{filename}{file name you want to save plot}
 
 \item{main}{plot title}
+
+\item{hk}{strongly expressed genes}
 
 \item{palette}{annotation palette}
 
@@ -50,9 +54,9 @@ a heatmap or a file
 plot a heatmap of highly uniform and strongly expressed Human housekeeping genes
 }
 \details{
-Human housekeeping genes revisited in
-https://www.tau.ac.il/~elieis/HKG/
-E. Eisenberg and E.Y. Levanon, Trends in Genetics, 29 (2013)
+Human housekeeping genes revisited in \cr
+https://www.tau.ac.il/~elieis/HKG/ \cr
+E. Eisenberg and E.Y. Levanon, Trends in Genetics, 29 (2013) \cr
 }
 \examples{
 exprHKGheatmap(expr,group_list)

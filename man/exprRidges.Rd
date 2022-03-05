@@ -2,7 +2,7 @@
 % Please edit documentation in R/Visualization_check.R
 \name{exprRidges}
 \alias{exprRidges}
-\title{Title}
+\title{Ridges plot of all samples}
 \usage{
 exprRidges(
   expr,
@@ -39,7 +39,7 @@ exprRidges(
 a Ridges plot or a file
 }
 \description{
-Title
+Ridges plot of all samples
 }
 \examples{
 exprRidges(expr,group_list)

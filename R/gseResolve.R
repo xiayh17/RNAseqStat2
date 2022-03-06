@@ -4,6 +4,7 @@ gseResolve <- function(object, GO = FALSE, KEGG = TRUE) {
   ## 获取GeneList
   test <- deg_here(object)
   ok <- names(test)[which(test == TRUE)] ## 取有效数据
+  OrgDb = gseGOparam(object)[["org.Hs.eg.db"]]
 
   if(KEGG) {
 
@@ -18,7 +19,7 @@ gseResolve <- function(object, GO = FALSE, KEGG = TRUE) {
       }
     } else {
       for (i in ok) {
-        gseKEGG_GeneSets[[i]] <- suppressWarnings(GSEA_GS(object,which = i,type = "ENTREZID"))
+        gseKEGG_GeneSets[[i]] <- suppressWarnings(GSEA_GS(object,which = i,type = "ENTREZID",OrgDb = OrgDb))
       }
     }
 

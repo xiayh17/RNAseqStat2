@@ -68,11 +68,11 @@ geneNames(obj, filtered) <- value
 sampleNames(obj, filtered) <- value
 }
 \value{
-The accessor functions \code{species}, \code{dataType},
-  \code{idType}, \code{expMatrix}, \code{groupInfo},
-  \code{caseGroup}, \code{filterMethod}, \code{matrixFiltered}
-  return the corresponding elements of a
-  \code{DEGContainer} or \code{dataInfo}.
+The accessor functions \code{species}, \code{dataType}, \cr
+  \code{idType}, \code{expMatrix}, \code{groupInfo}, \cr
+  \code{caseGroup}, \code{filterMethod}, \code{matrixFiltered} \cr
+  return the corresponding elements of a \cr
+  \code{DEGContainer} or \code{dataInfo}. \cr
 }
 \description{
 This was the class for storing input data for workflow.

@@ -4,6 +4,7 @@ hyperResolve <- function(object, GO = FALSE, KEGG = TRUE) {
   ## 获取GeneList
   test <- deg_here(object)
   ok <- names(test)[which(test == TRUE)] ## 取有效数据
+  OrgDb <- hyperGOparam(object)[["OrgDb"]]
 
   if (KEGG) {
 
@@ -22,7 +23,7 @@ hyperResolve <- function(object, GO = FALSE, KEGG = TRUE) {
     } else {
 
       for (i in ok) {
-        hyperKEGG_GeneSets[[i]] <- suppressWarnings(hyper_GS(object,which = i,type = "ENTREZID"))
+        hyperKEGG_GeneSets[[i]] <- suppressWarnings(hyper_GS(object,which = i,type = "ENTREZID",OrgDb = OrgDb))
       }
 
     }

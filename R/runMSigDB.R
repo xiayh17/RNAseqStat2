@@ -2,6 +2,10 @@
 setGeneric(name="runMSigDB", def=function(obj, dir = ".", prefix = "5-runMSigDB", top =10) standardGeneric("runMSigDB"))
 setMethod(f="runMSigDB", signature="DEGContainer", definition=function(obj, dir = ".", prefix = "5-runMSigDB",top = 10) {
 
+  if (!fs::dir_exists(dir)) {
+    fs::dir_create(dir)
+  }
+
   ## Download  data
   if (length(msigdbData(obj)) == 0) {
     obj <- msigdbGet(obj)

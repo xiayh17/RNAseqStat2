@@ -85,6 +85,17 @@ upDate_cutFC_NULL <- function(object,which,new_cutFC) {
 
 }
 
+#' Group result of DEG analysis results
+#'
+#' @param object a DEGContainer
+#' @param which kinds of DEG; can be "limma", "edgeR", "DESeq2" or "MSigDB"
+#' @param category MSigDB collection abbreviation, such as H or C1.
+#'
+#' @return a DEGContainer
+#' @export
+#'
+#' @examples
+#' cutMuch(DEGContainer,"limma","H")
 cutMuch <- function(object,which,category = 'H') {
 
   if (which == "limma") {
@@ -349,6 +360,16 @@ topGene <- function(object, topSig = 50, which, category = 'H') {
   return(choose_names)
 }
 
+
+#' Test for exists of DEG results
+#'
+#' @param object a DEGContainer
+#'
+#' @return logic vector
+#' @export
+#'
+#' @examples
+#' deg_here(DEGContainer)
 deg_here <- function(object) {
 
   obj = object
@@ -460,6 +481,15 @@ merge_deg <- function(object) {
 
 }
 
+#' Title
+#'
+#' @param merge_data
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#' commonGroup(merge_data)
 commonGroup <- function(merge_data) {
   Test <- merge_data[,grepl("group",colnames(merge_data))]
 
@@ -476,7 +506,7 @@ commonGroup <- function(merge_data) {
   return(merge_data3)
 }
 
-hyper_GS <- function(object,which,type) {
+hyper_GS <- function(object,which,type,OrgDb = NULL) {
 
   if (which == "limma") {
     deg_data = limma_res(object)
@@ -491,14 +521,25 @@ hyper_GS <- function(object,which,type) {
     ui_stop("{ui_code('which')} should be one of {ui_value('limma, edgeR, DESeq2')}")
   }
 
-  OrgDb = switch (species(object),
-    'Human' = "org.Hs.eg.db",
-    'Mouse' = "org.Mm.eg.db"
-  )
+  if(is.null(OrgDb)){
+
+    OrgDb = switch (species(object),
+                    'Human' = "org.Hs.eg.db",
+                    'Mouse' = "org.Mm.eg.db",
+                    'Rat' = "org.Rn.eg.db"
+    )
+
+  }
 
   g <- setdiff(label(object),label_ns(object))
   deg_df_g <- deg_data
   gene_list <- list()
+
+  if (!("group" %in% colnames(deg_df_g))) {
+
+    usethis::ui_stop("Try to group data with{ui_code(degGroup)}")
+
+  }
 
   if (type == "ENTREZID") {
 
@@ -531,7 +572,7 @@ hyper_GS <- function(object,which,type) {
 
 }
 
-GSEA_GS <- function(object,which,type) {
+GSEA_GS <- function(object,which,type,OrgDb = NULL) {
 
   if (which == "limma") {
     deg_data = limma_res(object)
@@ -548,11 +589,15 @@ GSEA_GS <- function(object,which,type) {
 
   x = FC_Identify(deg_data)
 
-  OrgDb = switch (species(object),
+  if(is.null(OrgDb)){
+
+    OrgDb = switch (species(object),
                   'Human' = "org.Hs.eg.db",
                   'Mouse' = "org.Mm.eg.db",
                   'Rat' = "org.Rn.eg.db"
   )
+
+  }
 
   if (which == "merge") {
 
@@ -652,12 +697,21 @@ toSYMBOL <- function(row_counts,species) {
 
 }
 
-#' @importFrom data.table rbindlist
-#' @export
-eggnogG2T <- function(data,SYMBOL,TERM) {
 
-  ## remove no GOs
-  gene2term <- data[!grepl("-",data$GOs),]
+#' Convert EGGnog to GENE2TERM
+#'
+#'
+#'
+#' @param data data from eggnog
+#' @param SYMBOL which column is SYMBOL
+#' @param TERM which column is Pathway
+#'
+#' @return a data frame
+#' @export
+#'
+#' @examples
+#' eggnogG2T(data,SYMBOL,TERM)
+eggnogG2T <- function(data,SYMBOL,TERM) {
 
   list_res <- lapply(seq_along(data[,get(SYMBOL)]), function(x){
 

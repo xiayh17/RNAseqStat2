@@ -26,11 +26,11 @@ setClassUnion("list_OR_NULL", c("list", "NULL"))
 #'
 #' @importFrom methods setClass new
 #'
-#' @return The accessor functions \code{species}, \code{dataType},
-#'   \code{idType}, \code{expMatrix}, \code{groupInfo},
-#'   \code{caseGroup}, \code{filterMethod}, \code{matrixFiltered}
-#'   return the corresponding elements of a
-#'   \code{DEGContainer} or \code{dataInfo}.
+#' @return The accessor functions \code{species}, \code{dataType}, \cr
+#'   \code{idType}, \code{expMatrix}, \code{groupInfo}, \cr
+#'   \code{caseGroup}, \code{filterMethod}, \code{matrixFiltered} \cr
+#'   return the corresponding elements of a \cr
+#'   \code{DEGContainer} or \code{dataInfo}. \cr
 #'
 #' @export
 setClass(Class="dataInfo",
@@ -163,6 +163,15 @@ setClass(Class = "MSigDB",
                    msigdbTreat = "treatInfo_OR_NULL"
          ))
 setClassUnion("MSigDB_OR_NULL", c("MSigDB", "NULL"))
+
+# setClass(Class = "IDstat",
+# slots = c(
+#   OrgDb = "character_OR_NULL",
+#   OriginalIDtype = "character_OR_NULL",
+#   CurrentIDtype = "character_OR_NULL",
+#   LoseOriginal2Current = "character_OR_NULL",
+#   Lose2ENTREZID = "character_OR_NULL"
+# ))
 
 #' @title Class \code{DEGContainer}
 #' @aliases DEGContainer-class

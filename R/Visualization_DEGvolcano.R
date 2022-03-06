@@ -166,8 +166,10 @@ theme_volcano <- function(...) {theme(...,
 #' @importFrom ggrepel geom_text_repel
 #'
 #' @return a ggplot ob
+#' @export
 #'
-#' @noRd
+#' @examples
+#' PointVolcano(DEGContainer,"limma")
 PointVolcano <- function(object,which, category = "H",
                          gene,light = NULL,
                          light_color = "#24ac56",

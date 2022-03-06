@@ -39,11 +39,11 @@ degResolveArray <- function(object,dir = ".", prefix = "2-DEG") {
   #                                 case_group = case_group, control_group = control_group, qc = qc)
 
   usethis::ui_info(glue("Start edgeR analysis."))
-  deg_df_edgeR <- edgeR_resolve(expr_data, group_list,
+  deg_df_edgeR <- edgeR_resolveArray(expr_data, group_list,
                                 control_group = control_group)
 
   usethis::ui_info(glue("Start limma analysis."))
-  deg_df_limma <- limma_resolve(expr_data,group_list,
+  deg_df_limma <- limma_resolveArray(expr_data,group_list,
                                 case_group = case_group, control_group = control_group)
 
   usethis::ui_info(glue("Merge data above."))
@@ -75,6 +75,24 @@ degResolveArray <- function(object,dir = ".", prefix = "2-DEG") {
 
 }
 
+#' Basic produce of limma
+#'
+#' A basic function to get data and produce results of limma
+#'
+#' @param expr_data a counts data frame of rows in genes and columns in samples
+#' @param group_list a character vector ordered by samples in counts_data
+#' @param case_group the name of the numerator level for the fold change (Test group)
+#' @param control_group the name of the denominator level for the fold change (Control group)
+#'
+#' @importFrom stats model.matrix na.omit
+#' @importFrom edgeR DGEList cpm calcNormFactors
+#' @importFrom limma voom lmFit makeContrasts contrasts.fit eBayes topTable
+#'
+#' @return a DEG data frame
+#' @export
+#'
+#' @examples
+#' limma_resolve(counts_input, group_list, control_group= "C", case_group = "T")
 limma_resolveArray <- function(expr_data, group_list, control_group, case_group) {
 
   design <- model.matrix(~0+factor(group_list))
@@ -96,7 +114,23 @@ limma_resolveArray <- function(expr_data, group_list, control_group, case_group)
 
 }
 
-edgeR_resolveArray <- function(expr_data, group_list, control_group, case_group) {
+#' Basic produce of edgeR
+#'
+#' A basic function to get data and produce results of edgeR
+#'
+#' @param expr_data a counts data frame of rows in genes and columns in samples
+#' @param group_list a character vector ordered by samples in counts_data
+#' @param control_group the name of the denominator level for the fold change (Control group)
+#'
+#' @importFrom stats relevel model.matrix
+#' @importFrom edgeR DGEList cpm calcNormFactors estimateGLMCommonDisp estimateGLMTrendedDisp estimateGLMTagwiseDisp glmFit glmLRT topTags
+#'
+#' @return a DEG data frame
+#' @export
+#'
+#' @examples
+#' edgeR_resolve_(counts_input, group_list, control_group= "C")
+edgeR_resolveArray <- function(expr_data, group_list, control_group) {
 
   g=factor(group_list)
   g=relevel(g,control_group)

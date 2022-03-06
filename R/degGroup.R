@@ -1,4 +1,14 @@
+#' Group degResults
+#'
+#' group results of DEG analysis
+#'
+#' @param obj a DEGContainer
+#'
+#' @return a DEGContainer
 #' @export
+#'
+#' @examples
+#' degGroup(DEGContainer)
 setGeneric(name="degGroup", def=function(obj) standardGeneric("degGroup"))
 setMethod(f="degGroup", signature="DEGContainer", definition=function(obj) {
 

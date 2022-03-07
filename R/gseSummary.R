@@ -88,20 +88,13 @@ gesSummary <- function(obj, dir = ".", prefix = "4-runGSEA",top =10) {
 
       if (!is.null(x)) {
 
-        enrichBar(x,top = top) +
-        theme(legend.position="none") +
-        ggtitle(names(res_list)[i])
+        enrichBar(x,top = top,plot_title = names(res_list)[i])
 
       }
 
     })
 
-    # legend <- cowplot::get_legend(
-    #   # create some space to the left of the legend
-    #   plot_list[[1]] + ggplot2::theme(legend.position="right",legend.box.margin = ggplot2::margin(0, 0, 0, 12))
-    # )
-
-    p <- cowplot::plot_grid(plotlist = plot_list,ncol = 4, rel_widths = c(3,3,3,3))
+     p <- cowplot::plot_grid(plotlist = plot_list, ncol = 4)
 
     ggplot2::ggsave(p,filename = glue::glue("{dir}/{prefix}_GO_bar.pdf"), width = 6400,height = 1200*(top*2/10),units = "px",limitsize = FALSE,device = cairo_pdf)
 

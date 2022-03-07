@@ -171,6 +171,12 @@ linkCir <- function(df, group = "model") {
 
   })
 
+  if (any(ispoor_m[,nrow(ispoor_m)])) {
+
+    poor_unique[length(poor_unique)] <- length(poor_unique)
+
+  }
+
   pu_index_row <- grep("[0-9]",poor_unique)
   pu_index_col <- na.omit(poor_unique)
   # print(length(pu_index_row))

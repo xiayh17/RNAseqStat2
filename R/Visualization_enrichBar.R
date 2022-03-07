@@ -36,12 +36,13 @@ enrichBar <- function(enrichResult,
                       point_title = "GeneRatio",
                       x_title = "-log10(pvalue)",
                       y_title = "Description",
+                      plot_title = NULL,
                       legend_text_size = 12,
                       FDR_color = c('#de2d26','#fc9272','#fee0d2')) {
 
   dat <- textBarData(enrichResult = enrichResult,top = top,group = group,order_by = order_by)
 
-  max_x <- max(dat[,bar])
+  max_x <- max(dat[,bar],na.rm = T)
 
   if(is.null(group)) {
 
@@ -122,7 +123,7 @@ enrichBar <- function(enrichResult,
                           ))+ ## bar 的颜色
     new_scale_color() +
     geom_point(
-      aes_(y = ~helpY-bar_space, x = as.name(bar),
+      aes_(y = ~helpY-space, x = as.name(bar),
            fill = as.name(point),color = as.name(point)),
       shape = point_shape,
       size = point_size
@@ -133,7 +134,8 @@ enrichBar <- function(enrichResult,
                                                   label.theme = element_text(size = legend_text_size)
                           ))+ # 点的边界色
     scale_y_continuous(name = y_title, breaks = dat$helpY, expand = c(0, 0.5)) +
-    theme_enrichBar()
+    theme_enrichBar() +
+    ggtitle(plot_title)
 
   ## 如果有分组，添加
   if(is.null(group)) {
@@ -156,9 +158,9 @@ enrichBar <- function(enrichResult,
       for (i in strip_both) {
         j <- which(grepl('rect', g$grobs[[i]]$grobs[[1]]$childrenOrder))
         m <- which(grepl('text', g$grobs[[i]]$grobs[[1]]$childrenOrder))
-        g$grobs[[i]]$grobs[[1]]$children[[j]]$gp$col <- split_color[k]
+        g$grobs[[i]]$grobs[[1]]$children[[j]]$gp$col <- group_color[k]
         g$grobs[[i]]$grobs[[1]]$children[[j]]$gp$lty <- "solid"
-        g$grobs[[i]]$grobs[[1]]$children[[j]]$gp$fill <- split_color[k]
+        g$grobs[[i]]$grobs[[1]]$children[[j]]$gp$fill <- group_color[k]
         g$grobs[[i]]$grobs[[1]]$children[[m]]$children[[1]]$gp$col <- "white"
         k <- k+1
       }

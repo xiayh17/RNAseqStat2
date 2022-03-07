@@ -235,7 +235,7 @@ textBarData <- function(enrichResult,
 
   if (!is.null(group)) {
 
-    if(group %in% colnames(dat)) {
+    if(group %in% colnames(result)) {
 
       usethis::ui_info("grouped by {group} and choose top {top} of every group")
       ## 分组排序取top

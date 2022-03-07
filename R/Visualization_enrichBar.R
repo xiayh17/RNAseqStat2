@@ -63,7 +63,7 @@ enrichBar <- function(enrichResult,
 
   } else {
 
-    if(group %in% colnames(result)) {
+    if(group %in% colnames(dat)) {
 
       p <- ggplot(dat,aes_(x = as.name(bar),y = ~helpY)) +
         geom_rect(

@@ -59,7 +59,7 @@ hyperResolve <- function(object, GO = FALSE, KEGG = TRUE) {
     ## 富集分析
     hyperGO_res <- lapply(seq_along(hyperGO_GeneSets), function(x){
       geneSet_list = hyperGO_GeneSets[[x]]
-      res <- hyper_goResolve(geneSet_list = x,goParams = goParams)
+      res <- hyper_goResolve(geneSet_list = geneSet_list,goParams = goParams)
       ui_done("Enrich KEGG {names(hyperGO_GeneSets)[x]} analysis done")
       return(res)
     })

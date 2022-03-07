@@ -1,10 +1,27 @@
+#' runGSEA Module
+#'
+#' runGSEA Module control GO and KEGG
+#'
+#' @param obj a DEGContainer
+#' @param dir a directory to store results
+#' @param prefix a prefix of file names in this step
+#' @param top top rows of up and down
+#' @param GO run GO
+#' @param KEGG run KEGG
+#'
 #' @import enrichplot
 #' @import ggplot2
 #' @importFrom DOSE theme_dose
 #' @export
-setGeneric(name="runGSEA", def=function(obj, dir = ".", prefix = "4-runGSEA",top =10) standardGeneric("runGSEA"))
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#' runGSEA(DEGContainer)
+setGeneric(name="runGSEA", def=function(obj, dir = ".", prefix = "4-runGSEA",top =10, GO = FALSE, KEGG = TRUE) standardGeneric("runGSEA"))
 
-setMethod(f="runGSEA", signature="DEGContainer", definition=function(obj, dir = ".", prefix = "4-runGSEA",top = 10) {
+setMethod(f="runGSEA", signature="DEGContainer", definition=function(obj, dir = ".", prefix = "4-runGSEA",top = 10, GO = FALSE, KEGG = TRUE) {
 
   if (!fs::dir_exists(dir)) {
     fs::dir_create(dir)
@@ -12,7 +29,7 @@ setMethod(f="runGSEA", signature="DEGContainer", definition=function(obj, dir = 
 
   ## hyper resolve of limma edgeR DESeq2
   if (length(gseRes(obj)) == 0) {
-    obj <- gseResolve(obj = obj)
+    obj <- gseResolve(obj = obj, GO = GO, KEGG = KEGG)
   }
 
   gesSummary(obj = obj, dir = dir, prefix = prefix,top = top)

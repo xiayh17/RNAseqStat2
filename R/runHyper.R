@@ -1,5 +1,20 @@
+#' runHyper
+#'
+#' @param obj a DEGContainer
+#' @param dir a directory to store results
+#' @param prefix a prefix of file names in this step
+#' @param top top for enrich result filter
+#' @param GO logic, run GO in enrich step
+#' @param KEGG logic, run KEGG in enrich step
+#'
 #' @import enrichplot
 #' @export
+#'
+#' @return a DEGContainer
+#' @export
+#'
+#' @examples
+#' runHyper(DEGContainer)
 setGeneric(name="runHyper", def=function(obj, dir = ".", prefix = "3-runHyper",top = 10,GO = FALSE, KEGG = TRUE) standardGeneric("runHyper"))
 
 setMethod(f="runHyper", signature="DEGContainer", definition=function(obj, dir = ".", prefix = "3-runHyper",top = 10,GO = FALSE, KEGG = TRUE) {

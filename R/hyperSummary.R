@@ -1,4 +1,15 @@
+#' Summary Hyper results
+#'
+#' @param obj a DEGContainer
+#' @param dir a directory to store results
+#' @param prefix a prefix of file names in this step
+#' @param top top rows of up and down
+#'
+#' @return files
 #' @export
+#'
+#' @examples
+#' hyperSummary(DEGContainer)
 hyperSummary <- function(obj, dir = ".", prefix = "3-runHyper",top = 10) {
 
   if (!fs::dir_exists(dir)) {

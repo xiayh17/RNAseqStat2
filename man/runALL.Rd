@@ -4,7 +4,7 @@
 \alias{runALL}
 \title{run all workflow}
 \usage{
-runALL(object, dir = "output", top = 10, parallel = T, GO = FALSE)
+runALL(object, dir = "output", top = 10, parallel = T, GO = FALSE, KEGG = TRUE)
 }
 \arguments{
 \item{object}{a DEGContainer}
@@ -16,6 +16,8 @@ runALL(object, dir = "output", top = 10, parallel = T, GO = FALSE)
 \item{parallel}{use parallel in DESeq2}
 
 \item{GO}{logic, run GO in enrich step}
+
+\item{KEGG}{logic, run KEGG in enrich step}
 }
 \value{
 a DEGContainer

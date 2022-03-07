@@ -1,5 +1,21 @@
+#' Summary GSE results
+#'
+#' @param obj a DEGContainer
+#' @param dir a directory to store results
+#' @param prefix a prefix of file names in this step
+#' @param top top rows of up and down
+#'
+#' @return files
+#' @export
+#'
+#' @examples
+#' gesSummary(DEGContainer)
 gesSummary <- function(obj, dir = ".", prefix = "4-runGSEA",top =10) {
 
+  if (!fs::dir_exists(dir)) {
+    fs::dir_create(dir)
+  }
+  
   ## get data
   # ui_info("Start summary ")
   res_list <- gseRes(obj = obj)$gseKEGG_res
@@ -67,19 +83,25 @@ gesSummary <- function(obj, dir = ".", prefix = "4-runGSEA",top =10) {
     # ## GO data
     ## 条形图
     plot_list <- lapply(seq_along(res_list), function(i){
+
       x = res_list[[i]]
-      GSEAbar(x,top = top) +
+
+      if (!is.null(x)) {
+
+        enrichBar(x,top = top) +
         theme(legend.position="none") +
         ggtitle(names(res_list)[i])
 
+      }
+
     })
 
-    legend <- cowplot::get_legend(
-      # create some space to the left of the legend
-      plot_list[[1]] + ggplot2::theme(legend.position="right",legend.box.margin = ggplot2::margin(0, 0, 0, 12))
-    )
+    # legend <- cowplot::get_legend(
+    #   # create some space to the left of the legend
+    #   plot_list[[1]] + ggplot2::theme(legend.position="right",legend.box.margin = ggplot2::margin(0, 0, 0, 12))
+    # )
 
-    p <- cowplot::plot_grid(plotlist = plot_list,legend,ncol = 5, rel_widths = c(.4,3,3,3,3))
+    p <- cowplot::plot_grid(plotlist = plot_list,ncol = 4, rel_widths = c(3,3,3,3))
 
     ggplot2::ggsave(p,filename = glue::glue("{dir}/{prefix}_GO_bar.pdf"), width = 6400,height = 1200*(top*2/10),units = "px",limitsize = FALSE,device = cairo_pdf)
 
@@ -110,7 +132,7 @@ gesSummary <- function(obj, dir = ".", prefix = "4-runGSEA",top =10) {
     tmp <- lapply(seq_along(res_list), function(i){
 
       res <- res_list[[i]]
-      dat <- res@result
+      if (!is.null(res)) {dat <- res@result}
 
       res_name <- glue("{dir}/{prefix}_GO_{names(res_list)[i]}.csv")
       write.csv(dat,file = res_name)

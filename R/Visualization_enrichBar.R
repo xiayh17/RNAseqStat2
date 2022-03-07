@@ -142,7 +142,7 @@ enrichBar <- function(enrichResult,
 
   } else {
 
-    if(group %in% colnames(result)) {
+    if(group %in% colnames(dat)) {
 
       p <- p +
         facet_grid(get(group)~., scale="free", switch="both") +
@@ -235,7 +235,7 @@ textBarData <- function(enrichResult,
 
   if (!is.null(group)) {
 
-    if(group %in% colnames(result)) {
+    if(group %in% colnames(dat)) {
 
       usethis::ui_info("grouped by {group} and choose top {top} of every group")
       ## 分组排序取top

@@ -4,10 +4,12 @@
 \alias{Create_msigdbParam}
 \title{Create \code{MSigDB}}
 \usage{
-Create_msigdbParam(msigdbParam = NULL)
+Create_msigdbParam(msigdbParam = NULL, skipMSigDB = FALSE)
 }
 \arguments{
 \item{msigdbParam}{a list contains any paramaters of \code{\link[msigdbr]{msigdbr}}}
+
+\item{skipMSigDB}{logical, set parameters as NULL for skip this step}
 }
 \value{
 a list

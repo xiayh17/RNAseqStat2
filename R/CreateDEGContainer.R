@@ -132,32 +132,40 @@ Create_DEGContainer <- function(species = "Human",
 
     if(!is.null(GOTERM2GENE)) {
       GOcustom = TRUE
+      skipGO = FALSE
       goParam = list(TERM2GENE = GOTERM2GENE, TERM2NAME = GOTERM2NAME)
     } else if (!is.null(OrgDb)) {
       GOcustom = FALSE
+      skipGO = FALSE
       goParam = list(OrgDb = OrgDb)
     } else {
       GOcustom = FALSE
       goParam = NULL
+      skipGO = TRUE
       ui_oops("hyperGO and gseGO step will skip for lack data")
     }
 
     if(!is.null(KEGGTERM2GENE)) {
       KEGGcustom = TRUE
+      skipKEGG = FALSE
       keggParam = list(TERM2GENE = KEGGTERM2GENE, TERM2NAME = KEGGTERM2NAME)
     } else if (!is.null(organism)) {
       KEGGcustom = FALSE
+      skipKEGG = FALSE
       keggParam = list(organism = organism)
     } else {
       KEGGcustom = FALSE
       keggParam = NULL
+      skipKEGG = TRUE
       ui_oops("hyperKEGG and gseKEGG step will skip for lack data")
     }
 
     if(!is.null(msi_species)) {
       msigdbParam = Create_msigdbParam(msigdbParam = list(species = msi_species,category = msi_category))
+      skipMSigDB = FALSE
     } else {
-      msigdbParam = Create_msigdbParam(msigdbParam = list(species = msi_species,category = msi_category))
+      msigdbParam = NULL
+      skipMSigDB = TRUE
       ui_oops("MSigDB step will skip for lack data")
     }
 
@@ -168,12 +176,12 @@ Create_DEGContainer <- function(species = "Human",
     }
 
     hyperParam = Create_hyperParam(goParam = goParam,keggParam = keggParam,
-               customGO = GOcustom,customKEGG = KEGGcustom)
+               customGO = GOcustom,customKEGG = KEGGcustom,skipGO = skipGO,skipKEGG = skipKEGG)
 
     gseParam = Create_gseParam(goParam = goParam,keggParam = keggParam,
-                               customGO = GOcustom,customKEGG = KEGGcustom)
+                               customGO = GOcustom,customKEGG = KEGGcustom,skipGO = skipGO,skipKEGG = skipKEGG)
 
-    msigdbParam = Create_msigdbParam(msigdbParam = list(species = msi_species,category = msi_category))
+    msigdbParam = Create_msigdbParam(msigdbParam = list(species = msi_species,category = msi_category),skipMSigDB = skipMSigDB)
 
   }
 

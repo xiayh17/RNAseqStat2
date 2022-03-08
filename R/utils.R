@@ -1,4 +1,3 @@
-
 ## res is one of result from limma or DESeq2 or edgeR
 ## cutFC is from treatInfo
 ## cutFDR is from treatInfo
@@ -82,6 +81,46 @@ upDate_cutFC_NULL <- function(object,which,new_cutFC) {
   ui_info("cutFC updated for object!")
 
   return(object)
+
+}
+
+#' get Results of DEGContainer
+#'
+#' @param obj a DEGContainer object
+#' @param which kinds of DEG; can be "limma", "edgeR", "DESeq2" or "MSigDB”
+#' @param category MSigDB collection abbreviation, such as H or C1.
+#'
+#' @return a dataframe
+#' @export
+#'
+#' @examples
+#' dataDEG(DEGContainer)
+dataDEG <- function(obj,which,category) {
+
+  if (which == "limma") {
+    deg_data = limma_res(obj)
+  } else if (which == "edgeR") {
+    deg_data = edgeR_res(obj)
+  } else if (which == "DESeq2") {
+    deg_data = DESeq2_res(obj)
+  } else if (which == "merge") {
+    deg_data = merge_res(obj)
+    deg_data <- commonGroup(merge_data = deg_data)
+  } else if (which == "MSigDB") {
+    if(!is.null(category)) {
+
+      deg_data = msigdbGSVAresult(obj)[["GSVA_diff"]][[category]]
+
+    } else {
+
+      ui_stop("when {ui_code('which')} set as {ui_value('MSigDB')}, {ui_code('category')} should be one of category in {ui_value('MSigDB')}")
+
+    }
+  } else {
+    ui_stop("{ui_code('which')} should be one of {ui_value('limma, edgeR, DESeq2, merge, MSigDB')}")
+  }
+
+  return(deg_data)
 
 }
 

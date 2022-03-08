@@ -4,6 +4,15 @@ hyperResolve <- function(object, GO = FALSE, KEGG = TRUE) {
   ## 获取GeneList
   test <- deg_here(object)
   ok <- names(test)[which(test == TRUE)] ## 取有效数据
+
+  if (is.null(hyperGOparam)) {
+    GO = FALSE
+  }
+
+  if (is.null(hyperKEGGparam)) {
+    KEGG = FALSE
+  }
+
   OrgDb <- hyperGOparam(object)[["OrgDb"]]
 
   if (KEGG) {

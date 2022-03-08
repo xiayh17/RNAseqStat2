@@ -1,20 +1,33 @@
-#' @importFrom aplot plot_list
+#' Summary results of DEG analysis
+#'
+#' @param obj a DEGContainer object
+#' @param dir a directory to store results
+#' @param prefix a prefix of file names in this step
+#' @param PointVolcanoParam more parameters for \code{\link{PointVolcano}}
+#'
+#' @return a batch of files
 #' @export
+#'
+#' @examples
+#' degSummary(DEGContainer)
 degSummary <- function(obj, dir = ".", prefix = "2-runDEG",
                        PointVolcanoParam = list(gene = 10,light = NULL,
                                                 light_color = "#24ac56",
                                                 light_label_color = "#24ac56",
                                                 expend = c(0.12, 0.12))) {
 
+  ## create dir if not exists
   if (!fs::dir_exists(dir)) {
     fs::dir_create(dir)
   }
 
+  ## check deg results
   test <- deg_here(obj)
   ok <- names(test)[which(test == TRUE)]
+  ## except merge
   main <- setdiff(ok,"merge")
-  # merge_data <- intersect(ok,"merge")
 
+  ## when merge exists
   if(test["merge"]) {
 
     dat <- dataDEG(obj,which = "merge")
@@ -33,7 +46,7 @@ degSummary <- function(obj, dir = ".", prefix = "2-runDEG",
 
   }
 
-  ## plot and export data
+  ## other dataset
   if(length(main)>=1){
 
     for (i in main) {
@@ -41,6 +54,7 @@ degSummary <- function(obj, dir = ".", prefix = "2-runDEG",
       which = i
 
       geneSymbol_list <- hyper_GS(object = obj,which = which,type = "SYMBOL")
+      ## gene names of every  regulate group
       lapply(seq_along(geneSymbol_list), function(x){
 
         file_name <- glue("{dir}/{prefix}_{names(geneSymbol_list)[x]}_{which}_Gene.txt")
@@ -49,11 +63,13 @@ degSummary <- function(obj, dir = ".", prefix = "2-runDEG",
 
       })
 
+      ## deg results
       dat <- dataDEG(obj,which = which)
       csv_name = glue('{dir}/{prefix}_{which}_results.csv')
       write.csv(dat,file = csv_name)
       ui_done(glue("{which} DEG results in csv format is stored in {usethis::ui_path(csv_name)}"))
 
+      ## volcano plot
       volcano_plot <-  do.call("PointVolcano",c(list(obj = obj,which = i), PointVolcanoParam))
       volcano_file = glue("{dir}/{prefix}_{which}_volcano.pdf")
       ggsave(volcano_plot,filename = volcano_file, width = 1600,height = 1600,units = "px",limitsize = FALSE,device = cairo_pdf)
@@ -104,23 +120,5 @@ degSummary <- function(obj, dir = ".", prefix = "2-runDEG",
   } else {
     ui_info("None available results of DEG.")
   }
-
-}
-
-dataDEG <- function(obj,which) {
-
-  if (which == "limma") {
-    deg_data = limma_res(obj)
-  } else if (which == "edgeR") {
-    deg_data = edgeR_res(obj)
-  } else if (which == "DESeq2") {
-    deg_data = DESeq2_res(obj)
-  } else if (which == "merge") {
-    deg_data = merge_res(obj)
-  } else {
-    ui_stop("{ui_code('which')} should be one of {ui_value('limma, edgeR, DESeq2')}")
-  }
-
-  return(deg_data)
 
 }

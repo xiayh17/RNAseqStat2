@@ -8,7 +8,9 @@ Create_gseParam(
   goParam = NULL,
   keggParam = NULL,
   customGO = FALSE,
-  customKEGG = FALSE
+  customKEGG = FALSE,
+  skipGO = FALSE,
+  skipKEGG = FALSE
 )
 }
 \arguments{
@@ -19,6 +21,10 @@ Create_gseParam(
 \item{customGO}{logic. FALSE for \code{\link[clusterProfiler]{gseGO}}, TRUE for \code{\link[clusterProfiler]{GSEA}}}
 
 \item{customKEGG}{logic. FALSE for \code{\link[clusterProfiler]{gseKEGG}}, TRUE for \code{\link[clusterProfiler]{GSEA}}}
+
+\item{skipGO}{logical, set parameters as NULL for skip this step}
+
+\item{skipKEGG}{logical, set parameters as NULL for skip this step}
 }
 \value{
 gseParam

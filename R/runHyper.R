@@ -28,7 +28,17 @@ setMethod(f="runHyper", signature="DEGContainer", definition=function(obj, dir =
     obj <- hyperResolve(obj = obj,GO = GO,KEGG=KEGG)
   }
 
-  hyperSummary(obj = obj, dir = dir, prefix = prefix,top = top)
+  tryCatch(
+    expr = {
+      hyperSummary(obj = obj, dir = dir, prefix = prefix,top = top)
+    },
+    error = function(e){
+      usethis::ui_oops("Something wrong occured in Hyper Summary. try again later by {ui_code(hyperSummary)}.")
+    },
+    finally = {
+      usethis::ui_line("Hyper analysis step done")
+    }
+  )
 
   return(obj)
 

@@ -6,29 +6,35 @@ setMethod(f="runMSigDB", signature="DEGContainer", definition=function(obj, dir 
     fs::dir_create(dir)
   }
 
-  ## Download  data
-  if (length(msigdbData(obj)) == 0) {
-    obj <- msigdbGet(obj)
+  if (!is.null(msigdbParam(obj))) {
+
+    ## Download  data
+    if (length(msigdbData(obj)) == 0) {
+      obj <- msigdbGet(obj)
+    }
+
+    ## Do gse
+    if (length(msigdbGSEAresult(obj)) == 0) {
+      obj <- gseMSigDB(obj)
+    }
+
+    ## Do Hyper
+    if (length(msigdbGSEAresult(obj)) == 0) {
+      obj <- hyperMSigDB(obj)
+    }
+
+    ## gsva
+    if (length(msigdbGSVAresult(obj)) == 0) {
+      obj <- gsvaResolve(obj)
+    }
+
+    obj@MSigDB <- degGroup(obj@MSigDB)
+
+    MSigDBSummay(obj, dir = dir, prefix = prefix,top =top)
+
+  } else {
+    ui_info"MSigDB step skiped."
   }
-
-  ## Do gse
-  if (length(msigdbGSEAresult(obj)) == 0) {
-    obj <- gseMSigDB(obj)
-  }
-
-  ## Do Hyper
-  if (length(msigdbGSEAresult(obj)) == 0) {
-    obj <- hyperMSigDB(obj)
-  }
-
-  ## gsva
-  if (length(msigdbGSVAresult(obj)) == 0) {
-    obj <- gsvaResolve(obj)
-  }
-
-  obj@MSigDB <- degGroup(obj@MSigDB)
-
-  MSigDBSummay(obj, dir = dir, prefix = prefix,top =top)
 
   return(obj)
 

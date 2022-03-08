@@ -55,7 +55,19 @@ setMethod(f="runDEG", signature="DEGContainer", definition=function(obj, dir = "
   ## group DEG Results
   obj <- degGroup(obj = obj)
 
-  degSummary(obj = obj, dir = dir,prefix = prefix,PointVolcanoParam = PointVolcanoParam)
+  tryCatch(
+    expr = {
+      degSummary(obj = obj, dir = dir,prefix = prefix,PointVolcanoParam = PointVolcanoParam)
+    },
+    error = function(e){
+      usethis::ui_oops("Something wrong occured in DEG Summary. try again later by {ui_code(degSummary)}.")
+    },
+    finally = {
+      usethis::ui_line("DEG analysis step done")
+    }
+  )
+
+
 
   return(obj)
 

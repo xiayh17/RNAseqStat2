@@ -5,14 +5,16 @@
 #' @param keggParam arguments in \code{\link[clusterProfiler]{enrichKEGG}} or \code{\link[clusterProfiler]{enricher}} except \code{gene}.
 #' @param customGO logic. FALSE for \code{\link[clusterProfiler]{enrichGO}}, TRUE for \code{\link[clusterProfiler]{enricher}}
 #' @param customKEGG logic. FALSE for \code{\link[clusterProfiler]{enrichKEGG}}, TRUE for \code{\link[clusterProfiler]{enricher}}
-#'
+#' @param skipGO logical, set parameters as NULL for skip this step
+#' @param skipKEGG logical, set parameters as NULL for skip this step
 #' @return hyperParam
 #' @export
 #'
 #' @examples
 #' Create_hyperParam()
 Create_hyperParam <- function(goParam = NULL,keggParam = NULL,
-                              customGO = FALSE,customKEGG = FALSE) {
+                              customGO = FALSE,customKEGG = FALSE,
+                              skipGO = FALSE,skipKEGG = FALSE) {
 
   customParams = list(
     pvalueCutoff = 0.99,
@@ -60,6 +62,14 @@ Create_hyperParam <- function(goParam = NULL,keggParam = NULL,
   goParam = paramParse(defaultParams = goParam_default,newParam = goParam)
   keggParam = paramParse(defaultParams = keggParam_default,newParam = keggParam)
 
+  if (skipGO) {
+    goParam = NULL
+  }
+
+  if (skipKEGG) {
+    keggParam = NULL
+  }
+
   new("hyperParam",
       goParam = goParam,
       keggParam = keggParam)
@@ -74,6 +84,8 @@ Create_hyperParam <- function(goParam = NULL,keggParam = NULL,
 #' @param keggParam arguments in \code{\link[clusterProfiler]{gseKEGG}} or \code{\link[clusterProfiler]{GSEA}} except \code{geneList}.
 #' @param customGO logic. FALSE for \code{\link[clusterProfiler]{gseGO}}, TRUE for \code{\link[clusterProfiler]{GSEA}}
 #' @param customKEGG logic. FALSE for \code{\link[clusterProfiler]{gseKEGG}}, TRUE for \code{\link[clusterProfiler]{GSEA}}
+#' @param skipGO logical, set parameters as NULL for skip this step
+#' @param skipKEGG logical, set parameters as NULL for skip this step
 #'
 #' @return gseParam
 #' @export
@@ -81,7 +93,8 @@ Create_hyperParam <- function(goParam = NULL,keggParam = NULL,
 #' @examples
 #' Create_gseParam()
 Create_gseParam <- function(goParam = NULL,keggParam = NULL,
-                            customGO = FALSE,customKEGG = FALSE) {
+                            customGO = FALSE,customKEGG = FALSE,
+                            skipGO = FALSE,skipKEGG = FALSE) {
 
   customParams = list(
     exponent = 1,
@@ -141,6 +154,14 @@ Create_gseParam <- function(goParam = NULL,keggParam = NULL,
   goParam = paramParse(defaultParams = goParam_default,newParam = goParam)
   keggParam = paramParse(defaultParams = keggParam_default,newParam = keggParam)
 
+  if (skipGO) {
+    goParam = NULL
+  }
+
+  if (skipKEGG) {
+    keggParam = NULL
+  }
+
   new("gseParam",
       goParam = goParam,
       keggParam = keggParam)
@@ -154,19 +175,24 @@ Create_gseParam <- function(goParam = NULL,keggParam = NULL,
 #' Create a msigdbParam list. If NULL, default parameters will apply.
 #'
 #' @param msigdbParam a list contains any paramaters of \code{\link[msigdbr]{msigdbr}}
+#' @param skipMSigDB logical, set parameters as NULL for skip this step
 #'
 #' @return a list
 #' @export
 #'
 #' @examples
 #' Create_msigdbParam()
-Create_msigdbParam <- function(msigdbParam = NULL) {
+Create_msigdbParam <- function(msigdbParam = NULL,skipMSigDB = FALSE) {
 
   ## 设置默认选项 ----
   msigdbParam_default = list(
     species = NULL, category = NULL, subcategory = NULL)
 
   msigdbParam = paramParse(defaultParams = msigdbParam_default, newParam = msigdbParam)
+
+  if (skipMSigDB) {
+    msigdbParam = NULL
+  }
 
   return(msigdbParam)
 

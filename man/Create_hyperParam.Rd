@@ -8,7 +8,9 @@ Create_hyperParam(
   goParam = NULL,
   keggParam = NULL,
   customGO = FALSE,
-  customKEGG = FALSE
+  customKEGG = FALSE,
+  skipGO = FALSE,
+  skipKEGG = FALSE
 )
 }
 \arguments{
@@ -19,6 +21,10 @@ Create_hyperParam(
 \item{customGO}{logic. FALSE for \code{\link[clusterProfiler]{enrichGO}}, TRUE for \code{\link[clusterProfiler]{enricher}}}
 
 \item{customKEGG}{logic. FALSE for \code{\link[clusterProfiler]{enrichKEGG}}, TRUE for \code{\link[clusterProfiler]{enricher}}}
+
+\item{skipGO}{logical, set parameters as NULL for skip this step}
+
+\item{skipKEGG}{logical, set parameters as NULL for skip this step}
 }
 \value{
 hyperParam

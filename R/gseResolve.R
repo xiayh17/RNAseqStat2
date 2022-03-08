@@ -4,6 +4,15 @@ gseResolve <- function(object, GO = FALSE, KEGG = TRUE) {
   ## 获取GeneList
   test <- deg_here(object)
   ok <- names(test)[which(test == TRUE)] ## 取有效数据
+
+  if (is.null(gseGOparam)) {
+    GO = FALSE
+  }
+
+  if (is.null(gseKEGGparam)) {
+    KEGG = FALSE
+  }
+
   OrgDb = gseGOparam(object)[["org.Hs.eg.db"]]
 
   if(KEGG) {

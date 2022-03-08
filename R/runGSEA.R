@@ -32,7 +32,7 @@ setMethod(f="runGSEA", signature="DEGContainer", definition=function(obj, dir = 
     obj <- gseResolve(obj = obj, GO = GO, KEGG = KEGG)
   }
 
-  gesSummary(obj = obj, dir = dir, prefix = prefix,top = top)
+  gseSummary(obj = obj, dir = dir, prefix = prefix,top = top)
 
   return(obj)
 

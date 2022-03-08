@@ -121,7 +121,7 @@ res_l <- modelEnrich(obj,dataBase = "KEGG",orderBy = "pvalue",head = top)
       p <- cowplot::plot_grid(plotlist = plot_list, ncol = 4)
 
       plot_path = glue::glue("{dir}/{prefix}_GO_bar_{i}.pdf")
-      ggplot2::ggsave(p,filename = plot_path, width = 8000,height = 4800*(top*2/10),units = "px",limitsize = FALSE,device = cairo_pdf)
+      ggplot2::ggsave(p,filename = "test3.pdf", width = 7700,height = 1800*(top*2/10),units = "px",limitsize = FALSE,device = cairo_pdf,dpi = 300)
       ui_done(glue("{i} Genes Hyper GO result is stored in {usethis::ui_path(plot_path)}"))
 
     })

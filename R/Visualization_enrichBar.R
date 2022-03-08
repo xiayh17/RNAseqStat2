@@ -217,21 +217,37 @@ theme_enrichBar <- function(...) {
 #' @importFrom forcats fct_reorder
 #' @importFrom usethis ui_info ui_oops
 textBarData <- function(enrichResult,
+                        richFactor = FALSE,
                         top = 10, group = "ONTOLOGY",
                         order_by = "pvalue"
 ) {
-  ## 判断数据类型
-  if(identical(class(enrichResult)[1],"enrichResult")) {
+  ## 只有hyperGO
+  if (richFactor) {
+    ## 判断数据类型
+    if(identical(class(enrichResult)[1],"enrichResult")) {
 
-    ## 添加richFactor
-    result <- mutate(enrichResult@result, richFactor = Count / as.numeric
-                     (sub("/\\d+", "", BgRatio)))
+      ## 添加richFactor
+      result <- mutate(enrichResult@result, richFactor = Count / as.numeric
+                       (sub("/\\d+", "", BgRatio)))
 
+    } else {
+
+      ## 添加richFactor
+      result <- mutate(enrichResult, richFactor = Count / as.numeric
+                       (sub("/\\d+", "", BgRatio)))
+
+    }
   } else {
 
-    ## 添加richFactor
-    result <- mutate(enrichResult, richFactor = Count / as.numeric
-                     (sub("/\\d+", "", BgRatio)))
+    if(identical(class(enrichResult)[1],"enrichResult")) {
+
+      result = enrichResult@result
+
+    } else {
+
+      result = enrichResult
+
+    }
 
   }
 

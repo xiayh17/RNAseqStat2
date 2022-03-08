@@ -30,10 +30,20 @@ setMethod(f="runMSigDB", signature="DEGContainer", definition=function(obj, dir 
 
     obj@MSigDB <- degGroup(obj@MSigDB)
 
-    MSigDBSummay(obj, dir = dir, prefix = prefix,top =top)
+    tryCatch(
+      expr = {
+        MSigDBSummay(obj, dir = dir, prefix = prefix,top =top)
+      },
+      error = function(e){
+        usethis::ui_oops("Something wrong occured in Hyper Summary. try again later by {ui_code(hyperSummary)}.")
+      },
+      finally = {
+        usethis::ui_line("Hyper analysis step done")
+      }
+    )
 
   } else {
-    ui_info"MSigDB step skiped."
+    ui_info("MSigDB step skiped.")
   }
 
   return(obj)

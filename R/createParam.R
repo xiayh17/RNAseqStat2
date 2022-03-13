@@ -16,28 +16,41 @@ Create_hyperParam <- function(goParam = NULL,keggParam = NULL,
                               customGO = FALSE,customKEGG = FALSE,
                               skipGO = FALSE,skipKEGG = FALSE) {
 
-  customParams = list(
-    pvalueCutoff = 0.99,
+  customKEGGParams = list(
+    pvalueCutoff = 1,
     pAdjustMethod = "BH",
     universe = NULL,
     minGSSize=10,
     maxGSSize=500,
-    qvalueCutoff = 0.99,
+    qvalueCutoff = 1,
     TERM2GENE = NULL, ## if custom* = true ,it must be set
     TERM2NAME = NA)
 
+  customGOParam = list(TERM2GENE = NULL,
+                       TERM2NAME = NA,
+                       organism = "UNKNOW",
+                       keyType = "SYMBOL",
+                       ont = "ALL",
+                       pvalueCutoff=1,
+                       pAdjustMethod="BH",
+                       universe = NULL,
+                       qvalueCutoff = 1,
+                       minGSSize = 10,
+                       maxGSSize = 500,
+                       pool=FALSE)
+
   ## 设置默认选项 ----
   if (customGO) {
-    goParam_default = customParams
+    goParam_default = customGOParam
   } else {
     goParam_default = list(
       OrgDb = 'org.Hs.eg.db',
       keyType = "SYMBOL",
       ont = "ALL",
-      pvalueCutoff = 0.99,
+      pvalueCutoff = 1,
       pAdjustMethod = "BH",
       universe = NULL,
-      qvalueCutoff = 0.99,
+      qvalueCutoff = 1,
       minGSSize = 10,
       maxGSSize = 500,
       readable = FALSE,
@@ -45,17 +58,17 @@ Create_hyperParam <- function(goParam = NULL,keggParam = NULL,
   }
 
   if(customKEGG) {
-    keggParam_default = customParams
+    keggParam_default = customKEGGParams
   } else {
     keggParam_default = list(
       organism = "hsa",
       keyType = "kegg",
-      pvalueCutoff = 0.99,
+      pvalueCutoff = 1,
       pAdjustMethod = "BH",
       universe = NULL,
       minGSSize = 10,
       maxGSSize = 500,
-      qvalueCutoff = 0.99,
+      qvalueCutoff = 1,
       use_internal_data = FALSE)
   }
 
@@ -96,12 +109,12 @@ Create_gseParam <- function(goParam = NULL,keggParam = NULL,
                             customGO = FALSE,customKEGG = FALSE,
                             skipGO = FALSE,skipKEGG = FALSE) {
 
-  customParams = list(
+  customKEGGParams = list(
     exponent = 1,
     minGSSize = 10,
     maxGSSize = 500,
     eps  = 0,
-    pvalueCutoff = 0.05,
+    pvalueCutoff = 1,
     pAdjustMethod = "BH",
     TERM2GENE = NULL,
     TERM2NAME = NA,
@@ -110,9 +123,26 @@ Create_gseParam <- function(goParam = NULL,keggParam = NULL,
     by = 'fgsea'
   )
 
+  customGOParams = list(
+    ont           = "ALL",
+    TERM2GENE = NULL,
+    TERM2NAME = NA,
+    organism = "UNKNOW",
+    keyType = "SYMBOL",
+    exponent      = 1,
+    minGSSize     = 10,
+    maxGSSize     = 500,
+    eps           = 0,
+    pvalueCutoff  = 1,
+    pAdjustMethod = "BH",
+    verbose       = TRUE,
+    seed          = FALSE,
+    by            = 'fgsea'
+  )
+
   ## 设置默认选项 ----
   if (customGO) {
-    goParam_default = customParams
+    goParam_default = customKEGGParams
   } else {
 
     goParam_default = list(
@@ -123,7 +153,7 @@ Create_gseParam <- function(goParam = NULL,keggParam = NULL,
       minGSSize = 10,
       maxGSSize = 500,
       eps = 0,
-      pvalueCutoff = 0.99,
+      pvalueCutoff = 1,
       pAdjustMethod = "BH",
       verbose = TRUE,
       seed = FALSE,
@@ -132,7 +162,7 @@ Create_gseParam <- function(goParam = NULL,keggParam = NULL,
   }
 
   if (customKEGG) {
-    keggParam_default = customParams
+    keggParam_default = customGOParams
   } else {
 
     keggParam_default = list(
@@ -142,7 +172,7 @@ Create_gseParam <- function(goParam = NULL,keggParam = NULL,
       minGSSize = 10,
       maxGSSize = 500,
       eps = 0,
-      pvalueCutoff = 0.99,
+      pvalueCutoff = 1,
       pAdjustMethod = "BH",
       verbose = TRUE,
       use_internal_data = FALSE,
@@ -216,7 +246,7 @@ Create_msigdbGSEAparam <- function(GSEAparam = NULL) {
     minGSSize = 10,
     maxGSSize = 500,
     eps = 0,
-    pvalueCutoff = 0.99,
+    pvalueCutoff = 1,
     pAdjustMethod = "BH",
     TERM2NAME = NA,
     verbose = TRUE,
@@ -244,12 +274,12 @@ Create_msigdbGSEAparam <- function(GSEAparam = NULL) {
 Create_msigdbHyperParam <- function(HyperParam = NULL) {
 
   HyperParam_default = list(
-    pvalueCutoff = 0.99,
+    pvalueCutoff = 1,
     pAdjustMethod = "BH",
     universe = NULL,
     minGSSize=10,
     maxGSSize=500,
-    qvalueCutoff = 0.99,
+    qvalueCutoff = 1,
     TERM2GENE = NULL, ## if custom* = true ,it must be set
     TERM2NAME = NA)
 

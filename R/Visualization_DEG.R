@@ -68,20 +68,20 @@ DEGtopHeatmap <- function(object, which, top = 50, filename = NA, show_gene = TR
            filename = filename)
 }
 
-#' Title
+#' Plot venn for a set of gene
 #'
-#' @param geneSets
-#' @param palette
+#' @param geneSets a list of gene sets
+#' @param palette palette
 #'
 #' @importFrom VennDiagram venn.diagram
 #' @importFrom ggplotify as.ggplot
 #' @importFrom cowplot as_grob
-#' @export
 #'
-#' @return
+#' @return a plot of venn
 #' @export
 #'
 #' @examples
+#' DEGvenn(geneSets)
 DEGvenn <- function(geneSets, palette = c('#1f78b4','#33a02c','#ff7f00')) {
 
   p =  venn.diagram(x = geneSets,

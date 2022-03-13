@@ -116,14 +116,7 @@ MSigDBSummay <- function(obj, dir = ".", prefix = "4-runGSEA",top =10) {
           ui_done(glue("{names(hyper_list)[k]} {j} {i} Hyper result in csv format is stored in {usethis::ui_path(res_name)}"))
 
           if(!is.null(eob)){
-
-            dat <- enrichplot:::fortify.enrichResult(model = eob, showCategory = top, by = "Count")
-            if(nrow(dat) != 0) {
-
-              barplot(eob)+ theme(legend.position="none") + ggtitle(names(hyper_list)[j])
-
-            }
-
+            hyperBar(eob,top = top)+ theme(legend.position="none") + ggtitle(names(hyper_list)[j])
           }
 
         })

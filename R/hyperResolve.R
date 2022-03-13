@@ -23,6 +23,7 @@ hyperResolve <- function(object, GO = FALSE, KEGG = TRUE) {
     keggParams <- hyperKEGGparam(object)
     hyperKEGG_GeneSets = list()
 
+    ## 自定义数据集 使用 SYMBOL
     if("TERM2GENE" %in% names(keggParams)){
 
       for (i in ok) {
@@ -152,10 +153,19 @@ hyperCore <- function(..., fparams, f = "enrichKEGG") {
 
   params <- list(...)
   fparams <- modifyList(params, fparams)
+  f2 = "enricher"
+  f3 = "enrichGO2"
 
-  if("TERM2GENE" %in% names(fparams)){
+  if("ont" %in% names(fparams)&"TERM2GENE" %in% names(fparams)){
 
-    core <- suppressMessages(do.call("enricher", modifyList(
+    core <- suppressMessages(do.call(f3, modifyList(
+      list(),
+      fparams)
+    ))
+
+  } else if ("TERM2GENE" %in% names(fparams)&!"ont" %in% names(fparams)) {
+
+    core <- suppressMessages(do.call(f2, modifyList(
       list(),
       fparams)
     ))

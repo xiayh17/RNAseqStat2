@@ -116,19 +116,21 @@ hyperMSigDB <- function(object){
 
     geneSet_list = hyperMSigDB_GeneSets[[x]]
 
-    res <- lapply(seq_along(t2g_l), function(j){
+      res <- lapply(seq_along(t2g_l), function(j){
 
-      hyperMSigDB_Resolve(geneSet_list = geneSet_list,
-                                 TERM2GENE = t2g_l[[j]],
-                                 msigdbHyperParam = msigdbHyperParam)
+        hyperMSigDB_Resolve(geneSet_list = geneSet_list,
+                            TERM2GENE = t2g_l[[j]],
+                            msigdbHyperParam = msigdbHyperParam)
 
-    })
+      })
 
-    names(res) <- names(t2g_l)
+      names(res) <- names(t2g_l)
 
-    ui_done("Enrich MSigDB {names(hyperMSigDB_GeneSets)[x]} analysis done")
+      ui_done("Enrich MSigDB {names(hyperMSigDB_GeneSets)[x]} analysis done")
 
     return(res)
+
+
   })
 
   names(hyperMSigDB_res) <- names(hyperMSigDB_GeneSets)
@@ -145,18 +147,22 @@ hyperMSigDB_Resolve <- function(...,geneSet_list,msigdbHyperParam) {
 
     gene = geneSet_list[[x]]
 
-    tryCatch(
-      expr = {
-        enrichMSigDB_Core(gene=gene,fparam = msigdbHyperParam,f = "enricher",...)
-      },
-      error = function(e){
-        usethis::ui_oops("Something wrong occured. try again.")
-        enrichMSigDB_Core(gene=gene,fparam = msigdbHyperParam,f = "enricher",...)
-      },
-      finally = {
-        usethis::ui_line("Enrich MSigDB {names(geneSet_list)[x]} analysis done")
-      }
-    )
+    if (length(gene) == 0) {
+      ui_oops("analysis skiped for not avaliable data.")
+    } else {
+      tryCatch(
+        expr = {
+          enrichMSigDB_Core(gene=gene,fparam = msigdbHyperParam,f = "enricher",...)
+        },
+        error = function(e){
+          usethis::ui_oops("Something wrong occured. try again.")
+          enrichMSigDB_Core(gene=gene,fparam = msigdbHyperParam,f = "enricher",...)
+        },
+        finally = {
+          usethis::ui_line("Enrich MSigDB {names(geneSet_list)[x]} analysis done")
+        }
+      )
+    }
 
   })
 

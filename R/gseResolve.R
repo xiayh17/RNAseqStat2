@@ -134,10 +134,19 @@ gseCore <- function(..., fparams, f = "gseKEGG") {
 
   params <- list(...)
   fparams <- modifyList(params, fparams)
+  f2 = "GSEA"
+  f3 = "gseGO2"
 
-  if("TERM2GENE" %in% names(fparams)){
+  if("ont" %in% names(fparams)&"TERM2GENE" %in% names(fparams)){
 
-    core <- suppressMessages(do.call("GSEA", modifyList(
+    core <- suppressMessages(do.call(f3, modifyList(
+      list(),
+      fparams)
+    ))
+
+  } else if ("TERM2GENE" %in% names(fparams)&!"ont" %in% names(fparams)) {
+
+    core <- suppressMessages(do.call(f2, modifyList(
       list(),
       fparams)
     ))

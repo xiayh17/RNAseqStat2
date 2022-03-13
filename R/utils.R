@@ -706,6 +706,17 @@ GSEA_GS <- function(object,which,type,OrgDb = NULL) {
 
 }
 
+
+#' Convert a ENSEMBL named data to SYMBOL named
+#'
+#' @param row_counts count data frame
+#' @param species support Human Mouse Rat
+#'
+#' @return a renamed dataframe
+#' @export
+#'
+#' @examples
+#' toSYMBOL()
 toSYMBOL <- function(row_counts,species) {
 
   row_counts <- as.data.frame(row_counts)
@@ -730,6 +741,43 @@ toSYMBOL <- function(row_counts,species) {
 
   rownames(data) <- NULL
   data[,"ENSEMBL"] <-NULL
+  data <- tibble::column_to_rownames(data,"SYMBOL")
+
+  return(data)
+
+}
+
+#' Convert a  data to SYMBOL named
+#'
+#' @param row_counts count data frame
+#' @param bad2good a dataframe, first column should be row name of row_counts, second should be SYMBOL
+#'
+#' @return a renamed dataframe
+#' @export
+#'
+#' @examples
+#' cleanSYMBOL()
+cleanSYMBOL <- function(row_counts,bad2good) {
+
+  row_counts <- as.data.frame(row_counts)
+  row_counts[,"badSYMBOL"] <- rownames(row_counts)
+
+  symbols <- bad2good
+  colnames(symbols) <- c("badSYMBOL","SYMBOL")
+  data <- merge(symbols,row_counts,by="badSYMBOL")
+
+  # symbols$SYMBOL[grep(TRUE,duplicated(symbols$SYMBOL))]
+
+  if (anyDuplicated(data[,"SYMBOL"]) == 0) {
+    data <- tibble::column_to_rownames(data,"SYMBOL")
+  } else if (anyDuplicated(data[,"SYMBOL"]) != 0) {
+    data$median=apply(data[,2:ncol(data)],1,median)
+    data <- data[order(data[,"SYMBOL"],data$median,decreasing = T),]
+    data <- data[!duplicated(data[,"SYMBOL"]),][,-ncol(data)]
+  }
+
+  rownames(data) <- NULL
+  data[,"badSYMBOL"] <-NULL
   data <- tibble::column_to_rownames(data,"SYMBOL")
 
   return(data)

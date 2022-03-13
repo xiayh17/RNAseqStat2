@@ -30,8 +30,8 @@ GSEAbar <- function(res, top = 10) {
   up_kegg <- dat[dat$enrichmentScore >= 0,];
 
 
-  down_kegg <- down_kegg[order(down_kegg[,"pvalue"])[1:top],]
-  up_kegg <- up_kegg[order(up_kegg[,"pvalue"])[1:top],]
+  down_kegg <- down_kegg[na.omit(order(down_kegg[, "pvalue"])[1:top]), ]
+  up_kegg <- up_kegg[na.omit(order(up_kegg[, "pvalue"])[1:top]), ]
 
   dat=rbind(up_kegg,down_kegg)
 
@@ -75,8 +75,8 @@ GSEAplot <- function(res, top = 10) {
   down_kegg<-data[data$enrichmentScore < 0,]
   up_kegg<-data[data$enrichmentScore >= 0,]
 
-  down_kegg <- down_kegg[order(down_kegg[,"pvalue"])[1:top],]
-  up_kegg <- up_kegg[order(up_kegg[,"pvalue"])[1:top],]
+  down_kegg <- down_kegg[na.omit(order(down_kegg[, "pvalue"])[1:top]), ]
+  up_kegg <- up_kegg[na.omit(order(up_kegg[, "pvalue"])[1:top]), ]
   # down_kegg <- res %>% top_n(-top,wt = pvalue)
   # up_kegg <- res %>% top_n(top,wt = pvalue)
 
@@ -87,13 +87,18 @@ GSEAplot <- function(res, top = 10) {
       theme(plot.caption = element_text(family = "Times", size = 8, face = "italic", colour = "dodgerblue"))
   }
 
-  down_plots <- lapply(1:nrow(down_kegg), function(x)
-    plot_gseplot(data,down_kegg,x)
-  )
-
-  up_plots <- lapply(1:nrow(up_kegg), function(x)
-    plot_gseplot(data,up_kegg,x)
-  )
+  if (nrow(down_kegg) > 0) {
+    down_plots <- lapply(1:nrow(down_kegg), function(x) plot_gseplot(data,
+                                                                     down_kegg, x))
+  } else {
+    down_plots <- NULL
+  }
+  if (nrow(up_kegg) > 0) {
+    up_plots <- lapply(1:nrow(up_kegg), function(x) plot_gseplot(data,
+                                                                 up_kegg, x))
+  } else {
+    up_plots <- NULL
+  }
 
   resl <- list(up_plots, down_plots)
 

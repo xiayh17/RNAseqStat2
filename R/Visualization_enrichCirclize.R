@@ -1,7 +1,32 @@
+#' Plot circos of common ID
+#'
+#' After a enrich analysis across limma, edgeR, DESeq2 results. How about the distribution among
+#' different datset.
+#'
+#' @param result_g results of \code{\link{modelEnrich}} or similar format data
+#' @param group which column used to group data
+#' @param height height of plot
+#' @param width width of plot
+#' @param mar margin of bottom, left, top, right around circos
+#' @param filename filename
+#' @param IDpalette color for unique ID
+#' @param heatCircle1 which column used to first outer circle
+#' @param heatCircle2 which column used to second outer circle
+#' @param heatCircle1Pal color of first outer circle
+#' @param heatCircle2Pal color of second outer circle
+#' @param groupPal color for every group
+#' @param group_name group name
+#'
 #' @importFrom circlize circos.clear chordDiagram circos.track
 #' @importFrom Cairo Cairo
 #' @importFrom grDevices dev.off pdf
 #' @importFrom grid unit pushViewport viewport grid.draw upViewport
+#'
+#' @return a file store plot
+#' @export
+#'
+#' @examples
+#' compareEnrichCircle(result_g)
 compareEnrichCircle <- function(result_g,group = "model",
                                 height = 12000,width = 10000,
                                 mar = c(8,0,0,17),filename = "circlize_cross.pdf",

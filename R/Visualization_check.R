@@ -310,7 +310,7 @@ theme_wide <- function(...)  theme(...,
                                    # axis
                                    axis.title.y = element_text(hjust = 1, vjust = 1),
                                    axis.title.x = element_text(hjust = 0, vjust = 1),
-                                   axis.text.x = element_markdown(),
+                                   axis.text.y = element_markdown(),
                                    axis.ticks = element_line(linetype = "blank"))
 # boxplot plot ------------------------------------------------------------
 

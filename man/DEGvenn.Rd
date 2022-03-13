@@ -2,16 +2,21 @@
 % Please edit documentation in R/Visualization_DEG.R
 \name{DEGvenn}
 \alias{DEGvenn}
-\title{Title}
+\title{Plot venn for a set of gene}
 \usage{
 DEGvenn(geneSets, palette = c("#1f78b4", "#33a02c", "#ff7f00"))
 }
 \arguments{
-\item{palette}{}
+\item{geneSets}{a list of gene sets}
+
+\item{palette}{palette}
 }
 \value{
-
+a plot of venn
 }
 \description{
-Title
+Plot venn for a set of gene
+}
+\examples{
+DEGvenn(geneSets)
 }

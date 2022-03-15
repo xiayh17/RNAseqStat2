@@ -13,7 +13,7 @@ gseResolve <- function(object, GO = FALSE, KEGG = TRUE) {
     KEGG = FALSE
   }
 
-  OrgDb = gseGOparam(object)[["org.Hs.eg.db"]]
+  OrgDb = gseGOparam(object)[["OrgDb"]]
 
   if(KEGG) {
 

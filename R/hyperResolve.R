@@ -1,4 +1,14 @@
+#' Resolve Hyper
+#'
+#' @param object DEGContainer
+#' @param GO run GO,TRUE or FALSE
+#' @param KEGG run KEGG,TRUE or FALSE
+#'
+#' @return DEGContainer
 #' @export
+#'
+#' @examples
+#' hyperResolve(object, GO = FALSE, KEGG = TRUE)
 hyperResolve <- function(object, GO = FALSE, KEGG = TRUE) {
 
   ## 获取GeneList

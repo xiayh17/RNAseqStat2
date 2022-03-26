@@ -1,5 +1,14 @@
+#' Download MSigDB data for DEGContainer
+#'
+#' @param object a DEGContainer
+#'
 #' @importFrom kit fduplicated
+#'
+#' @return a DEGContainer contains MSigDB data
 #' @export
+#'
+#' @examples
+#' msigdbGet(degcontainer)
 msigdbGet <- function(object) {
 
   ## 下载数据
@@ -63,6 +72,15 @@ msigdbGetCore <- function(...,msigdbParam){
 
 }
 
+#' GSE analysis of MSigDB data sets
+#'
+#' @param object a DEGContainer
+#'
+#' @return  a DEGContainer
+#' @export
+#'
+#' @examples
+#' gseMSigDB(DEGContainer)
 gseMSigDB <- function(object) {
 
   msigdbGSEAparam <- msigdbGSEAparam(object)
@@ -96,6 +114,15 @@ gseMSigDB <- function(object) {
 
 }
 
+#' Hyper analysis of DEGContainer
+#'
+#' @param object a DEGContainer
+#'
+#' @return a DEGContainer
+#' @export
+#'
+#' @examples
+#' hyperMSigDB(DEGContainer)
 hyperMSigDB <- function(object){
 
   msigdbHyperParam <- msigdbHyperParam(object)
@@ -141,6 +168,17 @@ hyperMSigDB <- function(object){
 
 }
 
+#' Hyper analysis for MSigDB
+#'
+#' @param ... more parameters for \code{\link[clusterProfiler]{enricher}}
+#' @param geneSet_list a gene set list
+#' @param msigdbHyperParam parameters for hyper
+#'
+#' @return a list of ernrichResult
+#' @export
+#'
+#' @examples
+#' hyperMSigDB_Resolve()
 hyperMSigDB_Resolve <- function(...,geneSet_list,msigdbHyperParam) {
 
   hyperRes <- lapply(seq_along(geneSet_list), function(x){
@@ -187,9 +225,18 @@ enrichMSigDB_Core <- function(...,fparam,f){
 
 }
 
+#' GSVA analysis
+#'
+#' @param object a DEGContainer
+#'
 #' @importFrom GSEABase GeneSet GeneSetCollection EntrezIdentifier KEGGCollection
 #' @importFrom GSVA gsva
+#'
+#' @return
 #' @export
+#'
+#' @examples
+#' gsvaResolve(DEGContainer)
 gsvaResolve <- function(object) {
 
   # 重新提取数据

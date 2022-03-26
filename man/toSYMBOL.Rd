@@ -15,8 +15,8 @@ toSYMBOL(row_counts, species)
 a renamed dataframe
 }
 \description{
-Convert a ENSEMBL named data to SYMBOL named
+larger median will be retain for duplicated
 }
 \examples{
-toSYMBOL()
+toSYMBOL(count,b2g)
 }

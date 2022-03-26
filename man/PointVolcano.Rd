@@ -12,13 +12,17 @@ PointVolcano(
   light = NULL,
   light_color = "#24ac56",
   light_label_color = "#24ac56",
-  expend = c(0.12, 0.12)
+  expend = c(0.12, 0.12),
+  nudge_y_up = -6.5,
+  nudge_y_down = -4
 )
 }
 \arguments{
 \item{object}{an DEGContainer}
 
 \item{which}{limma edgeR or DESeq2}
+
+\item{category}{MSigDB collection abbreviation, such as H or C1.}
 
 \item{gene}{number or gene name}
 
@@ -29,6 +33,10 @@ PointVolcano(
 \item{light_label_color}{character}
 
 \item{expend}{c(0.12, 0.12)}
+
+\item{nudge_y_up}{nudge up gene label in y direction}
+
+\item{nudge_y_down}{nudge down gene label in y direction}
 }
 \value{
 a ggplot ob

@@ -2,14 +2,14 @@
 % Please edit documentation in R/utils.R
 \name{dataDEG}
 \alias{dataDEG}
-\title{get Results of DEGContainer}
+\title{get deg data of DEGContainer}
 \usage{
-dataDEG(obj, which, category)
+dataDEG(obj, which, category = "H")
 }
 \arguments{
 \item{obj}{a DEGContainer object}
 
-\item{which}{kinds of DEG; can be "limma", "edgeR", "DESeq2" or "MSigDB”}
+\item{which}{kinds of DEG; can be "limma", "edgeR", "DESeq2" or "MSigDB"}
 
 \item{category}{MSigDB collection abbreviation, such as H or C1.}
 }
@@ -17,7 +17,7 @@ dataDEG(obj, which, category)
 a dataframe
 }
 \description{
-get Results of DEGContainer
+get deg data of DEGContainer
 }
 \examples{
 dataDEG(DEGContainer)

@@ -14,25 +14,7 @@
 #' BaseVolcanoPlot(object)
 BaseVolcanoPlot <- function(object,which,category = "H") {
 
-  if (which == "limma") {
-    deg_data = limma_res(object)
-  } else if (which == "edgeR") {
-    deg_data = edgeR_res(object)
-  } else if (which == "DESeq2") {
-    deg_data = DESeq2_res(object)
-  } else if (which == "MSigDB") {
-    if(!is.null(category)) {
-
-      deg_data = msigdbGSVAresult(object)[["GSVA_diff"]][[category]]
-
-    } else {
-
-      ui_stop("when {ui_code('which')} set as {ui_value('MSigDB')}, {ui_code('category')} should be one of category in {ui_value('MSigDB')}")
-
-    }
-  }else {
-    ui_stop("{ui_code('which')} should be one of {ui_value('limma, edgeR, DESeq2, MSigDB')}")
-  }
+  deg_data <- dataDEG(obj = object,which = which,category = category)
 
   x = FC_Identify(deg_data)
   y = pvalue_Identify(deg_data)
@@ -123,7 +105,7 @@ BaseVolcanoPlot <- function(object,which,category = "H") {
 #'
 #' @return a ggplot theme
 #'
-#' @noRd
+#' @export
 theme_volcano <- function(...) {theme(...,
                                       axis.line = element_line(size = 0.2, linetype = "solid"),
                                       axis.ticks = element_line(size = 0.2),
@@ -160,6 +142,9 @@ theme_volcano <- function(...) {theme(...,
 #' @param light_color character
 #' @param light_label_color character
 #' @param expend c(0.12, 0.12)
+#' @param category MSigDB collection abbreviation, such as H or C1.
+#' @param nudge_y_up nudge up gene label in y direction
+#' @param nudge_y_down nudge down gene label in y direction
 #'
 #' @importFrom data.table data.table
 #' @import ggplot2
@@ -174,7 +159,9 @@ PointVolcano <- function(object,which, category = "H",
                          gene,light = NULL,
                          light_color = "#24ac56",
                          light_label_color = "#24ac56",
-                         expend = c(0.12, 0.12)) {
+                         expend = c(0.12, 0.12),
+                         nudge_y_up = -6.5,
+                         nudge_y_down = -4) {
 
 
   ## basic plot
@@ -215,13 +202,13 @@ PointVolcano <- function(object,which, category = "H",
       scale_x_continuous(expand = c(0.12, 0.12)) +
       geom_volcano_text(data = label_up,
                         mapping = aes(label = rn,color = point.color),
-                        nudge_y      = -6.5,
+                        nudge_y      = nudge_y_up,
                         hjust        = 0,
                         min.segment.length = 0,
                         nudge_x =  volcano_nudge_x_up(object = object, label_data = label_up,which = which, category = category)) +
       geom_volcano_text(data = label_down,
                         mapping = aes(label = rn,color = point.color),
-                        nudge_y      = -4,
+                        nudge_y      = nudge_y_down,
                         hjust        = 1,
                         min.segment.length = 0,
                         nudge_x =  volcano_nudge_x_down(object = object, label_data = label_down,which = which, category = category))
@@ -260,6 +247,18 @@ PointVolcano <- function(object,which, category = "H",
 # point volcano -----------------------------------------------------------
 
 # help function -----------------------------------------------------------
+#' nudge gene labels in x direction in up side
+#'
+#' values for \code{nudge_x} in \code{\link{geom_volcano_text}}
+#'
+#' @param object a grouped DEGContainer
+#' @param label_data genePoint
+#' @param which kinds of DEG; can be "limma", "edgeR", "DESeq2" or "MSigDB"
+#' @param just just position
+#' @param category for \code{which} is "MSigDB"
+#'
+#' @return
+#' @export
 volcano_nudge_x_up <- function(object,label_data,which,just = 0, category = "H") {
 
   if (which == "limma") {
@@ -293,6 +292,18 @@ volcano_nudge_x_up <- function(object,label_data,which,just = 0, category = "H")
 
 }
 
+#' nudge gene labels in x direction in down side
+#'
+#' values for \code{nudge_x} in \code{\link{geom_volcano_text}}
+#'
+#' @param object a grouped DEGContainer
+#' @param label_data genePoint
+#' @param which kinds of DEG; can be "limma", "edgeR", "DESeq2" or "MSigDB"
+#' @param just just position
+#' @param category for \code{which} is "MSigDB"
+#'
+#' @return
+#' @export
 volcano_nudge_x_down <- function(object,label_data,which,just = 0, category = "H") {
 
   if (which == "limma") {
@@ -326,6 +337,11 @@ volcano_nudge_x_down <- function(object,label_data,which,just = 0, category = "H
 
 }
 
+#' A preset geom of \code{\link[ggrepel]{geom_text_repel}}
+#'
+#'
+#' @return geom
+#' @export
 geom_volcano_text <- function(data,
                               mapping = NULL,
                               nudge_x = NULL,
@@ -357,6 +373,10 @@ geom_volcano_text <- function(data,
                   family = family, mapping = mapping, ...)
 }
 
+#' A preset geom of \code{\link[ggplot2]{geom_point}}
+#'
+#' @return geom
+#' @export
 geom_volcano_point <- function(data,
                                shape = 1,
                                stroke = 0.15,
@@ -373,6 +393,13 @@ geom_volcano_point <- function(data,
 
 }
 
+#' Values break parameters \code{\link[ggplot2]{scale_colour_identity}}
+#'
+#' @param volcano data from \code{\link{create_volcano}}
+#' @param column_name a column name, e.g. "point.color"
+#'
+#' @return Values for break parameters
+#' @export
 get_breaks <- function(volcano, column_name) {
   pat <- unique(volcano[,c("group",column_name)])
   pat <- pat[match(levels(volcano$group),pat[,"group"]),]

@@ -4,11 +4,12 @@
 #'
 #' @param object a counts data frame of rows in genes and columns in samples
 #' @param top a single number or a length of 2 numeric vector, if 2 numeric vector, first one is top max logFC.
-#' @param which which model of deg analysis. limma edgeR or DESeq2
-#' @param dir a directory to store results
-#' @param prefix a prefix of file names in this step
+#' @param which which model of deg analysis. kinds of DEG; can be "limma", "edgeR", "DESeq2" or "MSigDB"
 #' @param palette a color palette for plots
-#'
+#' @param filename NA or a file path
+#' @param show_gene logical,show gene name
+#' @param category MSigDB collection abbreviation, such as H or C1.
+#' @param ... More \code{\link[pheatmap]{pheatmap}} parameters.
 #'
 #' @importFrom edgeR cpm
 #' @importFrom pheatmap pheatmap
@@ -19,7 +20,7 @@
 #'
 #' @examples
 #' DEGtopHeatmap(object,which = "limma")
-DEGtopHeatmap <- function(object, which, top = 50, filename = NA, show_gene = TRUE,
+DEGtopHeatmap <- function(object, which, top = 50, filename = NA, show_gene = TRUE,category = "H",
                             palette = RColorBrewer::brewer.pal(3,"Set2")[1:2],...) {
 
   if (is.null(matrixFiltered(object))) {
@@ -28,18 +29,7 @@ DEGtopHeatmap <- function(object, which, top = 50, filename = NA, show_gene = TR
     counts_data = matrixFiltered(object)
   }
 
-  if (which == "limma") {
-    deg_data = limma_res(object)
-  } else if (which == "edgeR") {
-    deg_data = edgeR_res(object)
-  } else if (which == "DESeq2") {
-    deg_data = DESeq2_res(object)
-  } else if (which == "merge") {
-    deg_data = merge_res(object)
-    deg_data <- commonGroup(merge_data = deg_data)
-  } else {
-    ui_stop("{ui_code('which')} should be one of {ui_value('limma, edgeR, DESeq2, merge')}")
-  }
+  deg_data <- dataDEG(obj = object,which = which,category = category)
 
   group_list = groupInfo(object)
   x = FC_Identify(res = deg_data)
@@ -48,9 +38,7 @@ DEGtopHeatmap <- function(object, which, top = 50, filename = NA, show_gene = TR
 
   choose_gene <- topGene(object = object, topSig = top, which = which)
 
-
   filename = filename
-
 
   exprSet=log2(edgeR::cpm(counts_data)+1)
   choose_matrix=exprSet[choose_gene,]

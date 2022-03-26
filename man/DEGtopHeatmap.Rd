@@ -10,6 +10,7 @@ DEGtopHeatmap(
   top = 50,
   filename = NA,
   show_gene = TRUE,
+  category = "H",
   palette = RColorBrewer::brewer.pal(3, "Set2")[1:2],
   ...
 )
@@ -17,15 +18,19 @@ DEGtopHeatmap(
 \arguments{
 \item{object}{a counts data frame of rows in genes and columns in samples}
 
-\item{which}{which model of deg analysis. limma edgeR or DESeq2}
+\item{which}{which model of deg analysis. kinds of DEG; can be "limma", "edgeR", "DESeq2" or "MSigDB"}
 
 \item{top}{a single number or a length of 2 numeric vector, if 2 numeric vector, first one is top max logFC.}
 
+\item{filename}{NA or a file path}
+
+\item{show_gene}{logical,show gene name}
+
+\item{category}{MSigDB collection abbreviation, such as H or C1.}
+
 \item{palette}{a color palette for plots}
 
-\item{dir}{a directory to store results}
-
-\item{prefix}{a prefix of file names in this step}
+\item{...}{More \code{\link[pheatmap]{pheatmap}} parameters.}
 }
 \value{
 a heatmap plot file

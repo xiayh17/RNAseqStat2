@@ -1,6 +1,16 @@
 ## res is one of result from limma or DESeq2 or edgeR
 ## cutFC is from treatInfo
 ## cutFDR is from treatInfo
+
+#' Identify the column where the FC is located
+#'
+#' @param res one of result from limma or DESeq2 or edgeR
+#'
+#' @return a column name
+#' @export
+#'
+#' @examples
+#' FC_Identify(deg_data)
 FC_Identify <- function(res) {
   x = NULL
   deg_data = res
@@ -10,6 +20,15 @@ FC_Identify <- function(res) {
   return(x)
 }
 
+#' Identify the column where the pvalue is located
+#'
+#' @param res one of result from limma or DESeq2 or edgeR
+#'
+#' @return a column name
+#' @export
+#'
+#' @examples
+#' pvalue_Identify(deg_data)
 pvalue_Identify <- function(res) {
   y = NULL
   deg_data = res
@@ -19,6 +38,17 @@ pvalue_Identify <- function(res) {
   return(y)
 }
 
+#' Verify the rationality of the FC threshold
+#'
+#' @param res one of result from limma or DESeq2 or edgeR
+#' @param cut_FC if is null, will give a recommend value.
+#' @param scale adjust recommend value
+#'
+#' @return a value
+#' @export
+#'
+#' @examples
+#' cutFC_Verify(deg_data)
 cutFC_Verify <- function(res, cut_FC, scale = 1) {
 
   deg_data = res
@@ -84,10 +114,10 @@ upDate_cutFC_NULL <- function(object,which,new_cutFC) {
 
 }
 
-#' get Results of DEGContainer
+#' get deg data of DEGContainer
 #'
 #' @param obj a DEGContainer object
-#' @param which kinds of DEG; can be "limma", "edgeR", "DESeq2" or "MSigDB”
+#' @param which kinds of DEG; can be "limma", "edgeR", "DESeq2" or "MSigDB"
 #' @param category MSigDB collection abbreviation, such as H or C1.
 #'
 #' @return a dataframe
@@ -95,7 +125,7 @@ upDate_cutFC_NULL <- function(object,which,new_cutFC) {
 #'
 #' @examples
 #' dataDEG(DEGContainer)
-dataDEG <- function(obj,which,category) {
+dataDEG <- function(obj,which,category = "H") {
 
   if (which == "limma") {
     deg_data = limma_res(obj)
@@ -137,25 +167,7 @@ dataDEG <- function(obj,which,category) {
 #' cutMuch(DEGContainer,"limma","H")
 cutMuch <- function(object,which,category = 'H') {
 
-  if (which == "limma") {
-    deg_data = limma_res(object)
-  } else if (which == "edgeR") {
-    deg_data = edgeR_res(object)
-  } else if (which == "DESeq2") {
-    deg_data = DESeq2_res(object)
-  } else if (which == "MSigDB") {
-    if(!is.null(category)) {
-
-      deg_data = msigdbGSVAresult(object)[["GSVA_diff"]][[category]]
-
-    } else {
-
-      ui_stop("when {ui_code('which')} set as {ui_value('MSigDB')}, {ui_code('category')} should be one of category in {ui_value('MSigDB')}")
-
-    }
-  }else {
-    ui_stop("{ui_code('which')} should be one of {ui_value('limma, edgeR, DESeq2, MSigDB')}")
-  }
+  deg_data <- dataDEG(obj = object,which = which,category = category)
 
   x = FC_Identify(deg_data)
   y = pvalue_Identify(deg_data)
@@ -291,28 +303,7 @@ cutMuch <- function(object,which,category = 'H') {
 #' topGene(object,  topSig = 50, which = "limma")
 topGene <- function(object, topSig = 50, which, category = 'H') {
 
-  if (which == "limma") {
-    deg_data = limma_res(object)
-  } else if (which == "edgeR") {
-    deg_data = edgeR_res(object)
-  } else if (which == "DESeq2") {
-    deg_data = DESeq2_res(object)
-  } else if (which == "merge") {
-    deg_data = merge_res(object)
-    deg_data <- commonGroup(merge_data = deg_data)
-  } else if (which == "MSigDB") {
-    if(!is.null(category)) {
-
-      deg_data = msigdbGSVAresult(object)[["GSVA_diff"]][[category]]
-
-    } else {
-
-      ui_stop("when {ui_code('which')} set as {ui_value('MSigDB')}, {ui_code('category')} should be one of category in {ui_value('MSigDB')}")
-
-    }
-  } else {
-    ui_stop("{ui_code('which')} should be one of {ui_value('limma, edgeR, DESeq2, merge, MSigDB')}")
-  }
+  deg_data <- dataDEG(obj = object,which = which,category = category)
 
   if (which == "merge") {
 
@@ -545,20 +536,22 @@ commonGroup <- function(merge_data) {
   return(merge_data3)
 }
 
-hyper_GS <- function(object,which,type,OrgDb = NULL) {
+#' Get a significant difference gene list
+#'
+#' @param object a DEGContainer
+#' @param which kinds of DEG; can be "limma", "edgeR", "DESeq2" or "MSigDB"
+#' @param type "ENTREZID" or "SYMBOL"
+#' @param OrgDb OrgDb
+#' @param category MSigDB collection abbreviation, such as H or C1.
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#' hyper_GS(object, which, type)
+hyper_GS <- function(object,which,type,OrgDb = NULL,category = "H") {
 
-  if (which == "limma") {
-    deg_data = limma_res(object)
-  } else if (which == "edgeR") {
-    deg_data = edgeR_res(object)
-  } else if (which == "DESeq2") {
-    deg_data = DESeq2_res(object)
-  } else if (which == "merge") {
-    deg_data = merge_res(object)
-    deg_data <- commonGroup(merge_data = deg_data)
-  } else {
-    ui_stop("{ui_code('which')} should be one of {ui_value('limma, edgeR, DESeq2')}")
-  }
+  deg_data <- dataDEG(obj = object,which = which,category = category)
 
   if(is.null(OrgDb)){
 
@@ -613,18 +606,7 @@ hyper_GS <- function(object,which,type,OrgDb = NULL) {
 
 GSEA_GS <- function(object,which,type,OrgDb = NULL) {
 
-  if (which == "limma") {
-    deg_data = limma_res(object)
-  } else if (which == "edgeR") {
-    deg_data = edgeR_res(object)
-  } else if (which == "DESeq2") {
-    deg_data = DESeq2_res(object)
-  } else if (which == "merge") {
-    deg_data = merge_res(object)
-    deg_data <- commonGroup(merge_data = deg_data)
-  } else {
-    ui_stop("{ui_code('which')} should be one of {ui_value('limma, edgeR, DESeq2, merge')}")
-  }
+  deg_data <- dataDEG(obj = object,which = which,category = category)
 
   x = FC_Identify(deg_data)
 
@@ -709,6 +691,8 @@ GSEA_GS <- function(object,which,type,OrgDb = NULL) {
 
 #' Convert a ENSEMBL named data to SYMBOL named
 #'
+#' larger median will be retain for duplicated
+#'
 #' @param row_counts count data frame
 #' @param species support Human Mouse Rat
 #'
@@ -716,7 +700,7 @@ GSEA_GS <- function(object,which,type,OrgDb = NULL) {
 #' @export
 #'
 #' @examples
-#' toSYMBOL()
+#' toSYMBOL(count,b2g)
 toSYMBOL <- function(row_counts,species) {
 
   row_counts <- as.data.frame(row_counts)
@@ -749,6 +733,8 @@ toSYMBOL <- function(row_counts,species) {
 
 #' Convert a  data to SYMBOL named
 #'
+#' larger median will be retain for duplicated
+#'
 #' @param row_counts count data frame
 #' @param bad2good a dataframe, first column should be row name of row_counts, second should be SYMBOL
 #'
@@ -756,7 +742,7 @@ toSYMBOL <- function(row_counts,species) {
 #' @export
 #'
 #' @examples
-#' cleanSYMBOL()
+#' cleanSYMBOL(count,b2g)
 cleanSYMBOL <- function(row_counts,bad2good) {
 
   row_counts <- as.data.frame(row_counts)

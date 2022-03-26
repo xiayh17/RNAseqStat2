@@ -15,8 +15,8 @@ cleanSYMBOL(row_counts, bad2good)
 a renamed dataframe
 }
 \description{
-Convert a  data to SYMBOL named
+larger median will be retain for duplicated
 }
 \examples{
-cleanSYMBOL()
+cleanSYMBOL(count,b2g)
 }

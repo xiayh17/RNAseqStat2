@@ -36,7 +36,9 @@ data_i <- Create_DEGContainer(species = "Human",
                               groupInfo = group_list,
                               caseGroup = "trt")
 
-# 一步运行
+# run all in one line
 data_o <- runALL(object = data_i,dir = "output_test")
 ```
 
+更多参考文档
+https://www.yuque.com/xiayonghe/rnaseqstat2

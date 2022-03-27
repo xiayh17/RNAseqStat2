@@ -1,4 +1,14 @@
+#' GSEA analysis
+#'
+#' @param object a DEGContainer
+#' @param GO run GO database
+#' @param KEGG run KEGG database
+#'
+#' @return a DEGContainer
 #' @export
+#'
+#' @examples
+#' gseResolve(DEGContainer)
 gseResolve <- function(object, GO = FALSE, KEGG = TRUE) {
 
   ## 获取GeneList

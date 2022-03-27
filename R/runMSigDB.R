@@ -1,4 +1,15 @@
+#' run MSigDB module
+#'
+#' @param obj a DEGContainer after MSigDB analysis
+#' @param dir a directory to store results
+#' @param prefix a prefix of file names in this step
+#' @param top top
+#'
+#' @return
 #' @export
+#'
+#' @examples
+#' runMSigDB(data_gse)
 setGeneric(name="runMSigDB", def=function(obj, dir = ".", prefix = "5-runMSigDB", top =10) standardGeneric("runMSigDB"))
 setMethod(f="runMSigDB", signature="DEGContainer", definition=function(obj, dir = ".", prefix = "5-runMSigDB",top = 10) {
 
@@ -32,7 +43,7 @@ setMethod(f="runMSigDB", signature="DEGContainer", definition=function(obj, dir 
 
     tryCatch(
       expr = {
-        MSigDBSummay(obj, dir = dir, prefix = prefix,top =top)
+        MSigDBSummary(obj, dir = dir, prefix = prefix,top =top)
       },
       error = function(e){
         usethis::ui_oops("Something wrong occured in Hyper Summary. try again later by {ui_code(hyperSummary)}.")

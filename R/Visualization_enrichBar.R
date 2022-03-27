@@ -1,3 +1,13 @@
+#' hyper barplot
+#'
+#' @param res a \code{\link[DOSE]{enrichResult}}
+#' @param top number of top categories to show, by pvalue
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#' hyperBar(res)
 hyperBar <- function(res, top = 10) {
 
   dat <- res@result
@@ -18,10 +28,44 @@ hyperBar <- function(res, top = 10) {
 
 }
 
+
+#' enrich bar plot
+#'
+#' @param enrichResult a \code{\link[DOSE]{enrichResult}}
+#' @param top number of top categories to show
+#' @param group which column used to split group
+#' @param space space for text
+#' @param order_by order by which column, default is pvalue
+#' @param FDR pvalue or qvalue
+#' @param bar which column to plot bar, default is 'logP'
+#' @param bar_size size of bar
+#' @param point which column to plot point, default is 'gr'
+#' @param point_shape shape of point
+#' @param point_size size of point
+#' @param point_color color of point
+#' @param bar_color color of bar
+#' @param group_color color of group
+#' @param group_names label of group
+#' @param group_color_name color label of group
+#' @param group_title title label of group
+#' @param bar_title title of bar
+#' @param point_title title of point
+#' @param x_title title of x axis
+#' @param y_title title of y axis
+#' @param plot_title title of point
+#' @param legend_text_size size of legend text
+#' @param FDR_color color of FDR
+#'
 #' @importFrom ggfittext geom_fit_text
 #' @importFrom ggnewscale new_scale_color
 #' @importFrom ggfun element_roundrect
 #' @import ggplot2
+#'
+#' @return a ggplot
+#' @export
+#'
+#' @examples
+#' enrichBar(enrichResult)
 enrichBar <- function(enrichResult,
                       top = 10, group = "ONTOLOGY", space = 0.9,
                       order_by = "pvalue", FDR = "qvalue", bar = "logP", bar_size = 2,
@@ -212,10 +256,24 @@ theme_enrichBar <- function(...) {
           axis.ticks.y = element_blank())
 }
 
+#' shape data of enrichResult
+#'
+#' @param enrichResult a \code{\link[DOSE]{enrichResult}}
+#' @param richFactor need to add richFactor?
+#' @param top number of top categories to show, by order_by
+#' @param group group data in which column
+#' @param order_by order data by which column
+#'
 #' @importFrom tibble add_column
 #' @importFrom dplyr pull arrange slice_head mutate group_by across
 #' @importFrom forcats fct_reorder
 #' @importFrom usethis ui_info ui_oops
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#' textBarData(enrichResult)
 textBarData <- function(enrichResult,
                         richFactor = FALSE,
                         top = 10, group = "ONTOLOGY",

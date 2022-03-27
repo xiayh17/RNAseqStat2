@@ -14,6 +14,46 @@
 \alias{matrixFiltered<-,DEGContainer-method}
 \alias{geneNames<-,DEGContainer-method}
 \alias{sampleNames<-,DEGContainer-method}
+\alias{treatInfo,DEGContainer-method}
+\alias{label,DEGContainer-method}
+\alias{label_ns,DEGContainer-method}
+\alias{cutFC,DEGContainer-method}
+\alias{cutFDR,DEGContainer-method}
+\alias{sigCol,DEGContainer-method}
+\alias{sigAlpha,DEGContainer-method}
+\alias{sigSize,DEGContainer-method}
+\alias{sigShape,DEGContainer-method}
+\alias{treatInfo<-,DEGContainer-method}
+\alias{cutFC<-,DEGContainer-method}
+\alias{cutFDR<-,DEGContainer-method}
+\alias{label<-,DEGContainer-method}
+\alias{label_ns<-,DEGContainer-method}
+\alias{sigCol<-,DEGContainer-method}
+\alias{sigAlpha<-,DEGContainer-method}
+\alias{sigSize<-,DEGContainer-method}
+\alias{sigShape<-,DEGContainer-method}
+\alias{vsData,DEGContainer-method}
+\alias{limma_res,DEGContainer-method}
+\alias{edgeR_res,DEGContainer-method}
+\alias{DESeq2_res,DEGContainer-method}
+\alias{merge_res,DEGContainer-method}
+\alias{vsData<-,DEGContainer-method}
+\alias{DESeq2_res<-,DEGContainer-method}
+\alias{limma_res<-,DEGContainer-method}
+\alias{edgeR_res<-,DEGContainer-method}
+\alias{merge_res<-,DEGContainer-method}
+\alias{hyperKEGGparam,DEGContainer-method}
+\alias{hyperKEGGparam<-,DEGContainer-method}
+\alias{hyperGOparam,DEGContainer-method}
+\alias{hyperGOparam<-,DEGContainer-method}
+\alias{hyperRes,DEGContainer-method}
+\alias{hyperRes<-,DEGContainer-method}
+\alias{gseKEGGparam,DEGContainer-method}
+\alias{gseKEGGparam<-,DEGContainer-method}
+\alias{gseGOparam,DEGContainer-method}
+\alias{gseGOparam<-,DEGContainer-method}
+\alias{gseRes,DEGContainer-method}
+\alias{gseRes<-,DEGContainer-method}
 \alias{msigdbParam,DEGContainer-method}
 \alias{msigdbGSEAparam,DEGContainer-method}
 \alias{msigdbHyperParam,DEGContainer-method}
@@ -51,6 +91,86 @@
 \S4method{geneNames}{DEGContainer}(obj, filtered = FALSE) <- value
 
 \S4method{sampleNames}{DEGContainer}(obj, filtered = FALSE) <- value
+
+\S4method{treatInfo}{DEGContainer}(obj)
+
+\S4method{label}{DEGContainer}(obj)
+
+\S4method{label_ns}{DEGContainer}(obj)
+
+\S4method{cutFC}{DEGContainer}(obj)
+
+\S4method{cutFDR}{DEGContainer}(obj)
+
+\S4method{sigCol}{DEGContainer}(obj)
+
+\S4method{sigAlpha}{DEGContainer}(obj)
+
+\S4method{sigSize}{DEGContainer}(obj)
+
+\S4method{sigShape}{DEGContainer}(obj)
+
+\S4method{treatInfo}{DEGContainer}(obj) <- value
+
+\S4method{cutFC}{DEGContainer}(obj) <- value
+
+\S4method{cutFDR}{DEGContainer}(obj) <- value
+
+\S4method{label}{DEGContainer}(obj) <- value
+
+\S4method{label_ns}{DEGContainer}(obj) <- value
+
+\S4method{sigCol}{DEGContainer}(obj) <- value
+
+\S4method{sigAlpha}{DEGContainer}(obj) <- value
+
+\S4method{sigSize}{DEGContainer}(obj) <- value
+
+\S4method{sigShape}{DEGContainer}(obj) <- value
+
+\S4method{vsData}{DEGContainer}(obj)
+
+\S4method{limma_res}{DEGContainer}(obj)
+
+\S4method{edgeR_res}{DEGContainer}(obj)
+
+\S4method{DESeq2_res}{DEGContainer}(obj)
+
+\S4method{merge_res}{DEGContainer}(obj)
+
+\S4method{vsData}{DEGContainer}(obj) <- value
+
+\S4method{DESeq2_res}{DEGContainer}(obj) <- value
+
+\S4method{limma_res}{DEGContainer}(obj) <- value
+
+\S4method{edgeR_res}{DEGContainer}(obj) <- value
+
+\S4method{merge_res}{DEGContainer}(obj) <- value
+
+\S4method{hyperKEGGparam}{DEGContainer}(obj)
+
+\S4method{hyperKEGGparam}{DEGContainer}(obj) <- value
+
+\S4method{hyperGOparam}{DEGContainer}(obj)
+
+\S4method{hyperGOparam}{DEGContainer}(obj) <- value
+
+\S4method{hyperRes}{DEGContainer}(obj)
+
+\S4method{hyperRes}{DEGContainer}(obj) <- value
+
+\S4method{gseKEGGparam}{DEGContainer}(obj)
+
+\S4method{gseKEGGparam}{DEGContainer}(obj) <- value
+
+\S4method{gseGOparam}{DEGContainer}(obj)
+
+\S4method{gseGOparam}{DEGContainer}(obj) <- value
+
+\S4method{gseRes}{DEGContainer}(obj)
+
+\S4method{gseRes}{DEGContainer}(obj) <- value
 
 \S4method{msigdbParam}{DEGContainer}(obj)
 

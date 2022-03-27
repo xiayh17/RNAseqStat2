@@ -214,6 +214,7 @@ setReplaceMethod("sampleNames", "DEGContainer",
 # methods for dataInfo ------------------------------------------------
 
 # Methods for treatInfo ---------------------------------------------------
+#' @rdname DEGContainer
 #' @export
 setMethod(f="treatInfo", signature="DEGContainer", definition=function(obj) obj@degResults@treatInfo)
 #' @export
@@ -223,6 +224,7 @@ setMethod(f="treatInfo", signature="degResults", definition=function(obj) obj@tr
 setMethod(f="label", signature="treatInfo", definition=function(obj) obj@label)
 #' @export
 setMethod(f="label", signature="degResults", definition=function(obj) obj@treatInfo@label)
+#' @rdname DEGContainer
 #' @export
 setMethod(f="label", signature="DEGContainer", definition=function(obj) obj@degResults@treatInfo@label)
 
@@ -230,6 +232,7 @@ setMethod(f="label", signature="DEGContainer", definition=function(obj) obj@degR
 setMethod(f="label_ns", signature="treatInfo", definition=function(obj) obj@label_ns)
 #' @export
 setMethod(f="label_ns", signature="degResults", definition=function(obj) obj@treatInfo@label_ns)
+#' @rdname DEGContainer
 #' @export
 setMethod(f="label_ns", signature="DEGContainer", definition=function(obj) obj@degResults@treatInfo@label_ns)
 
@@ -237,6 +240,7 @@ setMethod(f="label_ns", signature="DEGContainer", definition=function(obj) obj@d
 setMethod(f="cutFC", signature="treatInfo", definition=function(obj) obj@cutFC)
 #' @export
 setMethod(f="cutFC", signature="degResults", definition=function(obj) obj@treatInfo@cutFC)
+#' @rdname DEGContainer
 #' @export
 setMethod(f="cutFC", signature="DEGContainer", definition=function(obj) obj@degResults@treatInfo@cutFC)
 
@@ -244,6 +248,7 @@ setMethod(f="cutFC", signature="DEGContainer", definition=function(obj) obj@degR
 setMethod(f="cutFDR", signature="treatInfo", definition=function(obj) obj@cutFDR)
 #' @export
 setMethod(f="cutFDR", signature="degResults", definition=function(obj) obj@treatInfo@cutFDR)
+#' @rdname DEGContainer
 #' @export
 setMethod(f="cutFDR", signature="DEGContainer", definition=function(obj) obj@degResults@treatInfo@cutFDR)
 
@@ -251,6 +256,7 @@ setMethod(f="cutFDR", signature="DEGContainer", definition=function(obj) obj@deg
 setMethod(f="sigCol", signature="treatInfo", definition=function(obj) obj@sigCol)
 #' @export
 setMethod(f="sigCol", signature="degResults", definition=function(obj) obj@treatInfo@sigCol)
+#' @rdname DEGContainer
 #' @export
 setMethod(f="sigCol", signature="DEGContainer", definition=function(obj) obj@degResults@treatInfo@sigCol)
 
@@ -258,6 +264,7 @@ setMethod(f="sigCol", signature="DEGContainer", definition=function(obj) obj@deg
 setMethod(f="sigAlpha", signature="treatInfo", definition=function(obj) obj@sigAlpha)
 #' @export
 setMethod(f="sigAlpha", signature="degResults", definition=function(obj) obj@treatInfo@sigAlpha)
+#' @rdname DEGContainer
 #' @export
 setMethod(f="sigAlpha", signature="DEGContainer", definition=function(obj) obj@degResults@treatInfo@sigAlpha)
 
@@ -265,6 +272,7 @@ setMethod(f="sigAlpha", signature="DEGContainer", definition=function(obj) obj@d
 setMethod(f="sigSize", signature="treatInfo", definition=function(obj) obj@sigSize)
 #' @export
 setMethod(f="sigSize", signature="degResults", definition=function(obj) obj@treatInfo@sigSize)
+#' @rdname DEGContainer
 #' @export
 setMethod(f="sigSize", signature="DEGContainer", definition=function(obj) obj@degResults@treatInfo@sigSize)
 
@@ -272,9 +280,11 @@ setMethod(f="sigSize", signature="DEGContainer", definition=function(obj) obj@de
 setMethod(f="sigShape", signature="treatInfo", definition=function(obj) obj@sigShape)
 #' @export
 setMethod(f="sigShape", signature="degResults", definition=function(obj) obj@treatInfo@sigShape)
+#' @rdname DEGContainer
 #' @export
 setMethod(f="sigShape", signature="DEGContainer", definition=function(obj) obj@degResults@treatInfo@sigShape)
 
+#' @rdname DEGContainer
 #' @export
 setReplaceMethod("treatInfo", "DEGContainer",
                  function(obj, value) {obj@degResults@treatInfo <- value; validObject(obj); obj})
@@ -282,6 +292,7 @@ setReplaceMethod("treatInfo", "DEGContainer",
 setReplaceMethod("treatInfo", "degResults",
                  function(obj, value) {obj@treatInfo <- value; validObject(obj); obj})
 
+#' @rdname DEGContainer
 #' @export
 setReplaceMethod("cutFC", "DEGContainer",
                  function(obj, value) {obj@degResults@treatInfo@cutFC <- value; validObject(obj); obj})
@@ -292,6 +303,7 @@ setReplaceMethod("cutFC", "degResults",
 setReplaceMethod("cutFC", "treatInfo",
                  function(obj, value) {obj@cutFC <- value; validObject(obj); obj})
 
+#' @rdname DEGContainer
 #' @export
 setReplaceMethod("cutFDR", "DEGContainer",
                  function(obj, value) {obj@degResults@treatInfo@cutFDR <- value; validObject(obj); obj})
@@ -302,6 +314,7 @@ setReplaceMethod("cutFDR", "degResults",
 setReplaceMethod("cutFDR", "treatInfo",
                  function(obj, value) {obj@cutFDR <- value; validObject(obj); obj})
 
+#' @rdname DEGContainer
 #' @export
 setReplaceMethod("label", "DEGContainer",
                  function(obj, value) {obj@degResults@treatInfo@label <- value; validObject(obj); obj})
@@ -312,6 +325,7 @@ setReplaceMethod("label", "degResults",
 setReplaceMethod("label", "treatInfo",
                  function(obj, value) {obj@label <- value; validObject(obj); obj})
 
+#' @rdname DEGContainer
 #' @export
 setReplaceMethod("label_ns", "DEGContainer",
                  function(obj, value) {obj@degResults@treatInfo@label_ns <- value; validObject(obj); obj})
@@ -322,6 +336,7 @@ setReplaceMethod("label_ns", "degResults",
 setReplaceMethod("label_ns", "treatInfo",
                  function(obj, value) {obj@label_ns <- value; validObject(obj); obj})
 
+#' @rdname DEGContainer
 #' @export
 setReplaceMethod("sigCol", "DEGContainer",
                  function(obj, value) {obj@degResults@treatInfo@sigCol <- value; validObject(obj); obj})
@@ -332,6 +347,7 @@ setReplaceMethod("sigCol", "degResults",
 setReplaceMethod("sigCol", "treatInfo",
                  function(obj, value) {obj@sigCol <- value; validObject(obj); obj})
 
+#' @rdname DEGContainer
 #' @export
 setReplaceMethod("sigAlpha", "DEGContainer",
                  function(obj, value) {obj@degResults@treatInfo@sigAlpha <- value; validObject(obj); obj})
@@ -342,6 +358,7 @@ setReplaceMethod("sigAlpha", "degResults",
 setReplaceMethod("sigAlpha", "treatInfo",
                  function(obj, value) {obj@sigAlpha <- value; validObject(obj); obj})
 
+#' @rdname DEGContainer
 #' @export
 setReplaceMethod("sigSize", "DEGContainer",
                  function(obj, value) {obj@degResults@treatInfo@sigSize <- value; validObject(obj); obj})
@@ -352,6 +369,7 @@ setReplaceMethod("sigSize", "degResults",
 setReplaceMethod("sigSize", "treatInfo",
                  function(obj, value) {obj@sigSize <- value; validObject(obj); obj})
 
+#' @rdname DEGContainer
 #' @export
 setReplaceMethod("sigShape", "DEGContainer",
                  function(obj, value) {obj@degResults@treatInfo@sigShape <- value; validObject(obj); obj})
@@ -364,6 +382,7 @@ setReplaceMethod("sigShape", "treatInfo",
 # Methods for treatInfo ---------------------------------------------------
 
 # Methods for vsData ----
+#' @rdname DEGContainer
 #' @export
 setMethod(f="vsData", signature="DEGContainer", definition=function(obj) obj@degResults@vsData)
 #' @export
@@ -374,6 +393,7 @@ setMethod(f="vsData", signature="degResults", definition=function(obj) obj@vsDat
 setMethod(f="limma_res", signature="vsData", definition=function(obj) obj@limma_res)
 #' @export
 setMethod(f="limma_res", signature="degResults", definition=function(obj) obj@vsData@limma_res)
+#' @rdname DEGContainer
 #' @export
 setMethod(f="limma_res", signature="DEGContainer", definition=function(obj) obj@degResults@vsData@limma_res)
 
@@ -381,6 +401,7 @@ setMethod(f="limma_res", signature="DEGContainer", definition=function(obj) obj@
 setMethod(f="edgeR_res", signature="vsData", definition=function(obj) obj@edgeR_res)
 #' @export
 setMethod(f="edgeR_res", signature="degResults", definition=function(obj) obj@vsData@edgeR_res)
+#' @rdname DEGContainer
 #' @export
 setMethod(f="edgeR_res", signature="DEGContainer", definition=function(obj) obj@degResults@vsData@edgeR_res)
 
@@ -389,6 +410,7 @@ setMethod(f="edgeR_res", signature="DEGContainer", definition=function(obj) obj@
 setMethod(f="DESeq2_res", signature="vsData", definition=function(obj) obj@DESeq2_res)
 #' @export
 setMethod(f="DESeq2_res", signature="degResults", definition=function(obj) obj@vsData@DESeq2_res)
+#' @rdname DEGContainer
 #' @export
 setMethod(f="DESeq2_res", signature="DEGContainer", definition=function(obj) obj@degResults@vsData@DESeq2_res)
 
@@ -397,10 +419,11 @@ setMethod(f="DESeq2_res", signature="DEGContainer", definition=function(obj) obj
 setMethod(f="merge_res", signature="vsData", definition=function(obj) obj@merge_res)
 #' @export
 setMethod(f="merge_res", signature="degResults", definition=function(obj) obj@vsData@merge_res)
+#' @rdname DEGContainer
 #' @export
 setMethod(f="merge_res", signature="DEGContainer", definition=function(obj) obj@degResults@vsData@merge_res)
 
-
+#' @rdname DEGContainer
 #' @export
 setReplaceMethod("vsData", "DEGContainer",
                  function(obj, value) {obj@degResults@vsData <- value; validObject(obj); obj})
@@ -408,7 +431,7 @@ setReplaceMethod("vsData", "DEGContainer",
 setReplaceMethod("vsData", "degResults",
                  function(obj, value) {obj@vsData <- value; validObject(obj); obj})
 
-
+#' @rdname DEGContainer
 #' @export
 setReplaceMethod("DESeq2_res", "DEGContainer",
                  function(obj, value) {obj@degResults@vsData@DESeq2_res <- value; validObject(obj); obj})
@@ -419,7 +442,7 @@ setReplaceMethod("DESeq2_res", "degResults",
 setReplaceMethod("DESeq2_res", "vsData",
                  function(obj, value) {obj@DESeq2_res <- value; validObject(obj); obj})
 
-
+#' @rdname DEGContainer
 #' @export
 setReplaceMethod("limma_res", "DEGContainer",
                  function(obj, value) {obj@degResults@vsData@limma_res <- value; validObject(obj); obj})
@@ -430,7 +453,7 @@ setReplaceMethod("limma_res", "degResults",
 setReplaceMethod("limma_res", "vsData",
                  function(obj, value) {obj@limma_res <- value; validObject(obj); obj})
 
-
+#' @rdname DEGContainer
 #' @export
 setReplaceMethod("edgeR_res", "DEGContainer",
                  function(obj, value) {obj@degResults@vsData@edgeR_res <- value; validObject(obj); obj})
@@ -441,7 +464,7 @@ setReplaceMethod("edgeR_res", "degResults",
 setReplaceMethod("edgeR_res", "vsData",
                  function(obj, value) {obj@edgeR_res <- value; validObject(obj); obj})
 
-
+#' @rdname DEGContainer
 #' @export
 setReplaceMethod("merge_res", "DEGContainer",
                  function(obj, value) {obj@degResults@vsData@merge_res <- value; validObject(obj); obj})
@@ -458,9 +481,11 @@ setReplaceMethod("merge_res", "vsData",
 setMethod(f="hyperKEGGparam", signature="hyperParam", definition=function(obj) obj@keggParam)
 #' @export
 setMethod(f="hyperKEGGparam", signature="hyperResults", definition=function(obj) obj@hyperParam@keggParam)
+#' @rdname DEGContainer
 #' @export
 setMethod(f="hyperKEGGparam", signature="DEGContainer", definition=function(obj) obj@hyperResults@hyperParam@keggParam)
 
+#' @rdname DEGContainer
 #' @export
 setReplaceMethod("hyperKEGGparam", "DEGContainer",
                  function(obj, value) {obj@hyperResults@hyperParam@keggParam <- value; validObject(obj); obj})
@@ -475,9 +500,11 @@ setReplaceMethod("hyperKEGGparam", "hyperParam",
 setMethod(f="hyperGOparam", signature="hyperParam", definition=function(obj) obj@goParam)
 #' @export
 setMethod(f="hyperGOparam", signature="hyperResults", definition=function(obj) obj@hyperParam@goParam)
+#' @rdname DEGContainer
 #' @export
 setMethod(f="hyperGOparam", signature="DEGContainer", definition=function(obj) obj@hyperResults@hyperParam@goParam)
 
+#' @rdname DEGContainer
 #' @export
 setReplaceMethod("hyperGOparam", "DEGContainer",
                  function(obj, value) {obj@hyperResults@hyperParam@goParam <- value; validObject(obj); obj})
@@ -490,9 +517,11 @@ setReplaceMethod("hyperGOparam", "hyperParam",
 
 #' @export
 setMethod(f="hyperRes", signature="hyperResults", definition=function(obj) obj@hyperRes)
+#' @rdname DEGContainer
 #' @export
 setMethod(f="hyperRes", signature="DEGContainer", definition=function(obj) obj@hyperResults@hyperRes)
 
+#' @rdname DEGContainer
 #' @export
 setReplaceMethod("hyperRes", "DEGContainer",
                  function(obj, value) {obj@hyperResults@hyperRes <- value; validObject(obj); obj})
@@ -506,9 +535,11 @@ setReplaceMethod("hyperRes", "hyperResults",
 setMethod(f="gseKEGGparam", signature="gseParam", definition=function(obj) obj@keggParam)
 #' @export
 setMethod(f="gseKEGGparam", signature="gseResults", definition=function(obj) obj@gseParam@keggParam)
+#' @rdname DEGContainer
 #' @export
 setMethod(f="gseKEGGparam", signature="DEGContainer", definition=function(obj) obj@gseResults@gseParam@keggParam)
 
+#' @rdname DEGContainer
 #' @export
 setReplaceMethod("gseKEGGparam", "DEGContainer",
                  function(obj, value) {obj@gseResults@gseParam@keggParam <- value; validObject(obj); obj})
@@ -523,9 +554,11 @@ setReplaceMethod("gseKEGGparam", "gseParam",
 setMethod(f="gseGOparam", signature="gseParam", definition=function(obj) obj@goParam)
 #' @export
 setMethod(f="gseGOparam", signature="gseResults", definition=function(obj) obj@gseParam@goParam)
+#' @rdname DEGContainer
 #' @export
 setMethod(f="gseGOparam", signature="DEGContainer", definition=function(obj) obj@gseResults@gseParam@goParam)
 
+#' @rdname DEGContainer
 #' @export
 setReplaceMethod("gseGOparam", "DEGContainer",
                  function(obj, value) {obj@gseResults@gseParam@goParam <- value; validObject(obj); obj})
@@ -538,9 +571,11 @@ setReplaceMethod("gseGOparam", "gseParam",
 
 #' @export
 setMethod(f="gseRes", signature="gseResults", definition=function(obj) obj@gseRes)
+#' @rdname DEGContainer
 #' @export
 setMethod(f="gseRes", signature="DEGContainer", definition=function(obj) obj@gseResults@gseRes)
 
+#' @rdname DEGContainer
 #' @export
 setReplaceMethod("gseRes", "DEGContainer",
                  function(obj, value) {obj@gseResults@gseRes <- value; validObject(obj); obj})

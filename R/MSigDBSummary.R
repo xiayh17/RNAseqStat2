@@ -1,5 +1,16 @@
+#' Summary MSigDB modules results
+#'
+#' @param obj a DEGContainer
+#' @param dir a directory to store results
+#' @param prefix a prefix of file names in this step
+#' @param top top of hyper or gsea
+#'
+#' @return
 #' @export
-MSigDBSummay <- function(obj, dir = ".", prefix = "4-runGSEA",top =10) {
+#'
+#' @examples
+#' MSigDBSummary(data_msigdb)
+MSigDBSummary <- function(obj, dir = ".", prefix = "5-runMSigDB",top =10) {
 
   ## plot
   ## gse ----

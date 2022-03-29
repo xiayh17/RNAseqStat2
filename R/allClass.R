@@ -235,7 +235,7 @@ setValidity("dataInfo", function(object) {
     usethis::ui_stop("Please make sure your {ui_code('idType')} is one of {ui_value('SYMBOL')} or {ui_value('ENSEMBL')}")
   }
   ## counts
-  if (any(class(counts_data) == "data.frame") & all(apply(counts_data, 2, is.integer))) {
+  if (identical(dataType,"Counts") & any(class(counts_data) == "data.frame") & all(apply(counts_data, 2, is.integer))) {
     usethis::ui_done("Counts data frame seems ok")
   } else {
     usethis::ui_stop("Please check your data frame! Is it an integer data frame?")

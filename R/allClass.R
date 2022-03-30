@@ -237,8 +237,11 @@ setValidity("dataInfo", function(object) {
   ## counts
   if (identical(dataType,"Counts") & any(class(counts_data) == "data.frame") & all(apply(counts_data, 2, is.integer))) {
     usethis::ui_done("Counts data frame seems ok")
+  } else if (identical(dataType,"Array") & any(class(counts_data) == "data.frame") & all(apply(counts_data, 2, is.numeric))) {
+    usethis::ui_done("Array data frame seems ok")
   } else {
-    usethis::ui_stop("Please check your data frame! Is it an integer data frame?")
+    usethis::ui_stop("Please check your data frame!
+                     Is it an integer data frame for {ui_value('Counts')} or numeric for {ui_value('Array')}?")
   }
   ## group
   if (all(c(case_group, control_group) %in% group_list) & ncol(counts_data) == length(group_list)) {

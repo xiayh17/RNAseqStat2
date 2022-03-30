@@ -27,11 +27,11 @@ Create_dataInfo <- function(species,
   species = as.character(species)
   dataType = as.character(dataType)
   idType = as.character(idType)
-  expMatrix <- as.data.frame(expMatrix)
+  expMatrix = as.data.frame(expMatrix)
   groupInfo = as.character(groupInfo)
   caseGroup = as.character(caseGroup)
   filterMethod = as.character(filterMethod)
-  matrixFiltered <- as.data.frame(matrixFiltered)
+  matrixFiltered = as.data.frame(matrixFiltered)
 
 
   new("dataInfo",

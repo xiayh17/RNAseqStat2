@@ -417,7 +417,7 @@ hk=c('C1orf43','CHMP2A','EMC7','GPI','PSMB2','PSMB4','RAB7A','REEP5','SNRPD3','V
                            width = ncol(expr)*0.3+2.2,height = 10*0.3+2.2,
                            ...,heatmapParam = list(show_rownames = T,cluster_cols = F)){
 
-  if (any(hk %in% rownames(dat))) {
+  if (any(hk %in% rownames(expr))) {
 
     # highly uniform and strongly expressed genes
     hk = hk[hk %in% rownames(expr)]

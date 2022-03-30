@@ -35,36 +35,35 @@ runCheck <- function(object,
     # dat=cpm(exprSet, prior.count = 2, log = TRUE)
     dat = log2(cpm(exprSet)+1)
 
-    box_check(dat,group_list,dir = dir,prefix = prefix,palette = palette,y = "log2(cpm(count)+1)")
+    box_check(data = dat,group_list,dir = dir,prefix = prefix,palette = palette,y = "log2(cpm(count)+1)")
     ui_done(glue("Box checking have done, a plot was store in {ui_path(dir)}."))
-    suppressMessages(density_check(dat,group_list,dir = dir,prefix = prefix,palette = palette,y = "log2(cpm(count)+1)"))
+    suppressMessages(density_check(data = dat,group_list,dir = dir,prefix = prefix,palette = palette,y = "log2(cpm(count)+1)"))
     ui_done(glue("Density checking have done, a plot was store in {ui_path(dir)}."))
 
   } else if (dataType(object) == "Array") {
 
     ui_info("Your Array will be make a check!")
-    dat = exprSet
+    dat = as.matrix(exprSet)
 
-    box_check(dat,group_list,dir = dir,prefix = prefix,palette = palette,y = "expression value")
+    box_check(data = dat,group_list,dir = dir,prefix = prefix,palette = palette,y = "expression value")
     ui_done(glue("Box checking have done, a plot was store in {ui_path(dir)}."))
-    suppressMessages(density_check(dat,group_list,dir = dir,prefix = prefix,palette = palette,y = "expression value"))
+    suppressMessages(density_check(data = dat,group_list,dir = dir,prefix = prefix,palette = palette,y = "expression value"))
     ui_done(glue("Density checking have done, a plot was store in {ui_path(dir)}."))
-
 
   }
 
   if(species(object) == "Human"){
-    HKG_check(dat,group_list,dir = dir,prefix = prefix,palette = palette)
+    HKG_check(data = dat,group_list,dir = dir,prefix = prefix,palette = palette)
     ui_done(glue("HKG checking have done, a plot was store in {ui_path(dir)}."))
   }
 
-  pca_check(dat,group_list,dir = dir,prefix = prefix,palette = palette)
+  pca_check(data = dat,group_list,dir = dir,prefix = prefix,palette = palette)
   ui_done(glue("PCA checking have done, a plot was store in {ui_path(dir)}."))
-  corall_check(dat,group_list,dir = dir,prefix = prefix,palette = palette)
+  corall_check(data = dat,group_list,dir = dir,prefix = prefix,palette = palette)
   ui_done(glue("Correlation checking have done, a plot was store in {ui_path(dir)}."))
-  cor500_check(dat,group_list,dir = dir,prefix = prefix,palette = palette)
+  cor500_check(data = dat,group_list,dir = dir,prefix = prefix,palette = palette)
   ui_done(glue("Correlation to top 500 genes checking have done, a plot was store in {ui_path(dir)}."))
-  top1000_check(dat,group_list,dir = dir,prefix = prefix,palette = palette)
+  top1000_check(data = dat,group_list,dir = dir,prefix = prefix,palette = palette)
   ui_done(glue("Standard Deviation top 1000 genes checking have done, a plot was store in {ui_path(dir)}."))
 
 }

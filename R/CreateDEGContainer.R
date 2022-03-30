@@ -59,6 +59,7 @@ Create_DEGContainer <- function(species = "Human",
   if(is.null(filterMethod)){
 
     ui_info("Nothing filtered in your data.")
+    matrixFiltered = expMatrix
 
   } else {
 

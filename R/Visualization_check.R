@@ -454,6 +454,14 @@ hk=c('C1orf43','CHMP2A','EMC7','GPI','PSMB2','PSMB4','RAB7A','REEP5','SNRPD3','V
 
 # help function -----------------------------------------------------------
 ## for heatmap构建分组信息
+
+#' add group info for heatmap
+#'
+#' @param expr a expression matrix
+#' @param group_list group for samples
+#'
+#' @return a data frame for pheatmap annotation
+#' @export
 ac_ <- function(expr,group_list) {
   colD=data.frame(Groups=group_list)
   rownames(colD)=colnames(expr)

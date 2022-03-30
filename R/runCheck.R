@@ -62,7 +62,7 @@ runCheck <- function(object,
   ui_done(glue("PCA checking have done, a plot was store in {ui_path(dir)}."))
   corall_check(dat,group_list,dir = dir,prefix = prefix,palette = palette)
   ui_done(glue("Correlation checking have done, a plot was store in {ui_path(dir)}."))
-  cor500_check(exprSet,group_list,dir = dir,prefix = prefix,palette = palette)
+  cor500_check(dat,group_list,dir = dir,prefix = prefix,palette = palette)
   ui_done(glue("Correlation to top 500 genes checking have done, a plot was store in {ui_path(dir)}."))
   top1000_check(dat,group_list,dir = dir,prefix = prefix,palette = palette)
   ui_done(glue("Standard Deviation top 1000 genes checking have done, a plot was store in {ui_path(dir)}."))

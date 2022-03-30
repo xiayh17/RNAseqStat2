@@ -397,6 +397,9 @@ exprRidges <- function(expr,group_list,palette = RColorBrewer::brewer.pal(3,"Set
 #' @param heatmapParam more parameters in \code{\link[pheatmap]{pheatmap}}
 #' @param ... more parameters in \code{\link[pheatmap]{pheatmap}}
 #'
+#' @importFrom pheatmap pheatmap
+#' @importFrom usethis ui_oops
+#'
 #' @details
 #' Human housekeeping genes revisited in \cr
 #' https://www.tau.ac.il/~elieis/HKG/ \cr
@@ -414,29 +417,37 @@ hk=c('C1orf43','CHMP2A','EMC7','GPI','PSMB2','PSMB4','RAB7A','REEP5','SNRPD3','V
                            width = ncol(expr)*0.3+2.2,height = 10*0.3+2.2,
                            ...,heatmapParam = list(show_rownames = T,cluster_cols = F)){
 
-  # highly uniform and strongly expressed genes
-  hk = hk[hk %in% rownames(expr)]
-  # https://www.tau.ac.il/~elieis/HKG/
-  # "Human housekeeping genes revisited"
-  # E. Eisenberg and E.Y. Levanon, Trends in Genetics, 29 (2013)
-  # pheatmap::pheatmap(expr[hk,])
+  if (any(hk %in% rownames(dat))) {
 
-  m = expr[hk,]
-  names(palette) <- unique(group_list)
-  palette = split(palette,anno_title)
+    # highly uniform and strongly expressed genes
+    hk = hk[hk %in% rownames(expr)]
+    # https://www.tau.ac.il/~elieis/HKG/
+    # "Human housekeeping genes revisited"
+    # E. Eisenberg and E.Y. Levanon, Trends in Genetics, 29 (2013)
+    # pheatmap::pheatmap(expr[hk,])
 
-  width = width
-  height = height
+    m = expr[hk,]
+    names(palette) <- unique(group_list)
+    palette = split(palette,anno_title)
+
+    width = width
+    height = height
 
 
-  param = list()
-  heatmapParam = modifyList(param,heatmapParam)
-  heatmap <- do.call("pheatmap",modifyList(
-    list(mat = m,width = width, height = height, main = main,
-         annotation_col = annotation_col, annotation_colors = palette,filename = filename),
-    heatmapParam))
+    param = list()
+    heatmapParam = modifyList(param,heatmapParam)
+    heatmap <- do.call("pheatmap",modifyList(
+      list(mat = m,width = width, height = height, main = main,
+           annotation_col = annotation_col, annotation_colors = palette,filename = filename),
+      heatmapParam))
 
-  return(heatmap)
+    return(heatmap)
+
+  } else {
+
+    ui_oops("Nothing to do for without any specified gene in data.")
+
+  }
 
 }
 # hallmark heatmap --------------------------------------------------------

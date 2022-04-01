@@ -20,7 +20,7 @@ runALL <- function(object,dir = "output",top = 10,parallel = T,GO = FALSE,KEGG =
     },
     error = function(e){
       usethis::ui_oops("Something wrong occured in Check.
-                       try again later by {ui_code(runCheck)}.")
+                       try again later by {ui_code('runCheck')}.")
     }
   )
 
@@ -40,7 +40,7 @@ runALL <- function(object,dir = "output",top = 10,parallel = T,GO = FALSE,KEGG =
     },
     error = function(e){
       usethis::ui_oops("Something wrong occured in Hyper analysis. Skip it now.
-                       Try again later by {ui_code(runHyper)}")
+                       Try again later by {ui_code('runHyper')}")
       object_h <- object_g
     }
   )
@@ -51,7 +51,7 @@ runALL <- function(object,dir = "output",top = 10,parallel = T,GO = FALSE,KEGG =
     },
     error = function(e){
       usethis::ui_oops("Something wrong occured in GSEA analysis. Skip it now.
-                       Try again later by {ui_code(runGSEA)}")
+                       Try again later by {ui_code('runGSEA')}")
       object_gs <- object_h
     }
   )
@@ -62,7 +62,7 @@ runALL <- function(object,dir = "output",top = 10,parallel = T,GO = FALSE,KEGG =
     },
     error = function(e){
       usethis::ui_oops("Something wrong occured in runMSigDB analysis. Skip it now.
-                       Try again later by {ui_code(runMSigDB)}")
+                       Try again later by {ui_code('runMSigDB')}")
       object_gs <- object_gs
     }
   )

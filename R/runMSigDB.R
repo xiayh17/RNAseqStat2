@@ -46,7 +46,7 @@ setMethod(f="runMSigDB", signature="DEGContainer", definition=function(obj, dir 
         MSigDBSummary(obj, dir = dir, prefix = prefix,top =top)
       },
       error = function(e){
-        usethis::ui_oops("Something wrong occured in Hyper Summary. try again later by {ui_code(hyperSummary)}.")
+        usethis::ui_oops("Something wrong occured in Hyper Summary. try again later by {ui_code('MSigDBSummary')}.")
       },
       finally = {
         usethis::ui_line("Hyper analysis step done")

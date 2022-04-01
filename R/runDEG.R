@@ -60,7 +60,7 @@ setMethod(f="runDEG", signature="DEGContainer", definition=function(obj, dir = "
       degSummary(obj = obj, dir = dir,prefix = prefix,PointVolcanoParam = PointVolcanoParam)
     },
     error = function(e){
-      usethis::ui_oops("Something wrong occured in DEG Summary. try again later by {ui_code(degSummary)}.")
+      usethis::ui_oops("Something wrong occured in DEG Summary. try again later by {ui_code('degSummary')}.")
     },
     finally = {
       usethis::ui_line("DEG analysis step done")

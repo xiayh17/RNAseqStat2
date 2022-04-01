@@ -37,7 +37,7 @@ setMethod(f="runGSEA", signature="DEGContainer", definition=function(obj, dir = 
       gseSummary(obj = obj, dir = dir, prefix = prefix,top = top)
     },
     error = function(e){
-      usethis::ui_oops("Something wrong occured in GSEA Summary. try again later by {ui_code(gseSummary)}.")
+      usethis::ui_oops("Something wrong occured in GSEA Summary. try again later by {ui_code('gseSummary')}.")
     },
     finally = {
       usethis::ui_line("GSEA analysis step done")

@@ -40,7 +40,8 @@ DEGtopHeatmap <- function(object, which, top = 50, filename = NA, show_gene = TR
 
   filename = filename
 
-  exprSet=log2(edgeR::cpm(counts_data)+1)
+  # exprSet=log2(edgeR::cpm(counts_data)+1)
+  exprSet=cpm(counts_data, prior.count = 2, log = TRUE)
   choose_matrix=exprSet[choose_gene,]
   choose_matrix=t(scale(t(choose_matrix)))
   choose_matrix[choose_matrix>2]=2

@@ -8,11 +8,15 @@
 #'
 #' @examples
 #' hyperBar(res)
-hyperBar <- function(res, top = 10) {
+hyperBar <- function(res, top = 10, order_by = "pvalue") {
 
   dat <- res@result
 
-  dat <- dat[order(dat[,"pvalue"])[1:top],]
+  # dat <- dat[order(dat[,"pvalue"])[1:top],]
+  ## 排序取top
+  dat <- dat %>%
+    arrange({{ order_by }}, .by_group = TRUE) %>% # 排序 pvalue 升序
+    slice_head(n = top) # 排序后数据的top
 
   p <- ggplot(dat,
               aes(Count, fct_reorder(stringr::str_wrap(Description,25), Count),

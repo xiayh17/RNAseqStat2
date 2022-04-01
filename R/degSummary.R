@@ -94,28 +94,30 @@ degSummary <- function(obj, dir = ".", prefix = "2-runDEG",
     ui_done(glue("DEG top heatmap plot were store in {ui_path(heatmap_all_file)}."))
 
     ## venn plot
-    index <- c(setdiff(label(obj),label_ns(obj)),"diff")
+    if (length(main) > 1) {
+      index <- c(setdiff(label(obj),label_ns(obj)),"diff")
 
-    geneSets <- lapply(main, function(x){
-      geneSymbol_list <- hyper_GS(object = obj,which = x,type = "SYMBOL")
-    })
-    names(geneSets) <- main
+      geneSets <- lapply(main, function(x){
+        geneSymbol_list <- hyper_GS(object = obj,which = x,type = "SYMBOL")
+      })
+      names(geneSets) <- main
 
-    geneSets_ls <- list()
-    for (i in index){
-      tmp <- lapply(main, function(x){geneSets[[x]][[i]]})
-      names(tmp) <- main
-      geneSets_ls[[i]] <- tmp
+      geneSets_ls <- list()
+      for (i in index){
+        tmp <- lapply(main, function(x){geneSets[[x]][[i]]})
+        names(tmp) <- main
+        geneSets_ls[[i]] <- tmp
+      }
+
+      p_list <- lapply(seq_along(geneSets_ls), function(x){
+        DEGvenn(geneSets = geneSets_ls[[x]])
+      })
+      p_l <- aplot::plot_list(gglist = p_list,labels = index)
+
+      venn_file = glue("{dir}/{prefix}_vennplot.pdf")
+      ggsave(filename = venn_file,plot = p_l,device = cairo_pdf,width = 4.5*length(index),height = 4.5)
+      ui_done(glue("DEG venn plot were store in {ui_path(venn_file)}."))
     }
-
-    p_list <- lapply(seq_along(geneSets_ls), function(x){
-      DEGvenn(geneSets = geneSets_ls[[x]])
-    })
-    p_l <- aplot::plot_list(gglist = p_list,labels = index)
-
-    venn_file = glue("{dir}/{prefix}_vennplot.pdf")
-    ggsave(filename = venn_file,plot = p_l,device = cairo_pdf,width = 4.5*length(index),height = 4.5)
-    ui_done(glue("DEG venn plot were store in {ui_path(venn_file)}."))
 
   } else {
     ui_info("None available results of DEG.")

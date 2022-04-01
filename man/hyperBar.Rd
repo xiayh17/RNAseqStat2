@@ -4,7 +4,7 @@
 \alias{hyperBar}
 \title{hyper barplot}
 \usage{
-hyperBar(res, top = 10)
+hyperBar(res, top = 10, order_by = "pvalue")
 }
 \arguments{
 \item{res}{a \code{\link[DOSE]{enrichResult}}}

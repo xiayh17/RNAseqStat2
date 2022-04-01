@@ -30,48 +30,55 @@ hyperSummary <- function(obj, dir = ".", prefix = "3-runHyper",top = 10) {
 
   subRes <- data$hyperKEGG_res
 
-  if (!is.null(subRes)) {
+  ## check deg results
+  test <- deg_here(obj)
+  ok <- names(test)[which(test == TRUE)]
+  ## except merge
+  main <- setdiff(ok,"merge")
 
-res_l <- modelEnrich(obj,dataBase = "KEGG",orderBy = "pvalue",head = top)
+  if (!is.null(subRes) & length(main) > 1) {
 
-  tmp <- lapply(index, function(x){
+    res_l <- modelEnrich(obj,dataBase = "KEGG",orderBy = "pvalue",head = top)
 
-    dat_d <- res_l[[x]]
-    cc_file_name = glue("{dir}/{prefix}_KEGG_compareEnrichCircle_{x}.pdf")
-    compareEnrichCircle(result_g = dat_d,filename = cc_file_name,mar = c(8,0,0,19))
+    tmp <- lapply(index, function(x){
 
-  })
-
-    tmp <- lapply(index, function(i){
-
-      plot_list <- lapply(seq_along(subRes), function(j){
-
-        x = subRes[[j]]
-        eob <- x[[i]]
-
-        if(!is.null(eob)){
-
-            hyperBar(eob,top = top)+ theme(legend.position="none") + ggtitle(names(subRes)[j])
-
-
-        }
-
-      })
-
-      legend <- cowplot::get_legend(
-        # create some space to the left of the legend
-        plot_list[[1]] + ggplot2::theme(legend.position="right",legend.box.margin = ggplot2::margin(0, 0, 0, 12))
-      )
-
-      p <- cowplot::plot_grid(plotlist = plot_list,legend,ncol = 5, rel_widths = c(.4,3,3,3,3))
-
-      plot_path = glue::glue("{dir}/{prefix}_KEGG_{i}.pdf")
-      ggplot2::ggsave(p,filename = plot_path, width = 6400,height = 1200*(top*2/10),units = "px",limitsize = FALSE,device = cairo_pdf)
-
-      ui_done(glue("{i} Genes Hyper KEGG result is stored in {usethis::ui_path(plot_path)}"))
+      dat_d <- res_l[[x]]
+      dat_d <- na.omit(dat_d)
+      cc_file_name = glue("{dir}/{prefix}_KEGG_compareEnrichCircle_{x}.pdf")
+      compareEnrichCircle(result_g = dat_d,filename = cc_file_name,mar = c(8,0,0,19))
 
     })
   }
+
+  tmp <- lapply(index, function(i){
+
+    plot_list <- lapply(seq_along(subRes), function(j){
+
+      x = subRes[[j]]
+      eob <- x[[i]]
+
+      if(!is.null(eob)){
+
+        hyperBar(eob,top = top)+ theme(legend.position="none") + ggtitle(names(subRes)[j])
+
+
+      }
+
+    })
+
+    legend <- cowplot::get_legend(
+      # create some space to the left of the legend
+      plot_list[[1]] + ggplot2::theme(legend.position="right",legend.box.margin = ggplot2::margin(0, 0, 0, 12))
+    )
+
+    p <- cowplot::plot_grid(plotlist = plot_list,legend,ncol = 5, rel_widths = c(.4,3,3,3,3))
+
+    plot_path = glue::glue("{dir}/{prefix}_KEGG_{i}.pdf")
+    ggplot2::ggsave(p,filename = plot_path, width = 6400,height = 1200*(top*2/10),units = "px",limitsize = FALSE,device = cairo_pdf)
+
+    ui_done(glue("{i} Genes Hyper KEGG result is stored in {usethis::ui_path(plot_path)}"))
+
+  })
 
   tmp <- lapply(index, function(i){ ## Up Down diff
 
@@ -91,7 +98,7 @@ res_l <- modelEnrich(obj,dataBase = "KEGG",orderBy = "pvalue",head = top)
   ## GO data
   subRes <- data$hyperGO_res
 
-  if (!is.null(subRes)) {
+  if (!is.null(subRes) & length(main) > 1) {
 
     res_l <- modelEnrich(obj,dataBase = "GO",orderBy = "pvalue",head = top)
 
@@ -103,29 +110,30 @@ res_l <- modelEnrich(obj,dataBase = "KEGG",orderBy = "pvalue",head = top)
 
     })
 
-    tmp <- lapply(index, function(i){
+  }
 
-      plot_list <- lapply(seq_along(subRes), function(j){
+  tmp <- lapply(index, function(i){
 
-        x = subRes[[j]]
-        eob <- x[[i]]
+    plot_list <- lapply(seq_along(subRes), function(j){
 
-        if(!is.null(eob)){
+      x = subRes[[j]]
+      eob <- x[[i]]
 
-          enrichBar(eob,top = top,plot_title = names(subRes)[j])
+      if(!is.null(eob)){
 
-        }
+        enrichBar(eob,top = top,plot_title = names(subRes)[j])
 
-      })
-
-      p <- cowplot::plot_grid(plotlist = plot_list, ncol = 4)
-
-      plot_path = glue::glue("{dir}/{prefix}_GO_bar_{i}.pdf")
-      ggplot2::ggsave(p,filename = plot_path, width = 7700,height = 1800*(top*2/10),units = "px",limitsize = FALSE,device = cairo_pdf,dpi = 300)
-      ui_done(glue("{i} Genes Hyper GO result is stored in {usethis::ui_path(plot_path)}"))
+      }
 
     })
-  }
+
+    p <- cowplot::plot_grid(plotlist = plot_list, ncol = 4)
+
+    plot_path = glue::glue("{dir}/{prefix}_GO_bar_{i}.pdf")
+    ggplot2::ggsave(p,filename = plot_path, width = 7700,height = 1800*(top*2/10),units = "px",limitsize = FALSE,device = cairo_pdf,dpi = 300)
+    ui_done(glue("{i} Genes Hyper GO result is stored in {usethis::ui_path(plot_path)}"))
+
+  })
 
   tmp <- lapply(index, function(i){ ## Up Down diff
 

@@ -38,32 +38,32 @@ degResolveArray <- function(object,dir = ".", prefix = "2-DEG") {
   # deg_df_DESeq2 <- DESeq2_resolve(expr_data,group_list,parallel = parallel,dir=dir,prefix = prefix,
   #                                 case_group = case_group, control_group = control_group, qc = qc)
 
-  usethis::ui_info(glue("Start edgeR analysis."))
-  deg_df_edgeR <- edgeR_resolveArray(expr_data, group_list,
-                                control_group = control_group)
+  # usethis::ui_info(glue("Start edgeR analysis."))
+  # deg_df_edgeR <- edgeR_resolveArray(expr_data, group_list,
+  #                               control_group = control_group)
 
   usethis::ui_info(glue("Start limma analysis."))
   deg_df_limma <- limma_resolveArray(expr_data,group_list,
                                 case_group = case_group, control_group = control_group)
 
-  usethis::ui_info(glue("Merge data above."))
-  allg <- Reduce(intersect, list(
-                                 rownames(deg_df_edgeR),
-                                 rownames(deg_df_limma)))
-
-  deg_df_intersect=cbind(deg_df_limma[allg,c("logFC","P.Value","adj.P.Val")],
-                         deg_df_edgeR[allg,c("logFC","PValue","FDR")])
-
-  colnames(deg_df_intersect) <- paste0(colnames(deg_df_intersect),"_",rep(c("limma","edgeR"),each=2))
+  # usethis::ui_info(glue("Merge data above."))
+  # allg <- Reduce(intersect, list(
+  #                                rownames(deg_df_edgeR),
+  #                                rownames(deg_df_limma)))
+  #
+  # deg_df_intersect=cbind(deg_df_limma[allg,c("logFC","P.Value","adj.P.Val")],
+  #                        deg_df_edgeR[allg,c("logFC","PValue","FDR")])
+  #
+  # colnames(deg_df_intersect) <- paste0(colnames(deg_df_intersect),"_",rep(c("limma","edgeR"),each=2))
 
   # csv_name = glue('{dir}/{prefix}_intersect_results.csv')
   # write.csv(deg_df_intersect,file = csv_name)
   # ui_done(glue("DEG results in csv format is stored in {usethis::ui_path(csv_name)}"))
 
   limma_res(object) = deg_df_limma
-  edgeR_res(object) = deg_df_edgeR
+  # edgeR_res(object) = deg_df_edgeR
   # DESeq2_res(object) = deg_df_DESeq2
-  merge_res(object) = deg_df_intersect
+  # merge_res(object) = deg_df_intersect
   ui_done(glue("DEG results is updated in {ui_code('DEGContainer')}"))
   # rdata_name = glue('{dir}/{prefix}_results.Rdata')
   # save(deg_results,file = rdata_name)
@@ -111,45 +111,5 @@ limma_resolveArray <- function(expr_data, group_list, control_group, case_group)
   DEG_limma_voom = na.omit(tempOutput)
 
   return(DEG_limma_voom)
-
-}
-
-#' Basic produce of edgeR
-#'
-#' A basic function to get data and produce results of edgeR
-#'
-#' @param expr_data a counts data frame of rows in genes and columns in samples
-#' @param group_list a character vector ordered by samples in counts_data
-#' @param control_group the name of the denominator level for the fold change (Control group)
-#'
-#' @importFrom stats relevel model.matrix
-#' @importFrom edgeR DGEList cpm calcNormFactors estimateGLMCommonDisp estimateGLMTrendedDisp estimateGLMTagwiseDisp glmFit glmLRT topTags
-#'
-#' @return a DEG data frame
-#' @export
-#'
-#' @examples
-#' edgeR_resolve_(counts_input, group_list, control_group= "C")
-edgeR_resolveArray <- function(expr_data, group_list, control_group) {
-
-  g=factor(group_list)
-  g=relevel(g,control_group)
-
-  dge=expr_data
-  design <- model.matrix(~0+g)
-  # rownames(design)<-colnames(dge)
-  # colnames(design)<-levels(g)
-
-  dge <- estimateGLMCommonDisp(dge,design)
-  dge <- estimateGLMTrendedDisp(dge, design)
-  dge <- estimateGLMTagwiseDisp(dge, design)
-
-  fit <- glmFit(dge, design)
-  # https://www.biostars.org/p/110861/
-  lrt <- glmLRT(fit, contrast=c(-1,1))
-  nrDEG=topTags(lrt, n=nrow(dge))
-  nrDEG=as.data.frame(nrDEG)
-
-  return(nrDEG)
 
 }

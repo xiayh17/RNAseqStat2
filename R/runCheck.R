@@ -32,8 +32,8 @@ runCheck <- function(object,
   if(dataType(object) == "Counts") {
 
     ui_info("Your Counts will be Convert to CPM and make a check!")
-    # dat=cpm(exprSet, prior.count = 2, log = TRUE)
-    dat = log2(cpm(exprSet)+1)
+    dat=cpm(exprSet, prior.count = 2, log = TRUE)
+    # dat = log2(cpm(exprSet)+1)
 
     box_check(data = dat,group_list,dir = dir,prefix = prefix,palette = palette,y = "log2(cpm(count)+1)")
     ui_done(glue("Box checking have done, a plot was store in {ui_path(dir)}."))

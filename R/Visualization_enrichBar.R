@@ -8,7 +8,10 @@
 #'
 #' @examples
 #' hyperBar(res)
-hyperBar <- function(res, top = 10, order_by = "pvalue") {
+hyperBar <- function(res, top = 10,
+                     order_by = "pvalue", fill = "qvalue",
+                     x = "Count",
+                     wrap_limit = 25) {
 
   dat <- res@result
 
@@ -18,9 +21,30 @@ hyperBar <- function(res, top = 10, order_by = "pvalue") {
     arrange({{ order_by }}, .by_group = TRUE) %>% # 排序 pvalue 升序
     slice_head(n = top) # 排序后数据的top
 
+  if (nrow(dat) != top) {
+
+    ui_info("Top {top} is set but only {nrow(dat)} data avaliable!")
+
+  }
+
+  ## logical for na
+  if (any(is.na(dat[,fill]))) {
+
+    ui_info("{ui_value(fill)} contains NA, {ui_value('p.adjust')} will be choosed.")
+    fill = "p.adjust"
+
+  }
+
+  if (any(is.na(dat[,fill]))) {
+
+    ui_info("{ui_value(fill)} contains NA, {ui_value('pvalue')} will be choosed.")
+    fill = "pvalue"
+
+  }
+
   p <- ggplot(dat,
-              aes(Count, fct_reorder(stringr::str_wrap(Description,25), Count),
-                  fill=qvalue)) +
+              aes_(as.name(x), fct_reorder(stringr::str_wrap(dat$Description,wrap_limit), dat[,x]),
+                  fill=as.name(fill))) +
     geom_col() +
     scale_fill_gradientn(colours=c("#b3eebe", "#46bac2", "#371ea3"),
                          guide=guide_colorbar(reverse=TRUE)) +

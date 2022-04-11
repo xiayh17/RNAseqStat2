@@ -21,141 +21,282 @@ hyperSummary <- function(obj, dir = ".", prefix = "3-runHyper",top = 10) {
     fs::dir_create(dir)
   }
 
+  pro = NULL
+
+  if (length(hyperRes(obj)[["hyperKEGG_res"]]) > 0) {
+    pro = "KEGG"
+  }
+
+  if (length(hyperRes(obj)[["hyperGO_res"]]) > 0) {
+    pro = c(pro,"GO")
+  }
+
+  if(is.null(pro)){
+
+    ui_info("NO KEGG or GO data found!")
+
+  } else {
+
+    lapply(pro, function(x){
+      ui_info("Start to Summary Hyper {x}")
+
+      ## Bar plot of Count, order by pvalue, fill by qvalue
+      tryCatch(
+        expr = {
+          hyperSummaryHyperBar(obj = obj,dataBase = x,top = top,dir = dir,prefix = prefix)
+        },
+        error = function(e){
+          usethis::ui_oops("Something wrong occured in hyperSummaryHyperBar {x}.
+                       try again later by {ui_code('hyperSummaryHyperBar')}.")
+        }
+      )
+
+      ## Circlize plot of KEGG ids in Different methods
+      tryCatch(
+        expr = {
+          hyperSummaryHyperCompareCircle(obj = obj,dataBase = x,orderBy = "pvalue",top = top,dir = dir,prefix = prefix)
+        },
+        error = function(e){
+          usethis::ui_oops("Something wrong occured in hyperSummaryHyperCompareCircle {x}.
+                       try again later by {ui_code('hyperSummaryHyperCompareCircle')}.")
+        }
+      )
+
+      ## CSV files for results
+      tryCatch(
+        expr = {
+          hyperSummaryCSV(obj = obj, dataBase = x, dir = dir, prefix = prefix)
+        },
+        error = function(e){
+          usethis::ui_oops("Something wrong occured in hyperSummaryCSV {x}.
+                       try again later by {ui_code('hyperSummaryCSV')}.")
+        }
+      )
+
+      if(identical(x,"GO")){
+        tryCatch(
+          expr = {
+            ## GO enrich barplot Split by Ontology
+            hyperSummaryGOBar(obj = obj, top = top, dir = dir, prefix = prefix)
+          },
+          error = function(e){
+            usethis::ui_oops("Something wrong occured in hyperSummaryGOBar.
+                       try again later by {ui_code('hyperSummaryGOBar')}.")
+          }
+        )
+      }
+
+    })
+
+  }
+
+}
+
+## Hyper Summary  Enrich bar plot
+hyperSummaryGOBar <- function(obj,top = 10,dir = ".",prefix = "3-runHyper"){
+
+  index <- c(setdiff(label(obj),label_ns(obj)),"diff")
   ## get data
   # ui_info("Start plot")
   data <- hyperRes(obj = obj)
 
-  ## KEGG data
+  subRes <- data$hyperGO_res
+
+  if (is.null(subRes)) {
+
+    ui_oops("NO data avalible of {ui_value('GO')}")
+
+  } else {
+
+    tmp <- lapply(index, function(i) {
+
+      plot_list <- lapply(seq_along(subRes), function(j){
+
+        x = subRes[[j]]
+        eob <- x[[i]]
+
+        if(!is.null(eob)){
+
+          enrichBar(eob,top = top,plot_title = names(subRes)[j])
+
+        } else {
+
+          ui_info("Hyper GO of {j} {i} Data not avalible")
+
+        }
+
+      })
+
+      p <- patchwork::wrap_plots(plot_list,nrow = 1,guides = "collect")
+
+      plot_path = glue::glue("{dir}/{prefix}_GO_{i}_OntologySplitBar.pdf")
+      ggplot2::ggsave(p,filename = plot_path, width = 2566.66*seq_along(subRes),height = 1800*(top*2/10),units = "px",limitsize = FALSE,device = cairo_pdf,dpi = 300)
+      ui_done(glue("{i} Genes Hyper GO enrich barplot Split by Ontology is stored in {usethis::ui_path(plot_path)}"))
+
+    })
+
+  }
+
+}
+
+## CSV files for results
+hyperSummaryCSV <- function(obj,dataBase,dir = ".",prefix = "3-runHyper"){
+
+  if (missing(dataBase)) {
+
+    ui_oops("Please select from {ui_value('KEGG')} or {ui_value('GO')} for ui_code('dataBase')")
+
+  }
+
   index <- c(setdiff(label(obj),label_ns(obj)),"diff")
+  ## get data
+  # ui_info("Start plot")
+  data <- hyperRes(obj = obj)
 
-  subRes <- data$hyperKEGG_res
+  if (dataBase == "KEGG") {
+    subRes <- data$hyperKEGG_res
+  } else if (dataBase == "GO") {
+    subRes <- data$hyperGO_res
+  } else {
 
+    ui_oops("Please select from {ui_value('KEGG')} or {ui_value('GO')} for ui_code('dataBase')")
+
+  }
+
+  if (is.null(subRes)) {
+
+    ui_oops("NO data avalible of {ui_value(dataBase)}")
+
+  } else {
+
+    tmp <- lapply(index, function(i){ ## Up Down diff
+
+      lapply(seq_along(subRes), function(j){ ## limma edgeR DESeq2
+
+        x = subRes[[j]]
+        eob <- x[[i]]
+
+        if (is.null(eob)) {
+
+          ui_info("Hyper {dataBase} of {j} {i} Data not avalible")
+
+        } else {
+
+          res_name <- glue("{dir}/{prefix}_{dataBase}_{names(subRes)[j]}_{i}_Gene.csv")
+          write.csv(eob@result,file = res_name)
+          ui_done(glue("{names(subRes)[j]} {i} Hyper {dataBase} result in csv format is stored in {usethis::ui_path(res_name)}"))
+
+        }
+
+      })
+
+    })
+
+  }
+
+}
+
+## Circlize plot of KEGG and GO in Different methods ----
+hyperSummaryHyperCompareCircle <- function(obj,dataBase,orderBy = "pvalue",top = 10,dir = ".",prefix = "3-runHyper"){
+
+  index <- c(setdiff(label(obj),label_ns(obj)),"diff")
   ## check deg results
   test <- deg_here(obj)
   ok <- names(test)[which(test == TRUE)]
   ## except merge
   main <- setdiff(ok,"merge")
 
-  if (!is.null(subRes) & length(main) > 1) {
+  ## convert data format for compareEnrichCircle
+  res_l <- modelEnrich(obj,dataBase = dataBase,orderBy = orderBy,head = top)
 
-    res_l <- modelEnrich(obj,dataBase = "KEGG",orderBy = "pvalue",head = top)
-
+  if (is.null(res_l)) {
+    ui_oops("NO data avaliable for {ui_code('compareEnrichCircle')}")
+  } else {
     tmp <- lapply(index, function(x){
-
-      dat_d <- res_l[[x]]
-      dat_d <- na.omit(dat_d)
-      cc_file_name = glue("{dir}/{prefix}_KEGG_compareEnrichCircle_{x}.pdf")
-      compareEnrichCircle(result_g = dat_d,filename = cc_file_name,mar = c(8,0,0,19))
-
+      tryCatch(
+        expr = {
+          dat_d <- res_l[[x]]
+          cc_file_name = glue("{dir}/{prefix}_{dataBase}_compareEnrichCircle_{x}.pdf")
+          compareEnrichCircle(result_g = dat_d,filename = cc_file_name,mar = c(8,0,0,19))
+        },
+        error = function(e){
+          usethis::ui_oops("Something wrong occured in {ui_code('compareEnrichCircle')} of {x}")
+        }
+      )
     })
   }
 
-  tmp <- lapply(index, function(i){
+}
 
-    plot_list <- lapply(seq_along(subRes), function(j){
+## barplot of KEGG and GO ----
+hyperSummaryHyperBar <- function(obj,dataBase,top = 10,dir=".",prefix = "3-runHyper"){
 
-      x = subRes[[j]]
-      eob <- x[[i]]
+  if (missing(dataBase)) {
 
-      if(!is.null(eob)){
+    ui_oops("Please select from {ui_value('KEGG')} or {ui_value('GO')} for ui_code('dataBase')")
 
-        hyperBar(eob,top = top)+ theme(legend.position="none") + ggtitle(names(subRes)[j])
+  }
 
+  index <- c(setdiff(label(obj),label_ns(obj)),"diff")
+  ## get data
+  # ui_info("Start plot")
+  data <- hyperRes(obj = obj)
 
-      }
+  if (dataBase == "KEGG") {
+    subRes <- data$hyperKEGG_res
+  } else if (dataBase == "GO") {
+    subRes <- data$hyperGO_res
+  } else {
 
-    })
+    ui_oops("Please select from {ui_value('KEGG')} or {ui_value('GO')} for ui_code('dataBase')")
 
-    legend <- cowplot::get_legend(
-      # create some space to the left of the legend
-      plot_list[[1]] + ggplot2::theme(legend.position="right",legend.box.margin = ggplot2::margin(0, 0, 0, 12))
-    )
+  }
 
-    p <- cowplot::plot_grid(plotlist = plot_list,legend,ncol = 5, rel_widths = c(.4,3,3,3,3))
+  if (is.null(subRes)) {
 
-    plot_path = glue::glue("{dir}/{prefix}_KEGG_{i}.pdf")
-    ggplot2::ggsave(p,filename = plot_path, width = 6400,height = 1200*(top*2/10),units = "px",limitsize = FALSE,device = cairo_pdf)
+    ui_oops("NO data avalible of {ui_value(dataBase)}")
 
-    ui_done(glue("{i} Genes Hyper KEGG result is stored in {usethis::ui_path(plot_path)}"))
+  } else {
 
-  })
+    ## Down up diff split
+    tmp <- lapply(index, function(i){
 
-  tmp <- lapply(index, function(i){ ## Up Down diff
+      ## plot for every results
+      plot_list <- lapply(seq_along(subRes), function(j){
 
-    lapply(seq_along(subRes), function(j){ ## limma edgeR DESeq2
+        tryCatch(
+          expr = {
 
-      x = subRes[[j]]
-      eob <- x[[i]]
+            ## get limma edgeR DESeq2
+            x = subRes[[j]]
+            ## get up down diff
+            eob <- x[[i]]
+            ## plot
+            if(!is.null(eob)) {
+              hyperBar(eob,top = top) + ggtitle(names(subRes)[j])
+            } else {
+              ui_oops("NO data avalible of {ui_value(dataBase)} {ui_value(names(subRes)[j])} {ui_value(i)}")
+            }
 
-      res_name <- glue("{dir}/{prefix}_KEGG_{names(subRes)[j]}_{i}_Gene.csv")
-      write.csv(eob@result,file = res_name)
-      ui_done(glue("{names(subRes)[j]} {i} Hyper KEGG result in csv format is stored in {usethis::ui_path(res_name)}"))
+          },
+          error = function(e){
+            usethis::ui_oops("Something wrong occured in {ui_code('hyperBar')} {ui_value(names(subRes)[j])} {ui_value(i)}.")
+          }
+        )
 
-    })
+      })
 
-  })
+      ## collect plots
+      p <- patchwork::wrap_plots(plot_list,nrow = 1,guides = "collect")
 
-  ## GO data
-  subRes <- data$hyperGO_res
+      ## save plot
+      plot_path = glue::glue("{dir}/{prefix}_{dataBase}_{i}.pdf")
+      ggplot2::ggsave(p,filename = plot_path, width = 6400,height = 1200*(top*2.5/10),units = "px",limitsize = FALSE,device = cairo_pdf)
 
-  if (!is.null(subRes) & length(main) > 1) {
-
-    res_l <- modelEnrich(obj,dataBase = "GO",orderBy = "pvalue",head = top)
-
-    tmp <- lapply(index, function(x){
-
-      dat_d <- res_l[[x]]
-      cc_file_name = glue("{dir}/{prefix}_GO_compareEnrichCircle_{x}.pdf")
-      compareEnrichCircle(result_g = dat_d,filename = cc_file_name,mar = c(8,0,0,19))
+      ui_done(glue("{i} Genes Hyper {dataBase} barplot is stored in {usethis::ui_path(plot_path)}"))
 
     })
 
   }
-
-  tmp <- lapply(index, function(i){
-
-    plot_list <- lapply(seq_along(subRes), function(j){
-
-      x = subRes[[j]]
-      eob <- x[[i]]
-
-      if(!is.null(eob)){
-
-        enrichBar(eob,top = top,plot_title = names(subRes)[j])
-
-      }
-
-    })
-
-    p <- cowplot::plot_grid(plotlist = plot_list, ncol = 4)
-
-    plot_path = glue::glue("{dir}/{prefix}_GO_bar_{i}.pdf")
-    ggplot2::ggsave(p,filename = plot_path, width = 7700,height = 1800*(top*2/10),units = "px",limitsize = FALSE,device = cairo_pdf,dpi = 300)
-    ui_done(glue("{i} Genes Hyper GO result is stored in {usethis::ui_path(plot_path)}"))
-
-  })
-
-  tmp <- lapply(index, function(i){ ## Up Down diff
-
-    lapply(seq_along(subRes), function(j){ ## limma edgeR DESeq2
-
-      x = subRes[[j]]
-      eob <- x[[i]]
-
-      if (is.null(eob)) {
-
-        ui_info("Hyper GO of {j} {i} Data not avalible")
-
-      } else {
-
-        res_name <- glue("{dir}/{prefix}_GO_{names(subRes)[j]}_{i}_Gene.csv")
-        write.csv(eob@result,file = res_name)
-        ui_done(glue("{names(subRes)[j]} {i} Hyper GO result in csv format is stored in {usethis::ui_path(res_name)}"))
-
-      }
-
-    })
-
-  })
 
 }

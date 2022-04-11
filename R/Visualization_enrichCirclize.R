@@ -308,6 +308,21 @@ hideCir <- function(matrix,preData) {
 #' heatCir(matrix,df)
 heatCir <- function(matrix,df,look = "Count") {
 
+  ## logical for na
+  if (any(is.na(df[,get(look)]))) {
+
+    ui_info("{ui_value(look)} contains NA, {ui_value('p.adjust')} will be choosed.")
+    fill = "p.adjust"
+
+  }
+
+  if (any(is.na(df[,get(look)]))) {
+
+    ui_info("{ui_value(look)} contains NA, {ui_value('pvalue')} will be choosed.")
+    fill = "pvalue"
+
+  }
+
   # list 的names是from from 下面的子元素是to
   f_col <- apply(matrix, 1, function(x) which(x > 0))
   # list 的names是to to 下面的子元素是from
@@ -591,7 +606,13 @@ highlightGroup <- function(df,track.index = 1,palatte,
 #'
 #' @examples
 #' modelEnrich(obj)
-modelEnrich <- function(obj,dataBase = "KEGG",orderBy = "pvalue", head = 3) {
+modelEnrich <- function(obj,dataBase,orderBy = "pvalue", head = 3) {
+
+  if (missing(dataBase)) {
+
+    ui_oops("Please select from {ui_value('KEGG')} or {ui_value('GO')} for ui_code('dataBase')")
+
+  }
 
   # 验证方法得到的结果
   test <- deg_here(obj)
@@ -611,6 +632,8 @@ modelEnrich <- function(obj,dataBase = "KEGG",orderBy = "pvalue", head = 3) {
 
     if(is.null(res_l)) {
       usethis::ui_oops("No available Data in hyper {dataBase}")
+      subres_ls <- NULL
+
     } else {
 
       subres_ls <- list()
@@ -634,7 +657,13 @@ modelEnrich <- function(obj,dataBase = "KEGG",orderBy = "pvalue", head = 3) {
       names(subres_ls) <- index
 
     }
+  } else {
+
+    ui_oops("NO data avaliable for {ui_code('modelEnrich')}")
+    subres_ls <- NULL
+
   }
+
   return(subres_ls)
 
 }

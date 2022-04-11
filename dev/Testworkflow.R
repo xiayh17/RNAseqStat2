@@ -16,6 +16,7 @@ group_list <- as.character(colData(airway)$dex)
 
 data_i <- Create_DEGContainer(expMatrix = row_counts,
                               groupInfo = group_list,
+                              dataType = "Array",
                               caseGroup = "trt",
                               idType = "ENSEMBL")
 

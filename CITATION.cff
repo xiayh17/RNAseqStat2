@@ -1,0 +1,22 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: 'RNAseqStat2: A Pipeline to Process RNAseq Data'
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - family-names: Xia
+    email: xiayh17@gmail.com
+    given-names: Yonghe
+  - family-names: Zeng
+    given-names: Jianming
+    email: jmzeng1314@163.com
+identifiers:
+  - type: url
+    value: 'https://github.com/xiayh17/RNAseqStat2'
+    description: The URL of GitHub repository of the software
+repository-code: 'https://github.com/xiayh17/RNAseqStat2'
+repository: 'https://github.com/xiayh17/RNAseqStat2'

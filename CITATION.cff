@@ -20,3 +20,6 @@ identifiers:
     description: The URL of GitHub repository of the software
 repository-code: 'https://github.com/xiayh17/RNAseqStat2'
 repository: 'https://github.com/xiayh17/RNAseqStat2'
+commit: dc0bde0e443b8e2fe8d8d95eea2c9e7f731572f9
+version: 0.1.0.9993
+date-released: '2022-05-20'

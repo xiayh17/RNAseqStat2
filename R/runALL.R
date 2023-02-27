@@ -34,36 +34,39 @@ runALL <- function(object,dir = "output",top = 10,parallel = T,GO = FALSE,KEGG =
     }
   )
 
-  tryCatch(
+  object_h <-tryCatch(
     expr = {
       object_h <- runHyper(obj = object_g,dir = dir,top = top,GO = GO,KEGG = KEGG)
+      return(object_h)
     },
     error = function(e){
       usethis::ui_oops("Something wrong occured in Hyper analysis. Skip it now.
                        Try again later by {ui_code('runHyper')}")
-      object_h <- object_g
+      return(object_g)
     }
   )
 
-  tryCatch(
+  object_gs <- tryCatch(
     expr = {
       object_gs <- runGSEA(obj = object_h,dir = dir,top = top,GO = GO,KEGG= KEGG)
+      return(object_gs)
     },
     error = function(e){
       usethis::ui_oops("Something wrong occured in GSEA analysis. Skip it now.
                        Try again later by {ui_code('runGSEA')}")
-      object_gs <- object_h
+      return(object_h)
     }
   )
 
-  tryCatch(
+  object_va <- tryCatch(
     expr = {
       object_va <- runMSigDB(obj = object_gs,dir = dir,top = top)
+      return(object_va)
     },
     error = function(e){
       usethis::ui_oops("Something wrong occured in runMSigDB analysis. Skip it now.
                        Try again later by {ui_code('runMSigDB')}")
-      object_gs <- object_gs
+      return(object_gs)
     }
   )
 

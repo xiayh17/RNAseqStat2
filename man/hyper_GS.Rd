@@ -17,9 +17,6 @@ hyper_GS(object, which, type, OrgDb = NULL, category = "H")
 
 \item{category}{MSigDB collection abbreviation, such as H or C1.}
 }
-\value{
-
-}
 \description{
 Get a significant difference gene list
 }

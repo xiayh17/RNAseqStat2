@@ -9,9 +9,6 @@ gsvaResolve(object)
 \arguments{
 \item{object}{a DEGContainer}
 }
-\value{
-
-}
 \description{
 GSVA analysis
 }

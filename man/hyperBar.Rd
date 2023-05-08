@@ -4,15 +4,19 @@
 \alias{hyperBar}
 \title{hyper barplot}
 \usage{
-hyperBar(res, top = 10, order_by = "pvalue")
+hyperBar(
+  res,
+  top = 10,
+  order_by = "pvalue",
+  fill = "qvalue",
+  x = "Count",
+  wrap_limit = 25
+)
 }
 \arguments{
 \item{res}{a \code{\link[DOSE]{enrichResult}}}
 
 \item{top}{number of top categories to show, by pvalue}
-}
-\value{
-
 }
 \description{
 hyper barplot

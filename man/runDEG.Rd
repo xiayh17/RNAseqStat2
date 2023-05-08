@@ -27,9 +27,6 @@ runDEG(
 
 \item{PointVolcanoParam}{for volcano plot}
 }
-\value{
-
-}
 \description{
 run DEG analysis and summary results
 }

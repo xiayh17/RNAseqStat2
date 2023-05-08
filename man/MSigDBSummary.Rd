@@ -15,9 +15,6 @@ MSigDBSummary(obj, dir = ".", prefix = "5-runMSigDB", top = 10)
 
 \item{top}{top of hyper or gsea}
 }
-\value{
-
-}
 \description{
 Summary MSigDB modules results
 }

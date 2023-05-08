@@ -35,9 +35,6 @@ exprBox(
 
 \item{width}{width of plot}
 }
-\value{
-
-}
 \description{
 plot a boxplot of all samples
 }

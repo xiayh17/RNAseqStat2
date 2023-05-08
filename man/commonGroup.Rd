@@ -9,9 +9,6 @@ commonGroup(merge_data)
 \arguments{
 \item{merge_data}{}
 }
-\value{
-
-}
 \description{
 Title
 }

@@ -17,9 +17,6 @@ volcano_nudge_x_down(object, label_data, which, just = 0, category = "H")
 
 \item{category}{for \code{which} is "MSigDB"}
 }
-\value{
-
-}
 \description{
 values for \code{nudge_x} in \code{\link{geom_volcano_text}}
 }

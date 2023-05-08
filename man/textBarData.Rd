@@ -23,9 +23,6 @@ textBarData(
 
 \item{order_by}{order data by which column}
 }
-\value{
-
-}
 \description{
 shape data of enrichResult
 }

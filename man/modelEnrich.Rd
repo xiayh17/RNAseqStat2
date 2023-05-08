@@ -4,7 +4,7 @@
 \alias{modelEnrich}
 \title{Get circlize data from obj after hyper analysis}
 \usage{
-modelEnrich(obj, dataBase = "KEGG", orderBy = "pvalue", head = 3)
+modelEnrich(obj, dataBase, orderBy = "pvalue", head = 3)
 }
 \arguments{
 \item{obj}{obj}

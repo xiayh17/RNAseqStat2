@@ -313,7 +313,7 @@ gsva_limma_resolve <- function(gsva_data, group_list, case_group) {
   fit2=contrasts.fit(fit,cont.matrix)
   fit2=eBayes(fit2)
 
-  tempOutput = topTable(fit2, ,coef=con,adjust='BH', n=Inf)
+  tempOutput = topTable(fit2, coef=con,adjust='BH', n=Inf)
   DEG_limma_voom = na.omit(tempOutput)
 
   return(DEG_limma_voom)

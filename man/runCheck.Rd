@@ -20,9 +20,6 @@ runCheck(
 
 \item{palette}{a color palette for plots}
 }
-\value{
-
-}
 \description{
 A previous check function for overview the data sets.
 }

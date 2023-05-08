@@ -26,9 +26,6 @@ runGSEA(
 
 \item{KEGG}{run KEGG}
 }
-\value{
-
-}
 \description{
 runGSEA Module control GO and KEGG
 }

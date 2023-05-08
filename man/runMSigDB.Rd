@@ -15,9 +15,6 @@ runMSigDB(obj, dir = ".", prefix = "5-runMSigDB", top = 10)
 
 \item{top}{top}
 }
-\value{
-
-}
 \description{
 run MSigDB module
 }

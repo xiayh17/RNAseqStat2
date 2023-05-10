@@ -20,7 +20,7 @@ Encoding: UTF-8
 LazyData: true
 Depends: 
     R (>= 4.1.0)
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
 BugReports: https://github.com/xiayh17/RNAseqStat2/issues
 Suggests: 
     testthat (>= 3.0.0),

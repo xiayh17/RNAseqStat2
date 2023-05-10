@@ -34,7 +34,7 @@ runALL <- function(object,dir = "output",top = 10,parallel = T,GO = FALSE,KEGG =
     }
   )
 
-  object_h <-tryCatch(
+  object_h <- tryCatch(
     expr = {
       object_h <- runHyper(obj = object_g,dir = dir,top = top,GO = GO,KEGG = KEGG)
       return(object_h)
